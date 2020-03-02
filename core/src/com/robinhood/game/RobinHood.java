@@ -1,33 +1,32 @@
 package com.robinhood.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+import controller.Controller;
+import model.Model;
+import view.View;
 
 public class RobinHood extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
-	
+
+	private View view;
+	private Controller controller;
+
 	@Override
 	public void create () {
-		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		controller = new Controller(this);
 	}
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
+		view.render();
 	}
 	
 	@Override
 	public void dispose () {
-		batch.dispose();
-		img.dispose();
+		view.dispose();
+	}
+
+	public void setView(View view) {
+		this.view = view;
 	}
 }
