@@ -1,21 +1,27 @@
 # RobinHoodGame
 
-## Repository structure (from com.robinhood.game)
+## Repository structure (src)
 ```
 ├── controller
-│   └── . . .
+│   ├── Controller.java
+│   └── FirebaseConnector.java
 ├── model
-│   ├── example1
-│   │    └── . . .
-│   ├── example2
-│   │    └── . . .
-│   └── example3
-│        └── . . .
+│   ├── Archer.java
+│   ├── Arrow.java
+│   ├── GameObject.java
+│   ├── Model.java
+│   ├── Player.java
+│   └── Stage.java
 ├── view
 |   ├── example
-|   │    └── exa
-|   │         ├── ex.java
+|   │    └── ex
+|   │         ├── ex1.java
 |   │         └── ex2.java
-|   └── ex3.java
-└── RobinHood.java
+│   ├── GameOverView.java
+│   ├── GameView.java
+│   ├── LoadingView.java
+│   ├── MenuView.java
+│   ├── SettingsView.java
+|   └── View.java
+└── com/robinhood/game/RobinHood.java
 ```
