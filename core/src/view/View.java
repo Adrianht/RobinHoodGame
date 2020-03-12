@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -12,8 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import controller.Controller;
 import model.Model;
 
-public abstract class View implements Screen {
-    /*
+public abstract class View extends Stage implements Screen {
+
     SpriteBatch batch;
     Texture img;
 
@@ -28,6 +29,8 @@ public abstract class View implements Screen {
     }
 
     // Lifecycle methods
+    public void init(){}
+
     @Override
     final public void show() {
 
@@ -40,18 +43,22 @@ public abstract class View implements Screen {
         init();
     }
 
-    public void init(){}
-
-    public void render () {
+    @Override
+    public void render(float delta) {
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         if(UI != null){
-            UI.act(delta);
+            //UI.act(delta);
             UI.draw();
         }
         batch.begin();
         batch.draw(img, 0, 0);
         batch.end();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        UI.getViewport().update(width, height);
     }
 
     public void dispose () {
@@ -61,8 +68,4 @@ public abstract class View implements Screen {
         img.dispose();
     }
 
-    public void screenListener() {
-        controller.userInput("USER INPUT");
-    }
-    */
 }
