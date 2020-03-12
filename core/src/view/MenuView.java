@@ -7,7 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import controller.Controller;
 import model.Model;
 
-public class MenuView extends View {
+public class MenuView {
+    /*
     private Button StartGameButton;
     private Button SettingsButton;
     private Button ExitButton;
@@ -30,5 +31,5 @@ public class MenuView extends View {
     public void init(){
         
     }
-
+*/
 }

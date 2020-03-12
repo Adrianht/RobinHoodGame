@@ -5,6 +5,7 @@ import com.robinhood.game.RobinHood;
 
 import model.Model;
 import view.MenuView;
+import view.SettingsView;
 
 public class Controller extends RobinHood {
 
@@ -16,7 +17,6 @@ public class Controller extends RobinHood {
     public Controller(RobinHood game) {
         this.game = game;
         this.model = new Model();
-        this.fbConn = new FirebaseConnector();
     }
 
     // Method called from views to update fb and model
@@ -41,7 +41,7 @@ public class Controller extends RobinHood {
     public void navigateTo(String destination) {
         switch(destination) {
             case "MENU":
-                super.setView(new MenuView(this, model));
+                // super.setView(new MenuView(this, model));
                 break;
             case "SETTINGS":
                 // code block
@@ -61,4 +61,16 @@ public class Controller extends RobinHood {
     public void changeSound() {
         model.changeSound();
     }
+
+    // Method to initate Firebase-connector and find another player
+    public void findPlayer() {
+        this.fbConn = new FirebaseConnector(this);
+    }
+
+    // Method called to initiate game after Firebase has found opponent
+    public void initiateGame() {
+        model.initiateGame();
+    }
+
+    // TODO: there should be a method callable from MenuView to quit the game
 }

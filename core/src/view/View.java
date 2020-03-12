@@ -17,7 +17,6 @@ public abstract class View implements Screen {
     SpriteBatch batch;
     Texture img;
 
-    //protected String data;
     protected Controller controller;
     protected Model world;
     protected Stage UI;
@@ -60,14 +59,6 @@ public abstract class View implements Screen {
         UI = null;
         batch.dispose();
         img.dispose();
-    }
-
-    public void setData(String data) {
-        this.data = data;
-    }
-
-    public void setController(Controller controller) {
-        this.controller = controller;
     }
 
     public void screenListener() {
