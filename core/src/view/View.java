@@ -13,6 +13,7 @@ import controller.Controller;
 import model.Model;
 
 public abstract class View implements Screen {
+    /*
     SpriteBatch batch;
     Texture img;
 
@@ -72,4 +73,5 @@ public abstract class View implements Screen {
     public void screenListener() {
         controller.userInput("USER INPUT");
     }
+    */
 }

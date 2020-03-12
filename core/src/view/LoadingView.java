@@ -1,4 +1,5 @@
 package view;
 
-public class LoadingView extends View {
+public class LoadingView {
+
 }

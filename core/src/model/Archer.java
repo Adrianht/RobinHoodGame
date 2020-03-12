@@ -1,4 +1,4 @@
 package model;
 
-public class Archer extends GameObject {
+public class Archer {
 }
