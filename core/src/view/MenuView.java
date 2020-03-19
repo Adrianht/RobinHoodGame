@@ -1,54 +1,41 @@
 package view;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import controller.Controller;
-import model.Model;
 
 public class MenuView extends View {
 
-    private Button StartGameButton;
-    private Button SettingsButton;
-    private Button ExitButton;
+    private final Controller controller;
 
-    public MenuView(Controller controller, Model model) {
-        //super.setData(model.getData("state2"));
-        //super.setController(controller);
-        super(controller, model);
+    public MenuView(Controller cont) {
 
-        //TODO: render data from model for the given view
-        super.batch = new SpriteBatch();
-        super.img = new Texture("badlogic.jpg");
+        this.controller = cont;
 
-        StartGameButton = new Button();
-        SettingsButton = new Button();
-        ExitButton = new Button();
+        super.stage = new Stage(new ScreenViewport());
+        Gdx.input.setInputProcessor(super.stage);
 
-        // Attempt at adding ClickListener, need to fix call for controller
-        StartGameButton.addListener( new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                //controller.navigateTo("GAME");
-            };
+        Button settingsButton = new Button("settings");
+        Button loadingButton = new Button("loading");
+        super.stage.addActor(settingsButton);
+        super.stage.addActor(loadingButton);
+
+        stage.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float clickX, float clickY) {
+                if(clickX > 300) {
+                    System.out.println("TO SETTINGS!");
+                    controller.navigateTo("LOADING");
+                } else {
+                    System.out.println("TO LOADING!");
+                    controller.navigateTo("SETTINGS");
+                }
+            }
         });
-
-        UI.addActor(StartGameButton);
-        UI.addActor(SettingsButton);
-        UI.addActor(ExitButton);
-
     }
-
-    @Override
-    public void init(){
-
-    }
-
-    @Override public void hide() {}
-    @Override public void pause() {}
-    @Override public void resume() {}
 
 }

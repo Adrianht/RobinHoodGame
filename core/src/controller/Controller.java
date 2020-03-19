@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.robinhood.game.RobinHood;
 
 import model.Model;
+import view.LoadingView;
 import view.MenuView;
 import view.SettingsView;
 
@@ -17,6 +18,8 @@ public class Controller extends RobinHood {
     public Controller(RobinHood game) {
         this.game = game;
         this.model = new Model();
+
+        //game.setView(new SettingsView(this, model));
     }
 
     // Method called from views to update fb and model
@@ -41,13 +44,13 @@ public class Controller extends RobinHood {
     public void navigateTo(String destination) {
         switch(destination) {
             case "MENU":
-                // super.setView(new MenuView(this, model));
+                game.setView(new MenuView(this));
                 break;
             case "SETTINGS":
-                // code block
+                game.setView(new SettingsView(this, model));
                 break;
             case "LOADING":
-                // code block
+                game.setView(new LoadingView(this, model));
                 break;
             case "GAME":
                 // code block

@@ -3,6 +3,8 @@ package view;
 import controller.Controller;
 import model.Model;
 
+
+// TODO: adapt from other view-classes
 public class GameView {
 
     Controller controller;
