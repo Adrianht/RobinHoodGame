@@ -25,7 +25,7 @@ public class MenuView extends View {
         // Actor: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/Actor.html
         // adds all the elements to this interface
         Button settingsButton = new Button("settings");
-        Button loadingButton = new Button("loading");
+        Button loadingButton = new Button("play");
         super.stage.addActor(settingsButton);
         super.stage.addActor(loadingButton);
 
@@ -45,8 +45,8 @@ public class MenuView extends View {
             // here the interface change to loading if the user click on the area made by the
             // leftmost 300 pixels of the screen, else the interface change to settings
             if(clickX < 300) {
-                System.out.println("TO LOADING!");
-                controller.navigateTo("LOADING");
+                System.out.println("TO PLAY!");
+                controller.navigateTo("GAME");
             } else {
                 System.out.println("TO SETTINGS!");
                 controller.navigateTo("SETTINGS");

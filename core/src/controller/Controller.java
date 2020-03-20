@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.robinhood.game.RobinHood;
 
 import model.Model;
+import view.GameView;
 import view.LoadingView;
 import view.MenuView;
 import view.SettingsView;
@@ -32,7 +33,10 @@ public class Controller {
                 game.setView(new LoadingView(this, model));
                 break;
             case "GAME":
-                // TODO: code block
+                //TODO: all from somewhere else
+                model.initiateGame();
+
+                game.setView(new GameView(this, model));
                 break;
             default:
                 game.setView(new MenuView(this));
@@ -41,19 +45,19 @@ public class Controller {
 
     // Method called from views to update fb and model
     public void move(Boolean left) {
-        fbConn.move(left);
+        //fbConn.move(left);
         model.move(left);
     }
 
     // Method called from views to update fb and model
     public void buyArrow(String type) {
-        fbConn.buyArrow(type);
+        //fbConn.buyArrow(type);
         model.buyArrow(type);
     }
 
     // Method called from views to update fb and model
     public void drawBow(Vector2 vector2) {
-        fbConn.drawBow(vector2);
+        //fbConn.drawBow(vector2);
         model.drawBow(vector2);
     }
 
