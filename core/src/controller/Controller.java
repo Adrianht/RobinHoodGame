@@ -19,25 +19,25 @@ public class Controller extends RobinHood {
         this.model = new Model();
     }
 
-    // Method called from views to update fb and model
+    // Method called from com.robinhood.game.views to update fb and model
     public void move(Boolean left) {
         fbConn.move(left);
         model.move(left);
     }
 
-    // Method called from views to update fb and model
+    // Method called from com.robinhood.game.views to update fb and model
     public void buyArrow(String type) {
         fbConn.buyArrow(type);
         model.buyArrow(type);
     }
 
-    // Method called from views to update fb and model
+    // Method called from com.robinhood.game.views to update fb and model
     public void drawBow(Vector2 vector2) {
         fbConn.drawBow(vector2);
         model.drawBow(vector2);
     }
 
-    // Method called from views to navigate through the application
+    // Method called from com.robinhood.game.views to navigate through the application
     public void navigateTo(String destination) {
         switch(destination) {
             case "MENU":
