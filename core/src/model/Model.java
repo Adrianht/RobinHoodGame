@@ -15,20 +15,28 @@ public class Model {
     // only examples
     private Player player1, player2;
     private Stage stage;
+    private SoundBar soundBar;
 
     // constructor
     public Model() {
+        this.soundBar = new SoundBar();
+
         /*
         TODO:
 
-        should initate all non-game objects (Sound)
+        should initate all non-game objects
 
          */
     }
 
     // TODO: add description
+    public SoundBar getSoundBar() {
+        return this.soundBar.getSoundBar();
+    }
+
+    // TODO: add description
     public void changeSound() {
-        // TODO: should change sound variable
+        this.soundBar.getSoundBar().changeSound();
     }
 
     // TODO: add description

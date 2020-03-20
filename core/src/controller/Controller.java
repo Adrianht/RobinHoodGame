@@ -8,9 +8,8 @@ import view.LoadingView;
 import view.MenuView;
 import view.SettingsView;
 
-public class Controller extends RobinHood {
+public class Controller {
 
-    // only examples
     private Model model;
     private RobinHood game;
     private FirebaseConnector fbConn;
@@ -18,8 +17,26 @@ public class Controller extends RobinHood {
     public Controller(RobinHood game) {
         this.game = game;
         this.model = new Model();
+    }
 
-        //game.setView(new SettingsView(this, model));
+    // Method called from views to navigate through the application
+    public void navigateTo(String destination) {
+        switch(destination) {
+            case "MENU":
+                game.setView(new MenuView(this));
+                break;
+            case "SETTINGS":
+                game.setView(new SettingsView(this, model));
+                break;
+            case "LOADING":
+                game.setView(new LoadingView(this, model));
+                break;
+            case "GAME":
+                // TODO: code block
+                break;
+            default:
+                game.setView(new MenuView(this));
+        }
     }
 
     // Method called from views to update fb and model
@@ -40,26 +57,6 @@ public class Controller extends RobinHood {
         model.drawBow(vector2);
     }
 
-    // Method called from views to navigate through the application
-    public void navigateTo(String destination) {
-        switch(destination) {
-            case "MENU":
-                game.setView(new MenuView(this));
-                break;
-            case "SETTINGS":
-                game.setView(new SettingsView(this, model));
-                break;
-            case "LOADING":
-                game.setView(new LoadingView(this, model));
-                break;
-            case "GAME":
-                // code block
-                break;
-            default:
-                // code block
-        }
-    }
-
     // Method to call model about sound settings change
     public void changeSound() {
         model.changeSound();
@@ -75,5 +72,8 @@ public class Controller extends RobinHood {
         model.initiateGame();
     }
 
-    // TODO: there should be a method callable from MenuView to quit the game
+    // TODO: description
+    public void exitApplication() {
+        // TODO: this should be a method callable from MenuView to quit the application
+    }
 }

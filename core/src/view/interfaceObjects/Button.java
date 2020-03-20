@@ -1,4 +1,4 @@
-package view;
+package view.interfaceObjects;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -7,6 +7,13 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 
 public class Button extends Actor {
+    /*
+
+    Example class demonstrating an interface object which
+    don't hold game data. Objects containing game data should
+    be placed in the model-package
+
+    */
 
     private Sprite sprite;
 
@@ -22,10 +29,6 @@ public class Button extends Actor {
                 break;
             case "menu":
                 sprite = new Sprite(new Texture("menu.png"));
-                setPosition(400, 300);
-                break;
-            case "menu2":
-                sprite = new Sprite(new Texture("menu.png"));
                 setPosition(100, 100);
                 break;
             default:
@@ -33,6 +36,7 @@ public class Button extends Actor {
         }
     }
 
+    @Override
     public void draw(Batch batch, float parentAlpha) {
         sprite.setPosition(this.getX(), this.getY());
         sprite.draw(batch);
