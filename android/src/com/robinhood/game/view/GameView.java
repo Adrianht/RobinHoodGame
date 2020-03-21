@@ -1,35 +1,23 @@
 package com.robinhood.game.view;
 
-<<<<<<< HEAD:android/src/com/robinhood/game/view/GameView.java
 import com.robinhood.game.controller.Controller;
 import com.robinhood.game.model.Model;
-=======
+import com.robinhood.game.model.*;
+
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-import controller.Controller;
-import model.Archer;
-import model.Model;
-import model.Player;
-import view.interfaceObjects.Button;
->>>>>>> dd046e3c51ad34b401b66fd63028aa8c27f0268c:core/src/view/GameView.java
+
+import com.robinhood.game.view.interfaceObjects.*;
 
 
 public class GameView extends View {
 
     private final Controller controller;
 
-<<<<<<< HEAD:android/src/com/robinhood/game/view/GameView.java
-        /*
-         TODO:
-         Use/create methods in com.robinhood.game.model to extract current data
-         from objects related to this view.
-=======
->>>>>>> dd046e3c51ad34b401b66fd63028aa8c27f0268c:core/src/view/GameView.java
 
     public GameView(Controller cont, Model model) {
 
@@ -58,13 +46,8 @@ public class GameView extends View {
 
         /*
          TODO:
-<<<<<<< HEAD:android/src/com/robinhood/game/view/GameView.java
-         Use/create methods in com.robinhood.game.model to extract updated data
-=======
          Use/create methods in model to extract current data
->>>>>>> dd046e3c51ad34b401b66fd63028aa8c27f0268c:core/src/view/GameView.java
          from objects related to this view.
-
          This includes getting data from stage, players, etc. and
          checking if the game is over.
          */
@@ -90,14 +73,12 @@ public class GameView extends View {
 
             /*
                 TODO:
-
                 Clicks in this view should trgger one of the following methods
                 in the controller, based on the position and duration of the click:
                     - controller.navigateTo("MENU") (ONLY IF GAMEOVER)
                     - controller.move(Boolean left)
                     - controller.buyArrow(String type)
                     - controller.drawBow(Vector2 vector2)
-
                 Additional:
                     - if move() or buyArrow is called, they should be followed by
                         updateView()

@@ -1,42 +1,21 @@
 package com.robinhood.game.view;
 
-<<<<<<< HEAD:android/src/com/robinhood/game/view/MenuView.java
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-=======
 import com.badlogic.gdx.Gdx;
->>>>>>> dd046e3c51ad34b401b66fd63028aa8c27f0268c:core/src/view/MenuView.java
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-<<<<<<< HEAD:android/src/com/robinhood/game/view/MenuView.java
 import com.robinhood.game.controller.Controller;
-import com.robinhood.game.model.Model;
-=======
-import controller.Controller;
-import view.interfaceObjects.Button;
->>>>>>> dd046e3c51ad34b401b66fd63028aa8c27f0268c:core/src/view/MenuView.java
+import com.robinhood.game.view.interfaceObjects.*;
 
 public class MenuView extends View {
 
     private final Controller controller;
 
-<<<<<<< HEAD:android/src/com/robinhood/game/view/MenuView.java
-    public MenuView(Controller controller, Model model) {
-        //super.setData(com.robinhood.game.model.getData("state2"));
-        //super.setController(controller);
-        super(controller, model);
-
-        //TODO: render data from com.robinhood.game.model for the given view
-        super.batch = new SpriteBatch();
-        super.img = new Texture("badlogic.jpg");
-=======
     public MenuView(Controller cont) {
 
         this.controller = cont;
->>>>>>> dd046e3c51ad34b401b66fd63028aa8c27f0268c:core/src/view/MenuView.java
 
         // Stage: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/Stage.html
         // set the stage of the View superclass - same in all subclasses

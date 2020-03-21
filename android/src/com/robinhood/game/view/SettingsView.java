@@ -1,20 +1,17 @@
 package com.robinhood.game.view;
 
-<<<<<<< HEAD:android/src/com/robinhood/game/view/SettingsView.java
 import com.robinhood.game.controller.Controller;
 import com.robinhood.game.model.Model;
-=======
+import com.robinhood.game.view.interfaceObjects.*;
+import com.robinhood.game.model.SoundBar;
+
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-import controller.Controller;
-import model.Model;
-import view.interfaceObjects.Button;
-import model.SoundBar;
->>>>>>> dd046e3c51ad34b401b66fd63028aa8c27f0268c:core/src/view/SettingsView.java
 
 public class SettingsView extends View {
 
@@ -22,15 +19,7 @@ public class SettingsView extends View {
 
     public SettingsView(Controller cont, Model model) {
 
-<<<<<<< HEAD:android/src/com/robinhood/game/view/SettingsView.java
-        /*
-         TODO:
-         use/create methods in com.robinhood.game.model to extract current data
-         from objects related to this view
-         */
-=======
         this.controller = cont;
->>>>>>> dd046e3c51ad34b401b66fd63028aa8c27f0268c:core/src/view/SettingsView.java
 
         // Stage: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/Stage.html
         // set the stage of the View superclass - same in all subclasses

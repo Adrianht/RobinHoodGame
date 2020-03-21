@@ -44,9 +44,6 @@ public class Model {
     // TODO: add description
     public void move(Boolean left) {
         // TODO: update appropriate objects
-<<<<<<< HEAD:android/src/com/robinhood/game/model/Model.java
-
-=======
         if(player1turn) {
             if (left) {
                 player1.getArcher().moveBy(-10, 0);
@@ -61,7 +58,6 @@ public class Model {
             }
         }
         player1turn = !player1turn;
->>>>>>> dd046e3c51ad34b401b66fd63028aa8c27f0268c:core/src/model/Model.java
     }
 
     // TODO: add description

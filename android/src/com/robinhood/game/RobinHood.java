@@ -11,12 +11,13 @@ public class RobinHood extends ApplicationAdapter {
 
     @Override
     public void create () {
-        new Controller(this);
+        Controller controller = new Controller(this);
+        view = new MenuView(controller);
     }
 
     @Override
     public void render () {
-        //view.render();
+        view.render();
     }
 
     @Override
@@ -30,3 +31,4 @@ public class RobinHood extends ApplicationAdapter {
     }
 
 }
+
