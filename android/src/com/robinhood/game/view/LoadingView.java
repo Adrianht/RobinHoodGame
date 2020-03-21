@@ -1,6 +1,6 @@
-package view;
+package com.robinhood.game.view;
 
-import controller.Controller;
+import com.robinhood.game.controller.Controller;
 
 public class LoadingView {
 

@@ -1,4 +1,4 @@
-package model;
+package com.robinhood.game.model;
 
 import com.badlogic.gdx.math.Vector2;
 
@@ -34,6 +34,7 @@ public class Model {
     // TODO: add description
     public void move(Boolean left) {
         // TODO: update appropriate objects
+
     }
 
     // TODO: add description

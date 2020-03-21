@@ -1,7 +1,7 @@
-package view;
+package com.robinhood.game.view;
 
-import controller.Controller;
-import model.Model;
+import com.robinhood.game.controller.Controller;
+import com.robinhood.game.model.Model;
 
 public class GameView {
 
@@ -14,7 +14,7 @@ public class GameView {
 
         /*
          TODO:
-         Use/create methods in model to extract current data
+         Use/create methods in com.robinhood.game.model to extract current data
          from objects related to this view.
 
          This includes getting data from stage, players, etc. and
@@ -27,7 +27,7 @@ public class GameView {
 
         /*
          TODO:
-         Use/create methods in model to extract updated data
+         Use/create methods in com.robinhood.game.model to extract updated data
          from objects related to this view.
 
          This includes getting data from stage, players, etc.

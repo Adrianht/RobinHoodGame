@@ -1,7 +1,7 @@
-package view;
+package com.robinhood.game.view;
 
-import controller.Controller;
-import model.Model;
+import com.robinhood.game.controller.Controller;
+import com.robinhood.game.model.Model;
 
 public class SettingsView {
 
@@ -12,7 +12,7 @@ public class SettingsView {
 
         /*
          TODO:
-         use/create methods in model to extract current data
+         use/create methods in com.robinhood.game.model to extract current data
          from objects related to this view
          */
 

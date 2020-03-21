@@ -1,17 +1,16 @@
-package view;
+package com.robinhood.game.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
-import controller.Controller;
-import model.Model;
+import com.robinhood.game.controller.Controller;
+import com.robinhood.game.model.Model;
 
 public abstract class View extends Stage implements Screen {
 

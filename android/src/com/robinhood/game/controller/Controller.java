@@ -1,39 +1,42 @@
-package controller;
+package com.robinhood.game.controller;
 
 import com.badlogic.gdx.math.Vector2;
 import com.robinhood.game.RobinHood;
 
-import model.Model;
-import view.MenuView;
-import view.SettingsView;
+import com.robinhood.game.model.Model;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.DatabaseReference;
 
 public class Controller extends RobinHood {
 
     // only examples
     private Model model;
     private RobinHood game;
-    private FirebaseConnector fbConn;
+    private DatabaseReference fbConn;
+
 
     public Controller(RobinHood game) {
         this.game = game;
         this.model = new Model();
+        fbConn = FirebaseDatabase.getInstance().getReference();
+
     }
 
-    // Method called from com.robinhood.game.views to update fb and model
+    // Method called from com.robinhood.game.views to update fb and com.robinhood.game.model
     public void move(Boolean left) {
-        fbConn.move(left);
+        fbConn.setValue(left);
         model.move(left);
     }
 
-    // Method called from com.robinhood.game.views to update fb and model
+    // Method called from com.robinhood.game.views to update fb and com.robinhood.game.model
     public void buyArrow(String type) {
-        fbConn.buyArrow(type);
+        fbConn.setValue(type);
         model.buyArrow(type);
     }
 
-    // Method called from com.robinhood.game.views to update fb and model
+    // Method called from com.robinhood.game.views to update fb and com.robinhood.game.model
     public void drawBow(Vector2 vector2) {
-        fbConn.drawBow(vector2);
+        fbConn.setValue(vector2);
         model.drawBow(vector2);
     }
 
@@ -41,7 +44,7 @@ public class Controller extends RobinHood {
     public void navigateTo(String destination) {
         switch(destination) {
             case "MENU":
-                // super.setView(new MenuView(this, model));
+                // super.setView(new MenuView(this, com.robinhood.game.model));
                 break;
             case "SETTINGS":
                 // code block
@@ -57,15 +60,15 @@ public class Controller extends RobinHood {
         }
     }
 
-    // Method to call model about sound settings change
+    // Method to call com.robinhood.game.model about sound settings change
     public void changeSound() {
         model.changeSound();
     }
 
     // Method to initate Firebase-connector and find another player
-    public void findPlayer() {
-        this.fbConn = new FirebaseConnector(this);
-    }
+    //public void findPlayer() {
+    //    this.fbConn = new FirebaseConnector(this);
+    //}
 
     // Method called to initiate game after Firebase has found opponent
     public void initiateGame() {
