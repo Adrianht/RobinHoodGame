@@ -1,54 +1,57 @@
 package view;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import controller.Controller;
-import model.Model;
+import view.interfaceObjects.Button;
 
 public class MenuView extends View {
 
-    private Button StartGameButton;
-    private Button SettingsButton;
-    private Button ExitButton;
+    private final Controller controller;
 
-    public MenuView(Controller controller, Model model) {
-        //super.setData(model.getData("state2"));
-        //super.setController(controller);
-        super(controller, model);
+    public MenuView(Controller cont) {
 
-        //TODO: render data from model for the given view
-        super.batch = new SpriteBatch();
-        super.img = new Texture("badlogic.jpg");
+        this.controller = cont;
 
-        StartGameButton = new Button();
-        SettingsButton = new Button();
-        ExitButton = new Button();
+        // Stage: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/Stage.html
+        // set the stage of the View superclass - same in all subclasses
+        super.stage = new Stage(new ScreenViewport());
+        Gdx.input.setInputProcessor(super.stage);
 
-        // Attempt at adding ClickListener, need to fix call for controller
-        StartGameButton.addListener( new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                //controller.navigateTo("GAME");
-            };
-        });
+        // Actor: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/Actor.html
+        // adds all the elements to this interface
+        Button settingsButton = new Button("settings");
+        Button loadingButton = new Button("play");
+        super.stage.addActor(settingsButton);
+        super.stage.addActor(loadingButton);
 
-        UI.addActor(StartGameButton);
-        UI.addActor(SettingsButton);
-        UI.addActor(ExitButton);
-
+        // adds all listeners to this interface
+        stage.addListener(menuViewListener);
     }
 
-    @Override
-    public void init(){
+    // ClickListener: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/utils/ClickListener.html
+    // ClickListener triggered by user clicks to call appropriate actions
+    private ClickListener menuViewListener = new ClickListener() {
+        @Override
+        public void clicked(InputEvent event, float clickX, float clickY) {
 
-    }
+            // clickX and clickY are the (x,y)-coordinates of the users click
 
-    @Override public void hide() {}
-    @Override public void pause() {}
-    @Override public void resume() {}
+            // this is only example code
+            // here the interface change to loading if the user click on the area made by the
+            // leftmost 300 pixels of the screen, else the interface change to settings
+            if(clickX < 300) {
+                System.out.println("TO PLAY!");
+                controller.navigateTo("GAME");
+            } else {
+                System.out.println("TO SETTINGS!");
+                controller.navigateTo("SETTINGS");
+            }
+        }
+    };
 
 }

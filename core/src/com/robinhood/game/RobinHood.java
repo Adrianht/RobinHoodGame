@@ -3,6 +3,7 @@ package com.robinhood.game;
 import com.badlogic.gdx.ApplicationAdapter;
 
 import controller.Controller;
+import view.MenuView;
 import view.View;
 
 public class RobinHood extends ApplicationAdapter {
@@ -11,12 +12,13 @@ public class RobinHood extends ApplicationAdapter {
 
 	@Override
 	public void create () {
-		new Controller(this);
+		Controller controller = new Controller(this);
+		view = new MenuView(controller);
 	}
 
 	@Override
 	public void render () {
-		//view.render();
+		view.render();
 	}
 	
 	@Override
