@@ -28,7 +28,6 @@ public class MenuView extends View {
         Button loadingButton = new Button("play");
         super.stage.addActor(settingsButton);
         super.stage.addActor(loadingButton);
-
         // adds all listeners to this interface
         stage.addListener(menuViewListener);
     }
@@ -46,10 +45,14 @@ public class MenuView extends View {
             // leftmost 300 pixels of the screen, else the interface change to settings
             if(clickX < 300) {
                 System.out.println("TO PLAY!");
+                controller.findPlayer();
                 controller.navigateTo("GAME");
+
+
             } else {
                 System.out.println("TO SETTINGS!");
                 controller.navigateTo("SETTINGS");
+
             }
         }
     };

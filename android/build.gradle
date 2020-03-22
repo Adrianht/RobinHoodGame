@@ -90,7 +90,6 @@ task run(type: Exec) {
 }
 
 eclipse.project.name = appName + "-android"
-apply plugin: 'com.google.gms.google-services'
 
 dependencies {
     // add the Firebase SDK for Google Analytics
@@ -99,3 +98,4 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:19.2.1'
 
 }
+apply plugin: 'com.google.gms.google-services'
