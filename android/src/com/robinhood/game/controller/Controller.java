@@ -1,7 +1,5 @@
 package com.robinhood.game.controller;
 
-import android.widget.EditText;
-
 import com.badlogic.gdx.math.Vector2;
 import com.robinhood.game.RobinHood;
 
@@ -61,18 +59,21 @@ public class Controller {
     // Method called from views to update fb and model
     public void move(Boolean left) {
 
+        //fbConn.move(left);
         model.move(left);
     }
 
     // Method called from views to update fb and model
     public void buyArrow(String type) {
         mDatabase.child(gameRoomUID).setValue(type);
+        //fbConn.buyArrow(type);
         model.buyArrow(type);
     }
 
     // Method called from views to update fb and model
     public void drawBow(Vector2 vector2) {
         mDatabase.child(gameRoomUID).setValue(vector2);
+        //fbConn.drawBow(vector2);
         model.drawBow(vector2);
     }
 
