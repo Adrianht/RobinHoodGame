@@ -1,5 +1,6 @@
 package com.robinhood.game.controller;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.robinhood.game.RobinHood;
 
@@ -96,5 +97,6 @@ public class Controller {
     // TODO: description
     public void exitApplication() {
         // TODO: this should be a method callable from MenuView to quit the application
+        Gdx.app.exit();
     }
 }

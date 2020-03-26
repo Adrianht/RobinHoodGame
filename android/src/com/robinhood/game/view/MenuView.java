@@ -26,8 +26,10 @@ public class MenuView extends View {
         // adds all the elements to this interface
         Button settingsButton = new Button("settings");
         Button loadingButton = new Button("play");
+        Button exitButton = new Button("exit");
         super.stage.addActor(settingsButton);
         super.stage.addActor(loadingButton);
+        super.stage.addActor(exitButton);
         // adds all listeners to this interface
         stage.addListener(menuViewListener);
     }
@@ -49,10 +51,13 @@ public class MenuView extends View {
                 controller.navigateTo("GAME");
 
 
-            } else {
+            } else if (clickX >= 300 && clickX < 700){
                 System.out.println("TO SETTINGS!");
                 controller.navigateTo("SETTINGS");
 
+            } else {
+                System.out.println("EXIT APPLICATION!");
+                controller.exitApplication();
             }
         }
     };
