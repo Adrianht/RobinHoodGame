@@ -2,8 +2,8 @@ package com.robinhood.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 
-import com.robinhood.game.controller.*;
-import com.robinhood.game.view.*;
+import controller.*;
+import view.*;
 
 public class RobinHood extends ApplicationAdapter {
 

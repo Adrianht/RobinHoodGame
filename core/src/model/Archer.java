@@ -1,4 +1,4 @@
-package com.robinhood.game.model;
+package model;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;

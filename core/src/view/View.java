@@ -1,4 +1,4 @@
-package com.robinhood.game.view;
+package view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
