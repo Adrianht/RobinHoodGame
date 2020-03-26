@@ -43,8 +43,10 @@ public class MenuView extends View {
             // clickX and clickY are the (x,y)-coordinates of the users click
 
             // this is only example code
-            // here the interface change to loading if the user click on the area made by the
-            // leftmost 300 pixels of the screen, else the interface change to settings
+            // Interface switches based on X position of click
+            // If less than 300 -> PLAY
+            // If between 299 and 700 -> SETTINGS
+            // If greater than 699 -> EXIT
             if(clickX < 300) {
                 System.out.println("TO PLAY!");
                 controller.findPlayer();

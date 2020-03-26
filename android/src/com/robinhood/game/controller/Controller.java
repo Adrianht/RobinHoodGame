@@ -94,9 +94,8 @@ public class Controller {
         model.initiateGame();
     }
 
-    // TODO: description
+    // Method to exit application, called from MenuView
     public void exitApplication() {
-        // TODO: this should be a method callable from MenuView to quit the application
         Gdx.app.exit();
     }
 }
