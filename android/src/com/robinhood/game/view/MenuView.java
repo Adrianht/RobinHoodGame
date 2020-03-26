@@ -48,7 +48,6 @@ public class MenuView extends View {
                 controller.findPlayer();
                 controller.navigateTo("GAME");
 
-
             } else {
                 System.out.println("TO SETTINGS!");
                 controller.navigateTo("SETTINGS");
