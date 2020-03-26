@@ -31,6 +31,10 @@ public class Button extends Actor {
                 sprite = new Sprite(new Texture("menu.png"));
                 setPosition(250, 50);
                 break;
+            case "exit":
+                sprite = new Sprite(new Texture("exit.png"));
+                setPosition(700, 50);
+                break;
             case "left":
                 sprite = new Sprite(new Texture("left.png"));
                 setPosition(50, 0);
