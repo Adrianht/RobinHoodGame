@@ -63,17 +63,19 @@ public class GameView extends View {
             if(clickY < 100 && clickX < 200) {
                 System.out.println("LEFT!");
                 controller.move(true);
+                //updateView()
             } else if(clickY < 100 && clickX > 200 && clickX < 450) {
                 System.out.println("TO MENU!");
                 controller.navigateTo("MENU");
             } else if(clickY < 100 && clickX > 450) {
                 System.out.println("RIGHT!");
                 controller.move(false);
+                //updateView()
             }
 
             /*
                 TODO:
-                Clicks in this view should trgger one of the following methods
+                Clicks in this view should trigger one of the following methods
                 in the controller, based on the position and duration of the click:
                     - controller.navigateTo("MENU") (ONLY IF GAMEOVER)
                     - controller.move(Boolean left)
