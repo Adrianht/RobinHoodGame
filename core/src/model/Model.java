@@ -60,6 +60,8 @@ public class Model {
             if(i == 0) {
                 entity.component.turn.turn = true;
             }
+            entity.addComponent("playernr");
+            entity.component.playernr.nr = i;
             entity.addComponent("energy");
             entity.addComponent("hp");
             entity.addComponent("name");
@@ -128,7 +130,7 @@ public class Model {
 
     // TODO: add description
     public void drawBow(Vector2 vector2) {
-        // TODO: update appropriate objects
+        userInputSystem.drawBow(entities, vector2);
     }
 
     // Method that return this game instance's soundbar object

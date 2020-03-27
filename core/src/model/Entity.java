@@ -7,10 +7,10 @@ package model;
  */
 public class Entity {
 
-    final Component component;
+    final Components component;
 
     public Entity() {
-        this.component = new Component();
+        this.component = new Components();
     }
 
     // Creates the correct inner class instance within the
@@ -28,6 +28,9 @@ public class Entity {
                 break;
             case "pos":
                 this.component.new Position();
+                break;
+            case "playernr":
+                this.component.new PlayerNr();
                 break;
             case "actor":
                 this.component.new GameActor();

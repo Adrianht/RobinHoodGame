@@ -11,13 +11,14 @@ import java.awt.event.ComponentEvent;
      Holds all components possible for entities
      within RobinHood-game
  */
-public class Component {
+public class Components {
 
     // holders for all possible components
     public Energy energy;
     public GameActor actor;
     public HitPoints hp;
     public PlayerName name;
+    public PlayerNr playernr;
     public Position pos;
     public Turf turf;
     public Turn turn;
@@ -25,49 +26,55 @@ public class Component {
     // constructors for all possible components
     public class Energy {
         public Energy() {
-            Component.this.energy = this;
+            Components.this.energy = this;
         }
         public int value = 20;
     }
     public class GameActor extends Actor {
         public GameActor() {
-            Component.this.actor = this;
+            Components.this.actor = this;
         }
         public Sprite sprite;
 
         @Override
         public void draw(Batch batch, float parentAlpha) {
-            sprite.setPosition(Component.this.pos.x, Component.this.pos.y);
+            sprite.setPosition(Components.this.pos.x, Components.this.pos.y);
             sprite.draw(batch);
         }
     }
     public class HitPoints {
         public HitPoints() {
-            Component.this.hp = this;
+            Components.this.hp = this;
         }
         public int value = 100;
     }
     public class PlayerName {
         public PlayerName() {
-            Component.this.name = this;
+            Components.this.name = this;
         }
         public String name;
     }
+    public class PlayerNr {
+        public PlayerNr() {
+            Components.this.playernr = this;
+        }
+        public int nr;
+    }
     public class Position {
         public Position() {
-            Component.this.pos = this;
+            Components.this.pos = this;
         }
         public float x, y;
     }
     public class Turf {
         public Turf() {
-            Component.this.turf = this;
+            Components.this.turf = this;
         }
         public int[] y;
     }
-    public class Turn extends Component {
+    public class Turn extends Components {
         public Turn() {
-            Component.this.turn = this;
+            Components.this.turn = this;
         }
         public boolean turn = false;
     }

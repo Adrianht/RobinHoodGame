@@ -1,6 +1,7 @@
 package model;
 
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import java.util.ArrayList;
@@ -12,17 +13,48 @@ public class Systems {
     public static class UserInput {
         public void moveLeft(List<Entity> entities) {
             for(Entity entity: entities) {
-                if (entity.component.turn.turn) {
+                if (entity.component.turn.turn & entity.component.energy.value > 0) {
                     entity.component.pos.x -= 20;
-                    break;
+                    entity.component.energy.value -= 2;
+                    System.out.println("Player, whose turn it is moved left, energy points reduced to: " +
+                            entity.component.energy.value);
                 }
             }
         }
         public void moveRight(List<Entity> entities) {
             for(Entity entity: entities) {
-                if (entity.component.turn.turn) {
+                if (entity.component.turn.turn & entity.component.energy.value > 0) {
                     entity.component.pos.x += 20;
-                    break;
+                    entity.component.energy.value -= 2;
+                    System.out.println("Player, whose turn it is moved right, energy points reduced to: " +
+                            entity.component.energy.value);
+                }
+            }
+        }
+        public void drawBow(List<Entity> entities, Vector2 vector2) {
+
+            // FIXME: try to find more elegant solution
+
+            int nrOfPlayers = 0;
+            int prevPlayerNr = 0;
+
+            for(Entity entity: entities) {
+                if (entity.component.playernr != null) {
+                    nrOfPlayers++;
+                }
+                if (entity.component.turn.turn) {
+                    prevPlayerNr = entity.component.playernr.nr;
+                    entity.component.turn.turn = false;
+                }
+            }
+            for(Entity entity: entities) {
+                if (entity.component.playernr.nr == (prevPlayerNr + 1) % nrOfPlayers) {
+                    entity.component.turn.turn = true;
+                    if (entity.component.energy.value < 90) {
+                        entity.component.energy.value += 10;
+                    } else {
+                        entity.component.energy.value = 100;
+                    }
                 }
             }
         }
