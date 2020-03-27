@@ -22,7 +22,7 @@ public final class SoundBar extends Actor {
 
     private Sprite sprite;
 
-    public SoundBar() {
+    private SoundBar() {
         sprite = new Sprite(new Texture("soundon.png"));
         setPosition(200, 200);
     }

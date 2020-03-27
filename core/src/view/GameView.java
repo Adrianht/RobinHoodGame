@@ -5,11 +5,14 @@ import model.Model;
 import model.*;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+
+import java.util.List;
 
 import view.interfaceObjects.*;
 
@@ -33,13 +36,15 @@ public class GameView extends View {
         Button menuButton = new Button("menu");
         Button leftButton = new Button("left");
         Button rightButton = new Button("right");
-        Archer archer1 = model.getPlayer1().getArcher();
-        Archer archer2 = model.getPlayer2().getArcher();
         stage.addActor(menuButton);
         stage.addActor(leftButton);
         stage.addActor(rightButton);
-        stage.addActor(archer1);
-        stage.addActor(archer2);
+
+        // adds archers, arrows and arena
+        List<Actor> actors = model.getActors();
+        for (Actor actor: actors) {
+            stage.addActor(actor);
+        }
 
         // adds all listeners to this interface
         stage.addListener(gameListener);
