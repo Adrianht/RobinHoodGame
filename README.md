@@ -5,7 +5,7 @@
 ├── controller
 │   ├── Controller.java
 │   └── FirebaseConnector.java
-├── com.robinhood.game.model
+├── model
 │   ├── Archer.java
 │   ├── Arrow.java
 │   ├── GameObject.java
@@ -23,5 +23,5 @@
 │   ├── MenuView.java
 │   ├── SettingsView.java
 |   └── View.java
-└── com/robinhood/game/RobinHood.java
+└── com/robinhood/game/com.robinhood.game.RobinHood.java
 ```

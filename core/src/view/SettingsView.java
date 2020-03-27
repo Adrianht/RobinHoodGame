@@ -1,9 +1,9 @@
-package com.robinhood.game.view;
+package view;
 
-import com.robinhood.game.controller.Controller;
-import com.robinhood.game.model.Model;
-import com.robinhood.game.view.interfaceObjects.*;
-import com.robinhood.game.model.SoundBar;
+import controller.Controller;
+import model.Model;
+import view.interfaceObjects.*;
+import model.SoundBar;
 
 
 import com.badlogic.gdx.Gdx;

@@ -1,4 +1,4 @@
-package com.robinhood.game.view;
+package view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -6,8 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-import com.robinhood.game.controller.Controller;
-import com.robinhood.game.view.interfaceObjects.*;
+import controller.Controller;
+import view.interfaceObjects.*;
 
 public class MenuView extends View {
 
@@ -49,9 +49,7 @@ public class MenuView extends View {
             // If greater than 699 -> EXIT
             if(clickX < 300) {
                 System.out.println("TO PLAY!");
-                controller.findPlayer();
                 controller.navigateTo("GAME");
-
 
             } else if (clickX >= 300 && clickX < 700){
                 System.out.println("TO SETTINGS!");

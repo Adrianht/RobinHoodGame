@@ -1,4 +1,4 @@
-package com.robinhood.game.model;
+package model;
 
 import com.badlogic.gdx.math.Vector2;
 
