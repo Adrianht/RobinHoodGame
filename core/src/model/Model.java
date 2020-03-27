@@ -44,20 +44,28 @@ public class Model {
     // TODO: add description
     public void move(Boolean left) {
         // TODO: update appropriate objects
-        if(player1turn) {
+        if(player1turn && player1.getEnergyPoints() > 0) {
             if (left) {
                 player1.getArcher().moveBy(-10, 0);
+                player1.setEnergyPoints(player1.getEnergyPoints()-2); //It costs 2 points for each move, can change this
+                System.out.println("Player 1 moved left, energy points reduced to: " + player1.getEnergyPoints());
             } else {
                 player1.getArcher().moveBy(10, 0);
+                player1.setEnergyPoints(player1.getEnergyPoints()-2); //It costs 2 points for each move, can change this
+                System.out.println("Player 1 moved right, energy points reduced to: " + player1.getEnergyPoints());
             }
-        } else {
+        } else if (player2.getEnergyPoints() > 0) {
             if (left) {
                 player2.getArcher().moveBy(-10, 0);
+                player2.setEnergyPoints(player1.getEnergyPoints()-2); //It costs 2 points for each move, can change this
+                System.out.println("Player 2 moved left, energy points reduced to: " + player2.getEnergyPoints());
             } else {
                 player2.getArcher().moveBy(10, 0);
+                player2.setEnergyPoints(player1.getEnergyPoints()-2); //It costs 2 points for each move, can change this
+                System.out.println("Player 2 moved left, energy points reduced to: " + player2.getEnergyPoints());
             }
         }
-        player1turn = !player1turn;
+        player1turn = !player1turn; //Temporary, should be in method drawBow() below
     }
 
     // TODO: add description
@@ -68,6 +76,7 @@ public class Model {
     // TODO: add description
     public void drawBow(Vector2 vector2) {
         // TODO: update appropriate objects
+        player1turn = !player1turn;
     }
 
     // TODO: add description
@@ -77,7 +86,7 @@ public class Model {
          /*
         TODO:
 
-        should initate all game objects (e.g. Player, arraw)
+        should initate all game objects (e.g. Player, arrow)
 
          */
     }
