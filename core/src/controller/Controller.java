@@ -30,7 +30,7 @@ public class Controller {
                 game.setView(new LoadingView(this, model));
                 break;
             case "GAME":
-                //TODO: all from somewhere else
+                //TODO: this method should be called from somewhere else
                 model.initiateGame();
 
                 game.setView(new GameView(this, model));
@@ -40,9 +40,8 @@ public class Controller {
         }
     }
 
-    // Method called from views to update fb and model
+    // Method called from GameView to update fb and model
     public void move(Boolean left) {
-
         //fbConn.move(left);
         model.move(left);
     }

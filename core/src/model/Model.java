@@ -1,63 +1,126 @@
 package model;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/*
+    Model of the MVC pattern
+    Access point for View and the class triggering appropriate
+        system functions related to ECS
+ */
 
 public class Model {
 
-    /*
-        This is the class and related classes which
-        should store all game data
-
-        Begin by placing all information in few places
-        and spread it when classes get to large.
-     */
-
-    // only examples
-    private Player player1, player2;
-    private Arena arena;
+    // SoundBar is the only class outside ECS because
+    //  because it is not active in-game
     private SoundBar soundBar;
-    private Boolean player1turn = true;
 
-    // constructor
-    public Model() {
-        this.soundBar = new SoundBar();
-    }
+    // ECS related fields - list index might be used as entity id
+    private List<Entity> entities = new ArrayList<>();
+    private Systems.Render renderingSystem;
+    private Systems.UserInput userInputSystem;
+    private Systems.Animation animationSystem;
+    private Systems.Collision collisionSystem;
 
-    // TODO: add description
-    public SoundBar getSoundBar() {
-        return this.soundBar.getSoundBar();
-    }
+    // ECS related sources - remove pre delivery:
+    // http://vasir.net/blog/game-development/how-to-build-entity-component-system-in-javascript
+    // related GitHub-repo: https://github.com/erikhazzard/RectangleEater/tree/master/scripts
 
-    // TODO: add description
-    public void changeSound() {
-        this.soundBar.getSoundBar().changeSound();
-    }
+    // https://codereview.stackexchange.com/questions/163215/entity-component-system-ecs
 
-    public Player getPlayer1() {
-        return player1;
-    }
 
-    public Player getPlayer2() {
-        return player2;
-    }
+    // Method to initiate a new game after two players are matched
+    public void initiateGame() {
 
-    // TODO: add description
-    public void move(Boolean left) {
-        // TODO: update appropriate objects
-        if(player1turn) {
-            if (left) {
-                player1.getArcher().moveBy(-10, 0);
-            } else {
-                player1.getArcher().moveBy(10, 0);
+        Entity entity;
+
+        /*
+         TODO: initiate Arena entity
+
+        entity = new Entity();
+        entity.addComponent("turf");
+        entity.addComponent("render");
+
+        entities.add(entity);
+
+         */
+
+        // Initiate player entities
+        int[][] startPositions = {{30, 200},{400, 200}};
+        String[] playerNames = {"LARS", "NINA"};
+        String[] playerColor = {"RED", "BLUE"};
+        for (int i = 0; i < 2; i++) {
+            entity = new Entity();
+            entity.addComponent("turn");
+            if(i == 0) {
+                entity.component.turn.turn = true;
             }
-        } else {
-            if (left) {
-                player2.getArcher().moveBy(-10, 0);
-            } else {
-                player2.getArcher().moveBy(10, 0);
+            entity.addComponent("playernr");
+            entity.component.playernr.nr = i;
+            entity.addComponent("energy");
+            entity.addComponent("hp");
+            entity.addComponent("name");
+            entity.component.name.name = playerNames[i];
+            entity.addComponent("pos");
+            entity.component.pos.x = startPositions[i][0];
+            entity.component.pos.y = startPositions[i][1];
+            entity.addComponent("actor");
+
+            //TODO : possibly create help-method of following switch
+            switch(playerColor[i]) {
+                case "RED":
+                    entity.component.actor.sprite = new Sprite(new Texture("redarcher.png"));
+                    entity.component.actor.sprite.setSize(200, 200);
+                    break;
+                case "BLUE":
+                    entity.component.actor.sprite = new Sprite(new Texture("bluearcher.png"));
+                    entity.component.actor.sprite.setSize(200, 200);
+                    break;
+                default:
+                    entity.component.actor.sprite = new Sprite(new Texture("redarcher.png"));
+                    entity.component.actor.sprite.setSize(200, 200);
+                    break;
             }
+            entities.add(entity);
         }
-        player1turn = !player1turn;
+
+        /*
+         TODO: initiate Arrow entity
+
+        entity = new Entity();
+        entity.addComponent("pos");
+        entity.addComponent("render");
+
+        entities.add(entity);
+
+         */
+
+        // Initiate game system possibilities
+        renderingSystem = new Systems.Render();
+        userInputSystem = new Systems.UserInput();
+        // TODO: animationSystem = new Systems.Animation();
+        // TODO: collisionSystem = new Systems.Collision();
+
+    }
+
+    // Called in GameView to return all active actors
+    //  includes archers, arrow(s), and arena
+    public List<Actor> getActors() {
+        return renderingSystem.getActors(entities);
+    }
+
+    // Method called from Controller to move the active player
+    public void move(Boolean left) {
+        if(left) {
+            userInputSystem.moveLeft(entities);
+        } else {
+            userInputSystem.moveRight(entities);
+        }
     }
 
     // TODO: add description
@@ -67,19 +130,17 @@ public class Model {
 
     // TODO: add description
     public void drawBow(Vector2 vector2) {
-        // TODO: update appropriate objects
+        userInputSystem.drawBow(entities, vector2);
     }
 
-    // TODO: add description
-    public void initiateGame() {
-        player1 = new Player("LARS", "RED");
-        player2 = new Player("NINA", "BLUE");
-         /*
-        TODO:
+    // Method that return this game instance's soundbar object
+    public SoundBar getSoundBar() {
+        return this.soundBar.getSoundBar();
+    }
 
-        should initate all game objects (e.g. Player, arraw)
-
-         */
+    // Method used to change sound setting
+    public void changeSound() {
+        this.soundBar.getSoundBar().changeSound();
     }
 
 }
