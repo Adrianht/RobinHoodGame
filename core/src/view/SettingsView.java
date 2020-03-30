@@ -24,7 +24,8 @@ public class SettingsView extends View {
         super.stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(super.stage);
 
-        Button menuButton = new Button("menu");
+        Button menuButton = new Button("backbutton");
+        Button robinHood = new Button("robinhoodpic");
         SoundBar soundBar = model.getSoundBar();
 
         // ClickListener: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/utils/ClickListener.html
@@ -47,6 +48,7 @@ public class SettingsView extends View {
         // Actor: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/Actor.html
         // adds all the elements to this interface
         super.stage.addActor(menuButton);
+        super.stage.addActor(robinHood);
         super.stage.addActor(soundBar);
     }
 

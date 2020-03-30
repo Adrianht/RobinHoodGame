@@ -26,6 +26,7 @@ public class MenuView extends View {
         Button settingsButton = new Button("settings");
         Button loadingButton = new Button("play");
         Button exitButton = new Button("exit");
+        Button robinHood = new Button("robinhoodpic");
 
         // ClickListener: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/utils/ClickListener.html
         // ClickListener triggered by user clicks on Button/Actor to call appropriate actions
@@ -56,7 +57,7 @@ public class MenuView extends View {
         super.stage.addActor(settingsButton);
         super.stage.addActor(loadingButton);
         super.stage.addActor(exitButton);
-
+        super.stage.addActor(robinHood);
     }
 
 }

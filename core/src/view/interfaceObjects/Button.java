@@ -43,6 +43,16 @@ public class Button extends Actor {
                 sprite.setSize(100,100);
                 setBounds(500, 0, sprite.getWidth(), sprite.getHeight());
                 break;
+            case "robinhoodpic":
+                sprite = new Sprite(new Texture("robinhood.png"));
+                setPosition(0, 0);
+                sprite.setSize(370, 480);
+                break;
+            case "backbutton":
+                sprite = new Sprite(new Texture("back.png"));
+                setPosition(460, 50);
+                sprite.setSize(100,100);
+                break;
             default:
                 // code block
         }
