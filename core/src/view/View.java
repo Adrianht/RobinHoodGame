@@ -15,6 +15,12 @@ public abstract class View extends Stage {
         stage.draw();
     }
 
+    @Override
+    public void dispose () {
+        stage.dispose();
+    }
+
+    //Hjelpemetoder - hex til glcolors
     /* re-map RGB colors so they can be used in OpenGL */
     private float[] map(float[]rgb) {
         float[] result = new float[3];
@@ -30,11 +36,6 @@ public abstract class View extends Stage {
         rgbcolor[1] = Integer.valueOf(hex.substring(3,5 ),16);
         rgbcolor[2] = Integer.valueOf(hex.substring(5,7 ),16);
         return map(rgbcolor);
-    }
-
-    @Override
-    public void dispose () {
-        stage.dispose();
     }
 
 }
