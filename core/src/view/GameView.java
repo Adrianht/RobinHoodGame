@@ -2,6 +2,7 @@ package view;
 
 import controller.Controller;
 import model.Model;
+import model.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;

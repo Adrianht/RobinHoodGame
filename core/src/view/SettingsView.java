@@ -37,6 +37,7 @@ public class SettingsView extends View {
                 controller.navigateTo("MENU");
             }
         });
+
         soundBar.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {

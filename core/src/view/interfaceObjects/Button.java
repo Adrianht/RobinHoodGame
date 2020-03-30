@@ -18,20 +18,22 @@ public class Button extends Actor {
     public Button(String type) {
         switch(type) {
             case "settings":
-                sprite = new Sprite(new Texture("setting.png"));
-                setBounds(400, 200, sprite.getWidth(), sprite.getHeight());
+                sprite = new Sprite(new Texture("settings.png"));
+                sprite.setSize(90, 70);
+                setBounds(530, 400, sprite.getWidth(), sprite.getHeight());
                 break;
             case "play":
                 sprite = new Sprite(new Texture("play.png"));
-                setBounds(50, 200, sprite.getWidth(), sprite.getHeight());
+                setBounds(345, 180, sprite.getWidth(), sprite.getHeight());
                 break;
             case "menu":
                 sprite = new Sprite(new Texture("menu.png"));
-                setBounds(250, 50, sprite.getWidth(), sprite.getHeight());
+                setBounds(410, 50, sprite.getWidth(), sprite.getHeight());
                 break;
             case "exit":
                 sprite = new Sprite(new Texture("exit.png"));
-                setBounds(700, 50, sprite.getWidth(), sprite.getHeight());
+                sprite.setSize(180, 100);
+                setBounds(410, 50, sprite.getWidth(), sprite.getHeight());
                 break;
             case "left":
                 sprite = new Sprite(new Texture("left.png"));
@@ -45,13 +47,13 @@ public class Button extends Actor {
                 break;
             case "robinhoodpic":
                 sprite = new Sprite(new Texture("robinhood.png"));
-                setPosition(0, 0);
                 sprite.setSize(370, 480);
+                setBounds(0,0,sprite.getWidth(),sprite.getHeight());
                 break;
             case "backbutton":
                 sprite = new Sprite(new Texture("back.png"));
-                setPosition(460, 50);
                 sprite.setSize(100,100);
+                setBounds(460, 50, sprite.getWidth(), sprite.getHeight());
                 break;
             default:
                 // code block
