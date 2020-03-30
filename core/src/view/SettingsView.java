@@ -28,10 +28,14 @@ public class SettingsView extends View {
 
         // Actor: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/Actor.html
         // adds all the elements to this interface
-        Button menuButton = new Button("menu");
+        Button menuButton = new Button("backbutton");
         super.stage.addActor(menuButton);
         SoundBar soundBar = model.getSoundBar();
         super.stage.addActor(soundBar);
+
+        Button robinHood = new Button("robinhoodpic");
+        super.stage.addActor(robinHood);
+
 
         // adds all listeners to this interface
         stage.addListener(settingsViewListener);
@@ -50,7 +54,7 @@ public class SettingsView extends View {
             if(clickY > 200) {
                 System.out.println("CHANGE SOUND SETTINGS");
                 controller.changeSound();
-            } else {
+            } else if (clickX > 430 && clickY < 210){
                 System.out.println("TO MENU!");
                 controller.navigateTo("MENU");
             }

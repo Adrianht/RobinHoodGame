@@ -24,7 +24,8 @@ public final class SoundBar extends Actor {
 
     private SoundBar() {
         sprite = new Sprite(new Texture("soundon.png"));
-        setPosition(200, 200);
+        setPosition(500, 400);
+        sprite.setSize(100,70);
     }
 
     // TODO: add description
@@ -37,9 +38,11 @@ public final class SoundBar extends Actor {
         if(soundActive) {
             soundActive = false;
             sprite = new Sprite(new Texture("soundoff.png"));
+            sprite.setSize(100, 70);
         } else {
             soundActive = true;
             sprite = new Sprite(new Texture("soundon.png"));
+            sprite.setSize(100, 70);
         }
     }
 

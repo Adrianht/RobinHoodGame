@@ -26,10 +26,12 @@ public class MenuView extends View {
         // adds all the elements to this interface
         Button settingsButton = new Button("settings");
         Button loadingButton = new Button("play");
-        Button exitButton = new Button("exit");
+        //Button exitButton = new Button("exit");
         super.stage.addActor(settingsButton);
         super.stage.addActor(loadingButton);
-        super.stage.addActor(exitButton);
+        //super.stage.addActor(exitButton);
+        Button robinHood = new Button("robinhoodpic");
+        super.stage.addActor(robinHood);
         // adds all listeners to this interface
         stage.addListener(menuViewListener);
     }
@@ -47,11 +49,11 @@ public class MenuView extends View {
             // If less than 300 -> PLAY
             // If between 299 and 700 -> SETTINGS
             // If greater than 699 -> EXIT
-            if(clickX < 300) {
+            if(clickX > 400 && clickY > 200 && clickY < 300) {
                 System.out.println("TO PLAY!");
                 controller.navigateTo("GAME");
 
-            } else if (clickX >= 300 && clickX < 700){
+            } else if (clickX > 550 && clickY > 390){
                 System.out.println("TO SETTINGS!");
                 controller.navigateTo("SETTINGS");
 
