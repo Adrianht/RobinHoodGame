@@ -9,7 +9,7 @@ public abstract class View extends Stage {
     protected Stage stage;
 
     public void render() {
-        Gdx.gl.glClearColor(0, 0, 1, 1);
+        Gdx.gl.glClearColor(130/255f, 230/255f, 250/255f, 255/255f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
     }

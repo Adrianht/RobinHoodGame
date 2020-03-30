@@ -20,20 +20,21 @@ public class Button extends Actor {
     public Button(String type) {
         switch(type) {
             case "settings":
-                sprite = new Sprite(new Texture("setting.png"));
-                setPosition(400, 200);
+                sprite = new Sprite(new Texture("settings.png"));
+                setPosition(530, 400);
+                sprite.setSize(90,70);
                 break;
             case "play":
                 sprite = new Sprite(new Texture("play.png"));
-                setPosition(50, 200);
+                setPosition(345, 180);
                 break;
             case "menu":
                 sprite = new Sprite(new Texture("menu.png"));
-                setPosition(250, 50);
+                setPosition(410, 50);
                 break;
             case "exit":
                 sprite = new Sprite(new Texture("exit.png"));
-                setPosition(700, 50);
+                setPosition(410, 50);
                 break;
             case "left":
                 sprite = new Sprite(new Texture("left.png"));
@@ -43,6 +44,16 @@ public class Button extends Actor {
             case "right":
                 sprite = new Sprite(new Texture("right.png"));
                 setPosition(500, 0);
+                sprite.setSize(100,100);
+                break;
+            case "robinhoodpic":
+                sprite = new Sprite(new Texture("robinhood.png"));
+                setPosition(0, 0);
+                sprite.setSize(370, 480);
+                break;
+            case "backbutton":
+                sprite = new Sprite(new Texture("back.png"));
+                setPosition(460, 50);
                 sprite.setSize(100,100);
                 break;
             default:
