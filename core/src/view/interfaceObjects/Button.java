@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-
 public class Button extends Actor {
     /*
 
@@ -14,36 +13,35 @@ public class Button extends Actor {
     be placed in the model-package
 
     */
-
     private Sprite sprite;
 
     public Button(String type) {
         switch(type) {
             case "settings":
                 sprite = new Sprite(new Texture("setting.png"));
-                setPosition(400, 200);
+                setBounds(400, 200, sprite.getWidth(), sprite.getHeight());
                 break;
             case "play":
                 sprite = new Sprite(new Texture("play.png"));
-                setPosition(50, 200);
+                setBounds(50, 200, sprite.getWidth(), sprite.getHeight());
                 break;
             case "menu":
                 sprite = new Sprite(new Texture("menu.png"));
-                setPosition(250, 50);
+                setBounds(250, 50, sprite.getWidth(), sprite.getHeight());
                 break;
             case "exit":
                 sprite = new Sprite(new Texture("exit.png"));
-                setPosition(700, 50);
+                setBounds(700, 50, sprite.getWidth(), sprite.getHeight());
                 break;
             case "left":
                 sprite = new Sprite(new Texture("left.png"));
-                setPosition(50, 0);
                 sprite.setSize(100,100);
+                setBounds(50, 0, sprite.getWidth(), sprite.getHeight());
                 break;
             case "right":
                 sprite = new Sprite(new Texture("right.png"));
-                setPosition(500, 0);
                 sprite.setSize(100,100);
+                setBounds(500, 0, sprite.getWidth(), sprite.getHeight());
                 break;
             default:
                 // code block
