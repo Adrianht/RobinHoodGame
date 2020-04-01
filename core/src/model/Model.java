@@ -24,8 +24,6 @@ public class Model {
     private List<Entity> entities = new ArrayList<>();
     private Systems.Render renderingSystem;
     private Systems.UserInput userInputSystem;
-    private Systems.Animation animationSystem;
-    private Systems.Collision collisionSystem;
 
     // ECS related sources - remove pre delivery:
     // http://vasir.net/blog/game-development/how-to-build-entity-component-system-in-javascript
@@ -103,8 +101,6 @@ public class Model {
         // Initiate game system possibilities
         renderingSystem = new Systems.Render();
         userInputSystem = new Systems.UserInput();
-        // TODO: animationSystem = new Systems.Animation();
-        // TODO: collisionSystem = new Systems.Collision();
 
     }
 
@@ -128,7 +124,7 @@ public class Model {
         // TODO: update appropriate objects
     }
 
-    // TODO: add description
+    // Method runs animation and change players turn
     public void drawBow(Vector2 vector2) {
         userInputSystem.drawBow(entities, vector2);
     }

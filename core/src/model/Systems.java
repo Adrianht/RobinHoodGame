@@ -97,18 +97,4 @@ public class Systems {
         */
     }
 
-    // possibly class to handle arrow animation
-    public static class Animation {
-
-        // TODO: add appropriate method
-
-    }
-
-    // possibly class to handle Collision check
-    public static class Collision {
-
-        // TODO: add appropriate method
-
-    }
-
 }
