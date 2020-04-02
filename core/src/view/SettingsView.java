@@ -38,7 +38,7 @@ public class SettingsView extends View {
             }
         });
 
-        soundBar.addListener(new ClickListener(){
+        model.getSoundBar().addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
                 System.out.println("CHANGE SOUND SETTINGS");

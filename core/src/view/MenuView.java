@@ -58,5 +58,6 @@ public class MenuView extends View {
         super.stage.addActor(loadingButton);
         super.stage.addActor(exitButton);
         super.stage.addActor(robinHood);
-    }
+
+        }
 }
