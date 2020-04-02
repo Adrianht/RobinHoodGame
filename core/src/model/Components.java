@@ -3,6 +3,7 @@ package model;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.sun.java.swing.plaf.gtk.GTKConstants;
 
 import java.awt.event.ComponentEvent;
 
@@ -22,8 +23,16 @@ public class Components {
     public Position pos;
     public Turf turf;
     public Turn turn;
+    public ArrowType arrowtype;
 
     // constructors for all possible components
+    public class ArrowType {
+        public ArrowType() {
+            Components.this.arrowtype = this;
+        }
+        public String type = "Normal";
+        public int damage = 10;
+    }
     public class Energy {
         public Energy() {
             Components.this.energy = this;

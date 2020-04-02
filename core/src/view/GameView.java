@@ -5,6 +5,7 @@ import model.Model;
 import model.*;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -76,6 +77,11 @@ public class GameView extends View {
                 System.out.println("RIGHT!");
                 controller.move(false);
                 //updateView()
+            } else {
+                System.out.println("SHOOT");
+                for (int i = 0; i < 300; i++) {
+                    controller.drawBow(new Vector2());
+                }
             }
 
             /*

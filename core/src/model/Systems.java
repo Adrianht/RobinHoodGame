@@ -13,25 +13,30 @@ public class Systems {
     public static class UserInput {
         public void moveLeft(List<Entity> entities) {
             for(Entity entity: entities) {
-                if (entity.component.turn.turn & entity.component.energy.value > 0) {
-                    entity.component.pos.x -= 20;
-                    entity.component.energy.value -= 2;
-                    System.out.println("Player, whose turn it is moved left, energy points reduced to: " +
-                            entity.component.energy.value);
+                if(entity.component.turn != null) {
+                    if (entity.component.turn.turn & entity.component.energy.value > 0) {
+                        entity.component.pos.x -= 20;
+                        entity.component.energy.value -= 2;
+                        System.out.println("Player, whose turn it is moved left, energy points reduced to: " +
+                                entity.component.energy.value);
+                    }
                 }
             }
         }
         public void moveRight(List<Entity> entities) {
             for(Entity entity: entities) {
-                if (entity.component.turn.turn & entity.component.energy.value > 0) {
-                    entity.component.pos.x += 20;
-                    entity.component.energy.value -= 2;
-                    System.out.println("Player, whose turn it is moved right, energy points reduced to: " +
-                            entity.component.energy.value);
+                if (entity.component.turn != null) {
+                    if (entity.component.turn.turn & entity.component.energy.value > 0) {
+                        entity.component.pos.x += 20;
+                        entity.component.energy.value -= 2;
+                        System.out.println("Player, whose turn it is moved right, energy points reduced to: " +
+                                entity.component.energy.value);
+                    }
                 }
             }
         }
-        public void drawBow(List<Entity> entities, Vector2 vector2) {
+        // FIXME: possibly move elsewhere
+        public void changeTurn(List<Entity> entities) {
 
             // FIXME: try to find more elegant solution
 
@@ -42,18 +47,22 @@ public class Systems {
                 if (entity.component.playernr != null) {
                     nrOfPlayers++;
                 }
-                if (entity.component.turn.turn) {
-                    prevPlayerNr = entity.component.playernr.nr;
-                    entity.component.turn.turn = false;
+                if(entity.component.turn != null) {
+                    if (entity.component.turn.turn) {
+                        prevPlayerNr = entity.component.playernr.nr;
+                        entity.component.turn.turn = false;
+                    }
                 }
             }
             for(Entity entity: entities) {
-                if (entity.component.playernr.nr == (prevPlayerNr + 1) % nrOfPlayers) {
-                    entity.component.turn.turn = true;
-                    if (entity.component.energy.value < 90) {
-                        entity.component.energy.value += 10;
-                    } else {
-                        entity.component.energy.value = 100;
+                if(entity.component.playernr != null) {
+                    if (entity.component.playernr.nr == (prevPlayerNr + 1) % nrOfPlayers) {
+                        entity.component.turn.turn = true;
+                        if (entity.component.energy.value < 90) {
+                            entity.component.energy.value += 10;
+                        } else {
+                            entity.component.energy.value = 100;
+                        }
                     }
                 }
             }
@@ -97,4 +106,52 @@ public class Systems {
         */
     }
 
+
+    // system class handling animations
+    // FIXME: currently suited for two players
+    public static class Animation {
+        public boolean arrowAnimationShotIsVital(List<Entity> entities, Vector2 vector2) {
+            for(Entity entity: entities) {
+                // finds arrow object
+                if (entity.component.arrowtype != null) {
+
+                    //TODO-Lars: add correct flying pattern and direction
+                    entity.component.pos.x += 0.1;
+                    entity.component.pos.y += 0;
+
+                    // finds opponent object
+                    for(Entity entity2: entities) {
+                        if(entity2.component.playernr != null && !entity2.component.turn.turn) {
+                            if (this.isHit(entity, entity2)) {
+                                entity2.component.hp.value -= entity.component.arrowtype.damage;
+                                return entity2.component.hp.value < 1;
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        private boolean isHit(Entity arrow, Entity opponent) {
+
+            // arrow sprite corners [LLow, LUp, RLow, RUp]
+            float[] arrowCorners = {
+                    arrow.component.pos.x,
+                    arrow.component.pos.y,
+                    arrow.component.pos.x + arrow.component.actor.sprite.getWidth(),
+                    arrow.component.pos.y + arrow.component.actor.sprite.getWidth()
+            };
+
+            float[] opponentCorners = {
+                    opponent.component.pos.x,
+                    opponent.component.pos.y,
+                    opponent.component.pos.x + opponent.component.actor.sprite.getWidth(),
+                    opponent.component.pos.y + opponent.component.actor.sprite.getHeight()
+            };
+
+            //TODO-Ola: check hit
+            return false;
+        }
+    }
 }
