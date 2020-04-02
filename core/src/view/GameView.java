@@ -36,9 +36,11 @@ public class GameView extends View {
         Button menuButton = new Button("menu");
         Button leftButton = new Button("left");
         Button rightButton = new Button("right");
+        Button buyButton = new Button("buy");
         stage.addActor(menuButton);
         stage.addActor(leftButton);
         stage.addActor(rightButton);
+        stage.addActor(buyButton);
 
         // adds archers, arrows and arena
         List<Actor> actors = model.getActors();
@@ -68,14 +70,15 @@ public class GameView extends View {
             if(clickY < 100 && clickX < 200) {
                 System.out.println("LEFT!");
                 controller.move(true);
-                //updateView()
-            } else if(clickY < 100 && clickX > 200 && clickX < 450) {
-                System.out.println("TO MENU!");
-                controller.navigateTo("MENU");
             } else if(clickY < 100 && clickX > 450) {
                 System.out.println("RIGHT!");
                 controller.move(false);
-                //updateView()
+            } else if(clickY < 100 && clickY>50  && clickX > 312 && clickX < 450) {
+                System.out.println("TO MENU!");
+                controller.navigateTo("MENU");
+            } else if(clickY < 60 && clickX > 311 && clickX<340) {
+                System.out.println("You want to buy a new weapon!");
+                controller.buyArrow("weaponLevel2");
             }
 
             /*
