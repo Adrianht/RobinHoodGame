@@ -1,5 +1,6 @@
 package controller;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.robinhood.game.RobinHood;
@@ -34,6 +35,9 @@ public class Controller {
                 model.initiateGame();
 
                 game.setView(new GameView(this, model));
+                break;
+            case "GAMEOVER":
+                game.setView(new GameOverView(this,model));
                 break;
             default:
                 game.setView(new MenuView(this));

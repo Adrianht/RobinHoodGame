@@ -143,8 +143,5 @@ public class Model {
         this.soundBar.getSoundBar().changeSound();
     }
 
-    public void gameOver(){
-
-    }
 
 }
