@@ -144,4 +144,5 @@ public class Model {
         this.soundBar.getSoundBar().changeSound();
     }
 
+
 }

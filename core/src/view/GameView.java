@@ -81,6 +81,8 @@ public class GameView extends View {
                 controller.buyArrow("weaponLevel2");
             }
 
+
+
             /*
                 TODO:
                 Clicks in this view should trigger one of the following methods
@@ -97,5 +99,7 @@ public class GameView extends View {
 
         }
     };
+
+
 
 }
