@@ -28,6 +28,11 @@ public class SettingsView extends View {
         Button robinHood = new Button("robinhoodpic");
         SoundBar soundBar = model.getSoundBar();
 
+        // Checks if soundBar already has a clickListener, adds listener if not
+        if(!soundBar.getListener()){
+            soundBar.addListener(controller);
+        }
+
         // ClickListener: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/utils/ClickListener.html
         // ClickListener triggered by user clicks on Button/Actor to call appropriate actions
         menuButton.addListener(new ClickListener(){
@@ -35,14 +40,6 @@ public class SettingsView extends View {
             public void clicked(InputEvent event, float clickX, float clickY) {
                 System.out.println("TO MENU!");
                 controller.navigateTo("MENU");
-            }
-        });
-
-        model.getSoundBar().addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float clickX, float clickY) {
-                System.out.println("CHANGE SOUND SETTINGS");
-                controller.changeSound();
             }
         });
 
