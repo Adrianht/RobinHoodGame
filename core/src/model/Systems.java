@@ -116,7 +116,7 @@ public class Systems {
                 if (entity.component.arrowtype != null) {
 
                     //TODO-Lars: add correct flying pattern and direction
-                    entity.component.pos.x += 0.1;
+                    entity.component.pos.x += 20;
                     entity.component.pos.y += 0;
 
                     // finds opponent object
@@ -124,6 +124,7 @@ public class Systems {
                         if(entity2.component.playernr != null && !entity2.component.turn.turn) {
                             if (this.isHit(entity, entity2)) {
                                 entity2.component.hp.value -= entity.component.arrowtype.damage;
+                                System.out.println("HP: " + entity2.component.hp.value);
                                 return entity2.component.hp.value < 1;
                             }
                         }
@@ -135,22 +136,24 @@ public class Systems {
 
         private boolean isHit(Entity arrow, Entity opponent) {
 
-            // arrow sprite corners [LLow, LUp, RLow, RUp]
-            float[] arrowCorners = {
-                    arrow.component.pos.x,
-                    arrow.component.pos.y,
-                    arrow.component.pos.x + arrow.component.actor.sprite.getWidth(),
-                    arrow.component.pos.y + arrow.component.actor.sprite.getWidth()
-            };
+            Float arrowLeftmost = arrow.component.pos.x;
+            Float arrowRightmost = arrow.component.pos.x + arrow.component.actor.sprite.getWidth();
+            Float arrowLowest = arrow.component.pos.y;
+            Float arrowHighest = arrow.component.pos.y + arrow.component.actor.sprite.getHeight();
 
-            float[] opponentCorners = {
-                    opponent.component.pos.x,
-                    opponent.component.pos.y,
-                    opponent.component.pos.x + opponent.component.actor.sprite.getWidth(),
-                    opponent.component.pos.y + opponent.component.actor.sprite.getHeight()
-            };
+            Float opponentLeftmost = opponent.component.pos.x;
+            Float opponentRightmost = opponent.component.pos.x + opponent.component.actor.sprite.getWidth();
+            Float opponentLowest = opponent.component.pos.y;
+            Float opponentHighest = opponent.component.pos.y + arrow.component.actor.sprite.getHeight();
 
-            //TODO-Ola: check hit
+            // check if any of arrow sprite corners are inside opponent sprite
+            if (((arrowLeftmost <= opponentRightmost && arrowLeftmost >= opponentLeftmost)
+                    || (arrowRightmost <= opponentRightmost && arrowRightmost >= opponentLeftmost))
+                && ((arrowLowest <= opponentHighest && arrowLowest >= opponentLowest)
+                    || (arrowHighest <= opponentHighest && arrowHighest >= opponentLowest))) {
+                return true;
+            }
+
             return false;
         }
     }

@@ -79,9 +79,7 @@ public class GameView extends View {
                 //updateView()
             } else {
                 System.out.println("SHOOT");
-                for (int i = 0; i < 300; i++) {
-                    controller.drawBow(new Vector2());
-                }
+                controller.drawBow(new Vector2());
             }
 
             /*
