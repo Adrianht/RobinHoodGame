@@ -38,11 +38,12 @@ public class Systems {
         // FIXME: possibly move elsewhere
         public void changeTurn(List<Entity> entities) {
 
-            // FIXME: try to find more elegant solution
+            // FIXME: try to find more elegant solution(s)
 
             int nrOfPlayers = 0;
             int prevPlayerNr = 0;
 
+            // remove current players turn
             for(Entity entity: entities) {
                 if (entity.component.playernr != null) {
                     nrOfPlayers++;
@@ -54,6 +55,8 @@ public class Systems {
                     }
                 }
             }
+
+            // give turn to next player and add 10 energy points
             for(Entity entity: entities) {
                 if(entity.component.playernr != null) {
                     if (entity.component.playernr.nr == (prevPlayerNr + 1) % nrOfPlayers) {
@@ -64,6 +67,14 @@ public class Systems {
                             entity.component.energy.value = 100;
                         }
                     }
+                }
+            }
+
+            // reset arrow attributes to "Normal" arrow
+            for(Entity entity: entities) {
+                if(entity.component.arrowtype != null) {
+                    entity.component.arrowtype.type = "Normal";
+                    entity.component.arrowtype.damage = 10;
                 }
             }
         }
@@ -124,12 +135,24 @@ public class Systems {
     // FIXME: currently suited for two players
     public static class Animation {
         public boolean arrowAnimationShotIsVital(List<Entity> entities, Vector2 vector2) {
+
+            // FIXME: refac this test of whos turn it is and arrow direction
+            float direction = -400;
+            for(Entity playerTurn: entities) {
+                if(playerTurn.component.turn != null
+                        && playerTurn.component.turn.turn
+                        && playerTurn.component.playernr.nr == 0) {
+                    direction = 400;
+                    break;
+                }
+            }
+
             for(Entity entity: entities) {
                 // finds arrow object
                 if (entity.component.arrowtype != null) {
 
                     //TODO-Lars: add correct flying pattern and direction
-                    entity.component.pos.x += 20;
+                    entity.component.pos.x += direction;
                     entity.component.pos.y += 0;
 
                     // finds opponent object
