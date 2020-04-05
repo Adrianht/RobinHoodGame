@@ -5,6 +5,7 @@ import model.Model;
 import model.*;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -79,8 +80,10 @@ public class GameView extends View {
             } else if(clickY < 60 && clickX > 311 && clickX<340) {
                 System.out.println("You want to buy a new weapon!");
                 controller.buyArrow("weaponLevel2");
+            } else {
+                System.out.println("SHOOT");
+                controller.drawBow(new Vector2());
             }
-
 
 
             /*
