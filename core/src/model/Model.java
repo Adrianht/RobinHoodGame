@@ -123,6 +123,7 @@ public class Model {
     // TODO: add description
     public void buyArrow(String type) {
         // TODO: update appropriate objects
+        System.out.println("Arrow type bought:" + type);
     }
 
     // Method runs animation and change players turn
@@ -143,5 +144,6 @@ public class Model {
     public void changeSound() {
         this.soundBar.getSoundBar().changeSound();
     }
+
 
 }

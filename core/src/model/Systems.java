@@ -76,6 +76,19 @@ public class Systems {
 
     }
 
+    public static class gameOver{
+
+        public boolean gameIsOver(List<Entity> entities){
+            for(Entity entity : entities){
+                if(entity.component.hp.value < 1){
+                    System.out.println("Game over...");
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
 
     // system class handling rendering entities
     public static class Render {
