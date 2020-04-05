@@ -124,7 +124,8 @@ public class Systems {
                         if(entity2.component.playernr != null && !entity2.component.turn.turn) {
                             if (this.isHit(entity, entity2)) {
                                 entity2.component.hp.value -= entity.component.arrowtype.damage;
-                                System.out.println("HP: " + entity2.component.hp.value);
+                                System.out.println("Player " + entity2.component.playernr.nr
+                                        + " was hit, HP now: " + entity2.component.hp.value);
                                 return entity2.component.hp.value < 1;
                             }
                         }

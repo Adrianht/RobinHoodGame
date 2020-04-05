@@ -3,7 +3,6 @@ package model;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.sun.java.swing.plaf.gtk.GTKConstants;
 
 import java.awt.event.ComponentEvent;
 
