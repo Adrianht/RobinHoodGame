@@ -23,9 +23,8 @@ public class Model {
     // ECS related fields - list index might be used as entity id
     private List<Entity> entities = new ArrayList<>();
     private Systems.Render renderingSystem;
-    private Systems.UserInput userInputSystem;
     private Systems.Animation animationSystem;
-    private Systems.Collision collisionSystem;
+    private Systems.UserInput userInputSystem;
 
     // ECS related sources - remove pre delivery:
     // http://vasir.net/blog/game-development/how-to-build-entity-component-system-in-javascript
@@ -75,36 +74,34 @@ public class Model {
             switch(playerColor[i]) {
                 case "RED":
                     entity.component.actor.sprite = new Sprite(new Texture("redarcher.png"));
-                    entity.component.actor.sprite.setSize(200, 200);
                     break;
                 case "BLUE":
                     entity.component.actor.sprite = new Sprite(new Texture("bluearcher.png"));
-                    entity.component.actor.sprite.setSize(200, 200);
                     break;
                 default:
                     entity.component.actor.sprite = new Sprite(new Texture("redarcher.png"));
-                    entity.component.actor.sprite.setSize(200, 200);
                     break;
             }
+            entity.component.actor.sprite.setSize(200, 200);
             entities.add(entity);
         }
 
-        /*
-         TODO: initiate Arrow entity
-
+        // Initiate arrow
         entity = new Entity();
         entity.addComponent("pos");
-        entity.addComponent("render");
-
+        entity.component.pos.x = 30;
+        entity.component.pos.y = 200;
+        entity.addComponent("actor");
+        entity.component.actor.sprite = new Sprite(new Texture("arrow.png"));
+        entity.component.actor.sprite.setSize(100, 100);
+        entity.addComponent("arrowType");
         entities.add(entity);
 
-         */
 
         // Initiate game system possibilities
         renderingSystem = new Systems.Render();
         userInputSystem = new Systems.UserInput();
-        // TODO: animationSystem = new Systems.Animation();
-        // TODO: collisionSystem = new Systems.Collision();
+        animationSystem = new Systems.Animation();
 
     }
 
@@ -126,11 +123,16 @@ public class Model {
     // TODO: add description
     public void buyArrow(String type) {
         // TODO: update appropriate objects
+        System.out.println("Arrow type bought:" + type);
     }
 
-    // TODO: add description
+    // Method runs animation and change players turn
     public void drawBow(Vector2 vector2) {
-        userInputSystem.drawBow(entities, vector2);
+        boolean shotIsVital = animationSystem.arrowAnimationShotIsVital(entities, vector2);
+        if (shotIsVital) {
+            // TODO: GAME OVER
+        }
+        userInputSystem.changeTurn(entities);
     }
 
     // Method that return this game instance's soundbar object
@@ -142,5 +144,6 @@ public class Model {
     public void changeSound() {
         this.soundBar.getSoundBar().changeSound();
     }
+
 
 }

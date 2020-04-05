@@ -5,6 +5,7 @@ import model.Model;
 import model.*;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -31,6 +32,7 @@ public class GameView extends View {
         Button menuButton = new Button("menu");
         Button leftButton = new Button("left");
         Button rightButton = new Button("right");
+        Button buyButton = new Button("buy");
 
         // ClickListener: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/utils/ClickListener.html
         // ClickListener triggered by user clicks on Button/Actor to call appropriate actions
@@ -73,9 +75,11 @@ public class GameView extends View {
 
         // Actor: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/Actor.html
         // adds all the elements to this interface
+
         stage.addActor(menuButton);
         stage.addActor(leftButton);
         stage.addActor(rightButton);
+        stage.addActor(buyButton);
 
         // adds archers, arrows and arena
         List<Actor> actors = model.getActors();
@@ -92,5 +96,4 @@ public class GameView extends View {
          */
 
     }
-
 }

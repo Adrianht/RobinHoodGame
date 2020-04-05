@@ -17,6 +17,9 @@ public class Entity {
     //  component related to this entity
     public void addComponent(String componentName) {
         switch(componentName) {
+            case "arrowType":
+                this.component.new ArrowType();
+                break;
             case "energy":
                 this.component.new Energy();
                 break;

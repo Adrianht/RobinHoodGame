@@ -55,6 +55,11 @@ public class Button extends Actor {
                 sprite.setSize(100,100);
                 setBounds(460, 50, sprite.getWidth(), sprite.getHeight());
                 break;
+            case "buy":
+                sprite = new Sprite(new Texture("buy.png"));
+                setPosition(310, 25);
+                sprite.setSize(30,30);
+                break;
             default:
                 // code block
         }
