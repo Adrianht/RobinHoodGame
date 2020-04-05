@@ -57,8 +57,13 @@ public class Button extends Actor {
                 break;
             case "buy":
                 sprite = new Sprite(new Texture("buy.png"));
-                setPosition(310, 25);
                 sprite.setSize(30,30);
+                setBounds(310, 25, sprite.getWidth(), sprite.getHeight());
+                break;
+            case "shoot":
+                sprite = new Sprite(new Texture("shoot_arrow_test_button.png"));
+                sprite.setSize(30,30);
+                setBounds(270, 25, sprite.getWidth(), sprite.getHeight());
                 break;
             default:
                 // code block

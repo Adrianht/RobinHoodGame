@@ -33,30 +33,43 @@ public class GameView extends View {
         Button leftButton = new Button("left");
         Button rightButton = new Button("right");
         Button buyButton = new Button("buy");
+        Button shootButton = new Button("shoot");
 
         // ClickListener: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/utils/ClickListener.html
         // ClickListener triggered by user clicks on Button/Actor to call appropriate actions
-        menuButton.addListener(new ClickListener(){
+        menuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
                 System.out.println("TO MENU!");
                 controller.navigateTo("MENU");
             }
         });
-        leftButton.addListener(new ClickListener(){
+        leftButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
                 System.out.println("LEFT!");
                 controller.move(true);
-                //updateView()
             }
         });
-        rightButton.addListener(new ClickListener(){
+        rightButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
                 System.out.println("RIGHT!");
                 controller.move(false);
-                //updateView()
+            }
+        });
+        buyButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float clickX, float clickY) {
+                System.out.println("You want to buy a new weapon!");
+                controller.buyArrow("weaponLevel2");
+            }
+        });
+        shootButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float clickX, float clickY) {
+                System.out.println("SHOOT");
+                controller.drawBow(new Vector2());
             }
         });
 
@@ -80,10 +93,11 @@ public class GameView extends View {
         stage.addActor(leftButton);
         stage.addActor(rightButton);
         stage.addActor(buyButton);
+        stage.addActor(shootButton);
 
         // adds archers, arrows and arena
         List<Actor> actors = model.getActors();
-        for (Actor actor: actors) {
+        for (Actor actor : actors) {
             stage.addActor(actor);
         }
 
@@ -96,4 +110,6 @@ public class GameView extends View {
          */
 
     }
+
+
 }
