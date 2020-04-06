@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-
 public class Button extends Actor {
     /*
 
@@ -14,52 +13,57 @@ public class Button extends Actor {
     be placed in the model-package
 
     */
-
     private Sprite sprite;
 
     public Button(String type) {
         switch(type) {
             case "settings":
                 sprite = new Sprite(new Texture("settings.png"));
-                setPosition(530, 400);
-                sprite.setSize(90,70);
+                sprite.setSize(90, 70);
+                setBounds(530, 400, sprite.getWidth(), sprite.getHeight());
                 break;
             case "play":
                 sprite = new Sprite(new Texture("play.png"));
-                setPosition(345, 180);
+                setBounds(345, 180, sprite.getWidth(), sprite.getHeight());
                 break;
             case "menu":
                 sprite = new Sprite(new Texture("menu.png"));
-                setPosition(410, 50);
+                setBounds(410, 50, sprite.getWidth(), sprite.getHeight());
                 break;
             case "exit":
                 sprite = new Sprite(new Texture("exit.png"));
-                setPosition(410, 50);
+                sprite.setSize(180, 100);
+                setBounds(410, 50, sprite.getWidth(), sprite.getHeight());
                 break;
             case "left":
                 sprite = new Sprite(new Texture("left.png"));
-                setPosition(50, 0);
                 sprite.setSize(100,100);
+                setBounds(50, 0, sprite.getWidth(), sprite.getHeight());
                 break;
             case "right":
                 sprite = new Sprite(new Texture("right.png"));
-                setPosition(500, 0);
                 sprite.setSize(100,100);
+                setBounds(500, 0, sprite.getWidth(), sprite.getHeight());
                 break;
             case "robinhoodpic":
                 sprite = new Sprite(new Texture("robinhood.png"));
-                setPosition(0, 0);
                 sprite.setSize(370, 480);
+                setBounds(0,0,sprite.getWidth(),sprite.getHeight());
                 break;
             case "backbutton":
                 sprite = new Sprite(new Texture("back.png"));
-                setPosition(460, 50);
                 sprite.setSize(100,100);
+                setBounds(460, 50, sprite.getWidth(), sprite.getHeight());
                 break;
             case "buy":
                 sprite = new Sprite(new Texture("buy.png"));
-                setPosition(310, 25);
                 sprite.setSize(30,30);
+                setBounds(310, 25, sprite.getWidth(), sprite.getHeight());
+                break;
+            case "shoot":
+                sprite = new Sprite(new Texture("shoot_arrow_test_button.png"));
+                sprite.setSize(30,30);
+                setBounds(270, 25, sprite.getWidth(), sprite.getHeight());
                 break;
             default:
                 // code block
