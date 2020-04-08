@@ -69,6 +69,8 @@ public class Systems {
 
     public static class gameOver{
 
+
+
         public boolean gameIsOver(List<Entity> entities){
             for(Entity entity : entities){
                 if(entity.component.hp.value < 1){
@@ -78,6 +80,30 @@ public class Systems {
             }
             return false;
         }
+
+
+        public  static int getHP(List<Entity> entities){
+            int points = 0;
+            for(Entity entity : entities){
+                if(entity.component.hp != null){
+                    points = entity.component.hp.value;
+                }
+            }
+            return points;
+        }
+
+        public int getEnergyPoints(List<Entity> entities){
+            int points = 0;
+            for (Entity entity : entities){
+                if(entity.component.energy != null){
+                    points = entity.component.energy.value;
+                }
+            }
+            return points;
+        }
+
+
+
     }
 
 

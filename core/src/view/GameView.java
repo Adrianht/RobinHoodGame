@@ -5,6 +5,9 @@ import model.Model;
 import model.*;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -20,11 +23,13 @@ import view.interfaceObjects.*;
 public class GameView extends View {
 
     private final Controller controller;
-
+    private SpriteBatch batch;
+    private BitmapFont font;
 
     public GameView(Controller cont, Model model) {
 
         this.controller = cont;
+
 
         // Stage: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/Stage.html
         // set the stage of the View superclass - same in all subclasses
@@ -58,6 +63,29 @@ public class GameView extends View {
          This includes getting data from stage, players, etc. and
          checking if the game is over.
          */
+
+    }
+
+    //This is a quickfix and should be avoided....
+    @Override
+    public void render() {
+        float[] values = hextoRGB("#5f8db0");
+        Gdx.gl.glClearColor(values[0], values[1], values[2], 1.0f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        stage.draw();
+        drawText();
+    }
+
+    //TODO: print hp and energypoints
+    private void drawText(){
+        batch = new SpriteBatch();
+        font = new BitmapFont();
+        
+        String text = "HitPoints: ";
+
+        batch.begin();
+        font.draw(batch, text, 250, 100);
+        batch.end();
 
     }
 

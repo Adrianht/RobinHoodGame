@@ -44,13 +44,12 @@ public class GameOverView extends View {
     private void drawText(){
         batch = new SpriteBatch();
         font = new BitmapFont();
+        
+        //TODO: add who won and points
         String text = "GAME OVER" ;
 
         batch.begin();
         font.draw(batch, text, 250, 250);
-
-
-
         batch.end();
 
     }
