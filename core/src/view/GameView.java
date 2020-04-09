@@ -32,7 +32,7 @@ public class GameView extends View {
         Button menuButton = new Button("menu");
         Button leftButton = new Button("left");
         Button rightButton = new Button("right");
-        Button buyButton = new Button("buy");
+        Button buyLevel2 = new Button("buy");
         Button shootButton = new Button("shoot");
 
         // ClickListener: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/utils/ClickListener.html
@@ -58,11 +58,11 @@ public class GameView extends View {
                 controller.move(false);
             }
         });
-        buyButton.addListener(new ClickListener() {
+        buyLevel2.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
                 System.out.println("You want to buy a new weapon!");
-                controller.buyArrow("Level1");
+                controller.buyArrow("Level2");
             }
         });
         shootButton.addListener(new ClickListener() {
@@ -92,7 +92,7 @@ public class GameView extends View {
         stage.addActor(menuButton);
         stage.addActor(leftButton);
         stage.addActor(rightButton);
-        stage.addActor(buyButton);
+        stage.addActor(buyLevel2);
         stage.addActor(shootButton);
 
         // adds archers, arrows and arena

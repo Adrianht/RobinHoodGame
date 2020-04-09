@@ -125,9 +125,7 @@ public class Model {
     * in Systems.java  */
     public void buyArrow(String type) {
         System.out.println("Arrow type bought:" + type);
-        // Ta sjekken her, om spilleren har nok energy for å kjøpe våpenet
         userInputSystem.buyArrow(entities, type);
-
     }
 
     // Method runs animation and change players turn

@@ -81,30 +81,53 @@ public class Systems {
         }
 
         /* Checks if the player has enough energy to buy that arrow type, if yes,
-        updates the arrow type */
-        public void buyArrow(List<Entity> entities, String type) {
-
+        updates the arrow type and return true*/
+        public boolean buyArrow(List<Entity> entities, String type) {
             for(Entity entity: entities) {
-                //arrowType blir resettet et sted, så her er den null igjen => fører til tull
-                System.out.println("Arrow in buyArrow() in Systems.java: " + entity.component.arrowtype);
-                //it throws NullPointerException here
-                System.out.println("Arrowtype: " + entity.component.arrowtype.type);
-                System.out.println("Arrow cost: " + entity.component.arrowtype.getCost(type));
-                if(entity.component.arrowtype != null &&
-                        entity.component.energy.value >= entity.component.arrowtype.getCost(type)) {
-                    entity.component.arrowtype.type = type;
-                    entity.component.arrowtype.damage = entity.component.arrowtype.getDamage(type);
-                    entity.component.arrowtype.cost = entity.component.arrowtype.getCost(type);
+                // Finds current energy point of the player whose turn it is
+                if (entity.component.playernr != null && entity.component.turn.turn) {
+                    int currentEnergy = entity.component.energy.value;
+                    System.out.println("Current energy points: " + currentEnergy);
+
+                    // Values of cost and damage for the three arrows the players can buy
+                    int costLevel2 = 20;
+                    int costLevel3 = 50;
+                    int costLevel4 = 70;
+                    int damageLevel2 = 20;
+                    int damageLevel3 = 50;
+                    int damageLevel4 = 70;
+
+                    // Finds arrow object
+                    for(Entity entity2: entities) {
+                        if(entity2.component.arrowtype != null ) {
+                            // For each arrow type, check if the player can afford it, then updates
+                            // the current arrowType
+                            if(type.equals("Level2") && currentEnergy>=costLevel2) {
+                                entity2.component.arrowtype.type = "Level2";
+                                entity2.component.arrowtype.cost = costLevel2;
+                                entity2.component.arrowtype.damage = damageLevel2;
+                                System.out.println("Arrow bought has damage: "+ entity2.component.arrowtype.damage);
+                                return true;
+
+                            }
+                            else if(type.equals("Level3") && currentEnergy>=costLevel3) {
+                                entity2.component.arrowtype.type = "Level3";
+                                entity2.component.arrowtype.cost = costLevel3;
+                                entity2.component.arrowtype.damage = damageLevel3;
+                                return true;
+                            }
+                            else if(type.equals("Level4") && currentEnergy>=costLevel4) {
+                                entity2.component.arrowtype.type = "Level4";
+                                entity2.component.arrowtype.cost = costLevel4;
+                                entity2.component.arrowtype.damage = damageLevel4;
+                                return true;
+                            }
+                        }
+                    }
                 }
             }
+            return false;
         }
-
-        /*
-           TODO:
-           add system methods related to attacking
-
-        */
-
     }
 
 
