@@ -31,7 +31,41 @@ public class Components {
         }
         public String type = "Normal";
         public int damage = 10;
+        public int cost = 0;
+
+        /* As for now Level2 weapons costs 20 and damages 20,
+        Level3 costs 50 and damages 50, Level4 costs 70 and damages 70*/
+        public int getDamage(String type) {
+            switch (type) {
+                case "Normal":
+                    return 10;
+                case "Level2":
+                    return 20;
+                case "Level3":
+                    return 50;
+                case "Level4":
+                    return 70;
+                default:
+                    return 10;
+            }
+        }
+
+        public int getCost(String type) {
+            switch (type) {
+                case "Normal":
+                    return 0;
+                case "Level2":
+                    return 20;
+                case "Level3":
+                    return 50;
+                case "Level4":
+                    return 70;
+                default:
+                    return 0;
+            }
+        }
     }
+
     public class Energy {
         public Energy() {
             Components.this.energy = this;

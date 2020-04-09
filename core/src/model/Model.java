@@ -120,10 +120,14 @@ public class Model {
         }
     }
 
-    // TODO: add description
+    /* Method called from Controller to buy an arrow. The methods checks
+    * if the player has enough energy to buy that type, */
     public void buyArrow(String type) {
         // TODO: update appropriate objects
         System.out.println("Arrow type bought:" + type);
+        // Ta sjekken her, om spilleren har nok energy for å kjøpe våpenet
+        userInputSystem.buyArrow(entities, type);
+
     }
 
     // Method runs animation and change players turn

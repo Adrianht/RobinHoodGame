@@ -79,13 +79,28 @@ public class Systems {
             }
         }
 
+        /* Checks if the player has enough energy to buy that arrow type, if yes,
+        updates the arrow type */
+        public void buyArrow(List<Entity> entities, String type) {
+            for(Entity entity: entities) {
+                if(entity.component.arrowtype != null &&
+                        entity.component.energy.value>entity.component.arrowtype.getCost(type)) {
+                    entity.component.arrowtype.type = type;
+                    entity.component.arrowtype.damage = entity.component.arrowtype.getDamage(type);
+                    entity.component.arrowtype.cost = entity.component.arrowtype.getCost(type);
+                }
+            }
+        }
+
         /*
            TODO:
-           add system methods related to buying arrows and attacking
+           add system methods related to attacking
 
         */
 
     }
+
+
 
     public static class gameOver{
 
