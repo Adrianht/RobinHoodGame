@@ -87,7 +87,6 @@ public class Systems {
                 // Finds current energy point of the player whose turn it is
                 if (entity.component.playernr != null && entity.component.turn.turn) {
                     int currentEnergy = entity.component.energy.value;
-                    System.out.println("Current energy points: " + currentEnergy);
 
                     // Values of cost and damage for the three arrows the players can buy
                     int costLevel2 = 20;
@@ -102,11 +101,12 @@ public class Systems {
                         if(entity2.component.arrowtype != null ) {
                             // For each arrow type, check if the player can afford it, then updates
                             // the current arrowType
+                            System.out.println("Arrowtype beore buying: "+ entity2.component.arrowtype.type);
                             if(type.equals("Level2") && currentEnergy>=costLevel2) {
                                 entity2.component.arrowtype.type = "Level2";
                                 entity2.component.arrowtype.cost = costLevel2;
                                 entity2.component.arrowtype.damage = damageLevel2;
-                                System.out.println("Arrow2 bought has damage: "+ entity2.component.arrowtype.damage);
+                                System.out.println("Arrow2 bought and has damage: "+ entity2.component.arrowtype.damage);
                                 return true;
 
                             }
@@ -114,14 +114,14 @@ public class Systems {
                                 entity2.component.arrowtype.type = "Level3";
                                 entity2.component.arrowtype.cost = costLevel3;
                                 entity2.component.arrowtype.damage = damageLevel3;
-                                System.out.println("Arrow3 bought has damage: "+ entity2.component.arrowtype.damage);
+                                System.out.println("Arrow3 bought and has damage: "+ entity2.component.arrowtype.damage);
                                 return true;
                             }
                             else if(type.equals("Level4") && currentEnergy>=costLevel4) {
                                 entity2.component.arrowtype.type = "Level4";
                                 entity2.component.arrowtype.cost = costLevel4;
                                 entity2.component.arrowtype.damage = damageLevel4;
-                                System.out.println("Arrow4 bought has damage: "+ entity2.component.arrowtype.damage);
+                                System.out.println("Arrow4 bought and has damage: "+ entity2.component.arrowtype.damage);
                                 return true;
                             }
                         }
