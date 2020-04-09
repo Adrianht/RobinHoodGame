@@ -106,7 +106,7 @@ public class Systems {
                                 entity2.component.arrowtype.type = "Level2";
                                 entity2.component.arrowtype.cost = costLevel2;
                                 entity2.component.arrowtype.damage = damageLevel2;
-                                System.out.println("Arrow bought has damage: "+ entity2.component.arrowtype.damage);
+                                System.out.println("Arrow2 bought has damage: "+ entity2.component.arrowtype.damage);
                                 return true;
 
                             }
@@ -114,12 +114,14 @@ public class Systems {
                                 entity2.component.arrowtype.type = "Level3";
                                 entity2.component.arrowtype.cost = costLevel3;
                                 entity2.component.arrowtype.damage = damageLevel3;
+                                System.out.println("Arrow3 bought has damage: "+ entity2.component.arrowtype.damage);
                                 return true;
                             }
                             else if(type.equals("Level4") && currentEnergy>=costLevel4) {
                                 entity2.component.arrowtype.type = "Level4";
                                 entity2.component.arrowtype.cost = costLevel4;
                                 entity2.component.arrowtype.damage = damageLevel4;
+                                System.out.println("Arrow4 bought has damage: "+ entity2.component.arrowtype.damage);
                                 return true;
                             }
                         }
