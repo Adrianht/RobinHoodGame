@@ -62,7 +62,7 @@ public class GameView extends View {
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
                 System.out.println("You want to buy a new weapon!");
-                controller.buyArrow("weaponLevel2");
+                controller.buyArrow("Level1");
             }
         });
         shootButton.addListener(new ClickListener() {

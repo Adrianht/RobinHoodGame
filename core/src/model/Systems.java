@@ -75,6 +75,7 @@ public class Systems {
                 if(entity.component.arrowtype != null) {
                     entity.component.arrowtype.type = "Normal";
                     entity.component.arrowtype.damage = 10;
+                    entity.component.arrowtype.cost = 0;
                 }
             }
         }
@@ -82,9 +83,15 @@ public class Systems {
         /* Checks if the player has enough energy to buy that arrow type, if yes,
         updates the arrow type */
         public void buyArrow(List<Entity> entities, String type) {
+
             for(Entity entity: entities) {
+                //arrowType blir resettet et sted, så her er den null igjen => fører til tull
+                System.out.println("Arrow in buyArrow() in Systems.java: " + entity.component.arrowtype);
+                //it throws NullPointerException here
+                System.out.println("Arrowtype: " + entity.component.arrowtype.type);
+                System.out.println("Arrow cost: " + entity.component.arrowtype.getCost(type));
                 if(entity.component.arrowtype != null &&
-                        entity.component.energy.value>entity.component.arrowtype.getCost(type)) {
+                        entity.component.energy.value >= entity.component.arrowtype.getCost(type)) {
                     entity.component.arrowtype.type = type;
                     entity.component.arrowtype.damage = entity.component.arrowtype.getDamage(type);
                     entity.component.arrowtype.cost = entity.component.arrowtype.getCost(type);

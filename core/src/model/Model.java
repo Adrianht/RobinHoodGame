@@ -96,6 +96,7 @@ public class Model {
         entity.component.actor.sprite.setSize(100, 100);
         entity.addComponent("arrowType");
         entities.add(entity);
+        System.out.println("Arrowtype initiated: " + entity.component.arrowtype.type);
 
 
         // Initiate game system possibilities
@@ -120,10 +121,9 @@ public class Model {
         }
     }
 
-    /* Method called from Controller to buy an arrow. The methods checks
-    * if the player has enough energy to buy that type, */
+    /* Method called from Controller to buy an arrow, the check and update of weapon type is done
+    * in Systems.java  */
     public void buyArrow(String type) {
-        // TODO: update appropriate objects
         System.out.println("Arrow type bought:" + type);
         // Ta sjekken her, om spilleren har nok energy for å kjøpe våpenet
         userInputSystem.buyArrow(entities, type);
