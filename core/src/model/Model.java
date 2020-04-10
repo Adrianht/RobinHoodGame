@@ -96,6 +96,7 @@ public class Model {
         entity.component.actor.sprite.setSize(100, 100);
         entity.addComponent("arrowType");
         entities.add(entity);
+        // TODO: remove sysout
         System.out.println("Arrowtype initiated: " + entity.component.arrowtype.type);
 
 
@@ -124,7 +125,6 @@ public class Model {
     /* Method called from Controller to buy an arrow, the check and update of weapon type is done
     * in Systems.java  */
     public void buyArrow(String type) {
-        System.out.println("Arrow type bought:" + type);
         userInputSystem.buyArrow(entities, type);
     }
 

@@ -31,7 +31,6 @@ public class Components {
         }
         public String type = "Normal";
         public int damage = 10;
-        public int cost = 0;
     }
 
     public class Energy {
