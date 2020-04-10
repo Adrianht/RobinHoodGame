@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import controller.Controller;
+
 import view.interfaceObjects.*;
 
 public class MenuView extends View {
@@ -22,46 +23,41 @@ public class MenuView extends View {
         super.stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(super.stage);
 
-        // Actor: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/Actor.html
-        // adds all the elements to this interface
         Button settingsButton = new Button("settings");
         Button loadingButton = new Button("play");
-        //Button exitButton = new Button("exit");
-        super.stage.addActor(settingsButton);
-        super.stage.addActor(loadingButton);
-        //super.stage.addActor(exitButton);
+        Button exitButton = new Button("exit");
         Button robinHood = new Button("robinhoodpic");
-        super.stage.addActor(robinHood);
-        // adds all listeners to this interface
-        stage.addListener(menuViewListener);
-    }
 
-    // ClickListener: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/utils/ClickListener.html
-    // ClickListener triggered by user clicks to call appropriate actions
-    private ClickListener menuViewListener = new ClickListener() {
-        @Override
-        public void clicked(InputEvent event, float clickX, float clickY) {
-
-            // clickX and clickY are the (x,y)-coordinates of the users click
-
-            // this is only example code
-            // Interface switches based on X position of click
-            // If less than 300 -> PLAY
-            // If between 299 and 700 -> SETTINGS
-            // If greater than 699 -> EXIT
-            if(clickX > 400 && clickY > 200 && clickY < 300) {
-                System.out.println("TO PLAY!");
-                controller.navigateTo("GAME");
-
-            } else if (clickX > 550 && clickY > 390){
+        // ClickListener: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/utils/ClickListener.html
+        // ClickListener triggered by user clicks on Button/Actor to call appropriate actions
+        settingsButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float clickX, float clickY) {
                 System.out.println("TO SETTINGS!");
                 controller.navigateTo("SETTINGS");
-
-            } else {
-                System.out.println("EXIT APPLICATION!");
+            }
+        });
+        loadingButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float clickX, float clickY) {
+                System.out.println("TO GAME!");
+                controller.navigateTo("GAME");
+            }
+        });
+        exitButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float clickX, float clickY) {
+                System.out.println("EXITING APP!");
                 controller.exitApplication();
             }
-        }
-    };
+        });
 
+        // Actor: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/Actor.html
+        // adds all the elements to this interface
+        super.stage.addActor(settingsButton);
+        super.stage.addActor(loadingButton);
+        super.stage.addActor(exitButton);
+        super.stage.addActor(robinHood);
+
+        }
 }

@@ -22,8 +22,16 @@ public class Components {
     public Position pos;
     public Turf turf;
     public Turn turn;
+    public ArrowType arrowtype;
 
     // constructors for all possible components
+    public class ArrowType {
+        public ArrowType() {
+            Components.this.arrowtype = this;
+        }
+        public String type = "Normal";
+        public int damage = 10;
+    }
     public class Energy {
         public Energy() {
             Components.this.energy = this;
@@ -47,6 +55,7 @@ public class Components {
             Components.this.hp = this;
         }
         public int value = 100;
+
 
     }
     public class PlayerName {

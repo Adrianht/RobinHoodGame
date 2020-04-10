@@ -5,6 +5,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.robinhood.game.RobinHood;
 
+import java.util.List;
+
 import model.Model;
 import view.*;
 
@@ -79,5 +81,12 @@ public class Controller {
     // Method to exit application, called from MenuView
     public void exitApplication() {
         Gdx.app.exit();
+    }
+
+    public List<Integer> getHP(){
+        return model.getHP();
+    }
+    public List<Integer> getEnergy(){
+        return model.getEnergy();
     }
 }

@@ -13,48 +13,68 @@ public class Systems {
     public static class UserInput {
         public void moveLeft(List<Entity> entities) {
             for(Entity entity: entities) {
-                if (entity.component.turn.turn & entity.component.energy.value > 0) {
-                    entity.component.pos.x -= 20;
-                    entity.component.energy.value -= 2;
-                    System.out.println("Player, whose turn it is moved left, energy points reduced to: " +
-                            entity.component.energy.value);
+                if(entity.component.turn != null) {
+                    if (entity.component.turn.turn & entity.component.energy.value > 0) {
+                        entity.component.pos.x -= 20;
+                        entity.component.energy.value -= 2;
+                        System.out.println("Player, whose turn it is moved left, energy points reduced to: " +
+                                entity.component.energy.value);
+                    }
                 }
             }
         }
         public void moveRight(List<Entity> entities) {
             for(Entity entity: entities) {
-                if (entity.component.turn.turn & entity.component.energy.value > 0) {
-                    entity.component.pos.x += 20;
-                    entity.component.energy.value -= 2;
-                    System.out.println("Player, whose turn it is moved right, energy points reduced to: " +
-                            entity.component.energy.value);
+                if (entity.component.turn != null) {
+                    if (entity.component.turn.turn & entity.component.energy.value > 0) {
+                        entity.component.pos.x += 20;
+                        entity.component.energy.value -= 2;
+                        System.out.println("Player, whose turn it is moved right, energy points reduced to: " +
+                                entity.component.energy.value);
+                    }
                 }
             }
         }
-        public void drawBow(List<Entity> entities, Vector2 vector2) {
+        // FIXME: possibly move elsewhere
+        public void changeTurn(List<Entity> entities) {
 
-            // FIXME: try to find more elegant solution
+            // FIXME: try to find more elegant solution(s)
 
             int nrOfPlayers = 0;
             int prevPlayerNr = 0;
 
+            // remove current players turn
             for(Entity entity: entities) {
                 if (entity.component.playernr != null) {
                     nrOfPlayers++;
                 }
-                if (entity.component.turn.turn) {
-                    prevPlayerNr = entity.component.playernr.nr;
-                    entity.component.turn.turn = false;
+                if(entity.component.turn != null) {
+                    if (entity.component.turn.turn) {
+                        prevPlayerNr = entity.component.playernr.nr;
+                        entity.component.turn.turn = false;
+                    }
                 }
             }
+
+            // give turn to next player and add 10 energy points
             for(Entity entity: entities) {
-                if (entity.component.playernr.nr == (prevPlayerNr + 1) % nrOfPlayers) {
-                    entity.component.turn.turn = true;
-                    if (entity.component.energy.value < 90) {
-                        entity.component.energy.value += 10;
-                    } else {
-                        entity.component.energy.value = 100;
+                if(entity.component.playernr != null) {
+                    if (entity.component.playernr.nr == (prevPlayerNr + 1) % nrOfPlayers) {
+                        entity.component.turn.turn = true;
+                        if (entity.component.energy.value < 90) {
+                            entity.component.energy.value += 10;
+                        } else {
+                            entity.component.energy.value = 100;
+                        }
                     }
+                }
+            }
+
+            // reset arrow attributes to "Normal" arrow
+            for(Entity entity: entities) {
+                if(entity.component.arrowtype != null) {
+                    entity.component.arrowtype.type = "Normal";
+                    entity.component.arrowtype.damage = 10;
                 }
             }
         }
@@ -69,10 +89,8 @@ public class Systems {
 
     public static class gameOver{
 
-
-
         public boolean gameIsOver(List<Entity> entities){
-            for(Entity entity : entities){
+            for(Entity entity: entities){
                 if(entity.component.hp.value < 1){
                     System.out.println("Game over...");
                     return true;
@@ -81,10 +99,10 @@ public class Systems {
             return false;
         }
 
-
-        public  static int getHP(List<Entity> entities){
+        //Må hente begge sin HP
+        public static int getHP(List<Entity> entities){
             int points = 0;
-            for(Entity entity : entities){
+            for(Entity entity: entities){
                 if(entity.component.hp != null){
                     points = entity.component.hp.value;
                 }
@@ -92,17 +110,16 @@ public class Systems {
             return points;
         }
 
-        public int getEnergyPoints(List<Entity> entities){
+        //Trenger bare å se sin egen energy
+        public static int getEnergyPoints(List<Entity> entities){
             int points = 0;
-            for (Entity entity : entities){
+            for (Entity entity: entities){
                 if(entity.component.energy != null){
                     points = entity.component.energy.value;
                 }
             }
             return points;
         }
-
-
 
     }
 
@@ -136,18 +153,68 @@ public class Systems {
         */
     }
 
-    // possibly class to handle arrow animation
+
+    // system class handling animations
+    // FIXME: currently suited for two players
     public static class Animation {
+        public boolean arrowAnimationShotIsVital(List<Entity> entities, Vector2 vector2) {
 
-        // TODO: add appropriate method
+            // FIXME: refac this test of whos turn it is and arrow direction
+            float direction = -400;
+            for(Entity playerTurn: entities) {
+                if(playerTurn.component.turn != null
+                        && playerTurn.component.turn.turn
+                        && playerTurn.component.playernr.nr == 0) {
+                    direction = 400;
+                    break;
+                }
+            }
 
+            for(Entity entity: entities) {
+                // finds arrow object
+                if (entity.component.arrowtype != null) {
+
+                    //TODO-Lars: add correct flying pattern and direction
+                    entity.component.pos.x += direction;
+                    entity.component.pos.y += 0;
+
+                    // finds opponent object
+                    for(Entity entity2: entities) {
+                        if(entity2.component.playernr != null && !entity2.component.turn.turn) {
+                            if (this.isHit(entity, entity2)) {
+                                entity2.component.hp.value -= entity.component.arrowtype.damage;
+                                System.out.println("Player " + entity2.component.playernr.nr
+                                        + " was hit, HP now: " + entity2.component.hp.value);
+                                return entity2.component.hp.value < 1;
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        private boolean isHit(Entity arrow, Entity opponent) {
+
+            Float arrowLeftmost = arrow.component.pos.x;
+            Float arrowRightmost = arrow.component.pos.x + arrow.component.actor.sprite.getWidth();
+            Float arrowLowest = arrow.component.pos.y;
+            Float arrowHighest = arrow.component.pos.y + arrow.component.actor.sprite.getHeight();
+
+            Float opponentLeftmost = opponent.component.pos.x;
+            Float opponentRightmost = opponent.component.pos.x + opponent.component.actor.sprite.getWidth();
+            Float opponentLowest = opponent.component.pos.y;
+            Float opponentHighest = opponent.component.pos.y + arrow.component.actor.sprite.getHeight();
+
+            // check if any of arrow sprite corners are inside opponent sprite
+            if (((arrowLeftmost <= opponentRightmost && arrowLeftmost >= opponentLeftmost)
+                    || (arrowRightmost <= opponentRightmost && arrowRightmost >= opponentLeftmost))
+                && ((arrowLowest <= opponentHighest && arrowLowest >= opponentLowest)
+                    || (arrowHighest <= opponentHighest && arrowHighest >= opponentLowest))) {
+                return true;
+            }
+
+            return false;
+        }
     }
-
-    // possibly class to handle Collision check
-    public static class Collision {
-
-        // TODO: add appropriate method
-
-    }
-
 }
