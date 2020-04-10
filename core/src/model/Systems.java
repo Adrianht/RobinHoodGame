@@ -79,13 +79,59 @@ public class Systems {
             }
         }
 
-        /*
-           TODO:
-           add system methods related to buying arrows and attacking
+        /* Checks if the player has enough energy to buy that arrow type, if yes,
+        updates the arrow type*/
+        public void buyArrow(List<Entity> entities, String type) {
+            Entity activePlayer = null;
+            Entity arrowEntity = null;
+            for(Entity entity: entities) {
+                if (entity.component.turn != null && entity.component.turn.turn) {
+                    activePlayer = entity;
+                } else if (entity.component.arrowtype != null) {
+                    arrowEntity = entity;
+                }
+            }
 
-        */
+            // Check if player can afford current buy,
+            //  then update arrowtype and player energy
+            if(activePlayer != null && arrowEntity != null) {
+                int currentEnergy = activePlayer.component.energy.value;
 
+                // TODO: remove sysout
+                System.out.println("Arrowtype before buying: "+ arrowEntity.component.arrowtype.type);
+
+                // Level 2 arrow - cost: 20, damage: 20
+                if(type.equals("Level2") && currentEnergy >= 20) {
+                    arrowEntity.component.arrowtype.type = "Level2";
+                    arrowEntity.component.arrowtype.damage = 20;
+                    activePlayer.component.energy.value -= 20;
+                    // TODO: remove sysout
+                    System.out.println("Arrow2 bought and has damage: " +
+                            arrowEntity.component.arrowtype.damage);
+                }
+                // Level 3 arrow - cost: 50, damage: 50
+                else if(type.equals("Level3") && currentEnergy >= 50) {
+                    arrowEntity.component.arrowtype.type = "Level3";
+                    arrowEntity.component.arrowtype.damage = 50;
+                    activePlayer.component.energy.value -= 50;
+                    // TODO: remove sysout
+                    System.out.println("Arrow3 bought and has damage: " +
+                            arrowEntity.component.arrowtype.damage);
+                }
+                // Level 4 arrow - cost: 70, damage: 70
+                else if(type.equals("Level4") && currentEnergy >= 70) {
+                    arrowEntity.component.arrowtype.type = "Level4";
+                    arrowEntity.component.arrowtype.damage = 70;
+                    activePlayer.component.energy.value -= 70;
+                    // TODO: remove sysout
+                    System.out.println("Arrow4 bought and has damage: " +
+                            arrowEntity.component.arrowtype.damage);
+                }
+            }
+        }
     }
+
+
 
     public static class gameOver{
 

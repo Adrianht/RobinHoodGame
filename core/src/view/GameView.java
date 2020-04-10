@@ -32,7 +32,9 @@ public class GameView extends View {
         Button menuButton = new Button("menu");
         Button leftButton = new Button("left");
         Button rightButton = new Button("right");
-        Button buyButton = new Button("buy");
+        Button buyLevel2 = new Button("buyLevel2");
+        Button buyLevel3 = new Button("buyLevel3");
+        Button buyLevel4 = new Button("buyLevel4");
         Button shootButton = new Button("shoot");
 
         // ClickListener: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/utils/ClickListener.html
@@ -58,11 +60,25 @@ public class GameView extends View {
                 controller.move(false);
             }
         });
-        buyButton.addListener(new ClickListener() {
+        buyLevel2.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
-                System.out.println("You want to buy a new weapon!");
-                controller.buyArrow("weaponLevel2");
+                System.out.println("You want to buy a Level 2 weapon!");
+                controller.buyArrow("Level2");
+            }
+        });
+        buyLevel3.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float clickX, float clickY) {
+                System.out.println("You want to buy a Level 3 weapon!");
+                controller.buyArrow("Level3");
+            }
+        });
+        buyLevel4.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float clickX, float clickY) {
+                System.out.println("You want to buy a Level 4 weapon!");
+                controller.buyArrow("Level4");
             }
         });
         shootButton.addListener(new ClickListener() {
@@ -92,7 +108,9 @@ public class GameView extends View {
         stage.addActor(menuButton);
         stage.addActor(leftButton);
         stage.addActor(rightButton);
-        stage.addActor(buyButton);
+        stage.addActor(buyLevel2);
+        stage.addActor(buyLevel3);
+        stage.addActor(buyLevel4);
         stage.addActor(shootButton);
 
         // adds archers, arrows and arena
