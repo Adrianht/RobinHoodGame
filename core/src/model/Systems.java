@@ -100,22 +100,23 @@ public class Systems {
         }
 
         //Må hente begge sin HP
-        public static int getHP(List<Entity> entities){
-            int points = 0;
+        public static List<Integer> getHP(List<Entity> entities){
+            List<Integer> points = new ArrayList<>(); //Legg til at den opprettes med lengde antall spillere
             for(Entity entity: entities){
                 if(entity.component.hp != null){
-                    points = entity.component.hp.value;
+                    //playerNr skal hentes ut for aktiv entity og brukes som index i listen
+                    points.add(entity.component.hp.value);
                 }
             }
             return points;
         }
 
         //Trenger bare å se sin egen energy
-        public static int getEnergyPoints(List<Entity> entities){
-            int points = 0;
+        public static List<Integer> getEnergyPoints(List<Entity> entities){
+            List<Integer> points = new ArrayList<>();
             for (Entity entity: entities){
                 if(entity.component.energy != null){
-                    points = entity.component.energy.value;
+                    points.add(entity.component.energy.value);
                 }
             }
             return points;

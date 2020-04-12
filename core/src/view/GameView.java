@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import view.interfaceObjects.*;
@@ -138,12 +139,17 @@ public class GameView extends View {
     private void drawText(){
         batch = new SpriteBatch();
         font = new BitmapFont();
-        int size = controller.getHP().size();
-        System.out.println(size);
-        int energyPoints = controller.getEnergy().get(controller.getEnergy().size()-1);
-        int hpP2 = controller.getHP().get(size);
+        //int size = controller.getHP().size();
+        //System.out.println(size);
+        //int energyPoints = controller.getEnergy().get(controller.getEnergy().size()-1);
+        List<Integer> hitpoints = new ArrayList<>();
+        hitpoints = controller.getHP();
+        int hpP1 = hitpoints.get(0);
+        int hpP2 = hitpoints.get(1);
 
-        String text = "HitPoints Player 1: "  + "\nHitPoints Player 2: " + hpP2 + "\nEnergy points: " + energyPoints;
+
+
+        String text = "HitPoints Player 1: " + hpP1  + "\nHitPoints Player 2: " + hpP2 + "\nEnergy points: " ;
 
         batch.begin();
         font.draw(batch, text, 250, 100);
