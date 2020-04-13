@@ -12,12 +12,10 @@ public class Controller {
 
     private Model model;
     private RobinHood game;
-    private MatchMaker matchMaker;
 
     public Controller(RobinHood game) {
         this.game = game;
         this.model = new Model();
-        this.matchMaker = new MatchMaker();
     }
 
     // Method called from views to navigate through the application
@@ -31,6 +29,9 @@ public class Controller {
                 break;
             case "LOADING":
                 game.setView(new LoadingView(this, model));
+                break;
+            case "LOBBY":
+                game.setView(new LobbyView(this));
                 break;
             case "GAME":
                 //TODO: all from somewhere else
@@ -68,7 +69,7 @@ public class Controller {
 
     // Method to initate Firebase-connector and find another player
     public void findPlayer() {
-        matchMaker.initFindPlayer();
+
     }
 
     // Method called to initiate game after Firebase has found opponent

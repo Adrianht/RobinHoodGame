@@ -14,4 +14,8 @@ public class Player {
     public Archer getArcher() {
         return archer;
     }
+
+    public String getName(){
+        return name;
+    }
 }

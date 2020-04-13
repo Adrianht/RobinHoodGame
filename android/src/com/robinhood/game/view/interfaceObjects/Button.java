@@ -41,6 +41,11 @@ public class Button extends Actor {
                 setPosition(500, 0);
                 sprite.setSize(100,100);
                 break;
+            case "room":
+                sprite = new Sprite(new Texture("right.png"));
+                setPosition(500, 0);
+                sprite.setSize(100,100);
+                break;
             default:
                 // code block
         }
