@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Systems {
@@ -36,18 +37,14 @@ public class Systems {
             }
         }
         // FIXME: possibly move elsewhere
-        public void changeTurn(List<Entity> entities) {
+        public void changeTurn(List<Entity> entities, int nrOfPlayers) {
 
             // FIXME: try to find more elegant solution(s)
 
-            int nrOfPlayers = 0;
             int prevPlayerNr = 0;
 
             // remove current players turn
             for(Entity entity: entities) {
-                if (entity.component.playernr != null) {
-                    nrOfPlayers++;
-                }
                 if(entity.component.turn != null) {
                     if (entity.component.turn.turn) {
                         prevPlayerNr = entity.component.playernr.nr;
@@ -132,17 +129,27 @@ public class Systems {
     }
 
 
+    public static class playerInfo {
 
-    public static class gameOver{
-
-        public boolean gameIsOver(List<Entity> entities){
-            for(Entity entity : entities){
-                if(entity.component.hp.value < 1){
-                    System.out.println("Game over...");
-                    return true;
+        // Finds and returns HP values of all players
+        public static List<Integer> getHP(List<Entity> entities, int nrOfPlayers){
+            List<Integer> points = Arrays.asList(new Integer[nrOfPlayers]);
+            for(Entity entity: entities){
+                if(entity.component.hp != null){
+                    points.set(entity.component.playernr.nr, entity.component.hp.value);
                 }
             }
-            return false;
+            return points;
+        }
+
+        public static List<Integer> getEnergyPoints(List<Entity> entities, int nrOfPlayers){
+            List<Integer> points = Arrays.asList(new Integer[nrOfPlayers]);
+            for (Entity entity: entities){
+                if(entity.component.energy != null){
+                    points.set(entity.component.playernr.nr, entity.component.energy.value);
+                }
+            }
+            return points;
         }
     }
 

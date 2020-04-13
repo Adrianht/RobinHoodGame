@@ -1,9 +1,10 @@
 package controller;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.robinhood.game.RobinHood;
+
+import java.util.List;
 
 import model.Model;
 import view.*;
@@ -59,7 +60,10 @@ public class Controller {
     // Method called from views to update fb and model
     public void drawBow(Vector2 vector2) {
         //fbConn.drawBow(vector2);
-        model.drawBow(vector2);
+        boolean gameOver = model.drawBowEndGame(vector2);
+        if (gameOver) {
+            navigateTo("GAMEOVER");
+        }
     }
 
     // Method to call model about sound settings change
@@ -80,4 +84,15 @@ public class Controller {
     public void exitApplication() {
         Gdx.app.exit();
     }
+
+    // Method call model about players hit point values
+    public List<Integer> getHP(){
+        return model.getHP();
+    }
+
+    // Method call model about players energy values
+    public List<Integer> getEnergy(){
+        return model.getEnergy();
+    }
+
 }

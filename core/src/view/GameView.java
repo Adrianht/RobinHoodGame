@@ -2,16 +2,18 @@ package view;
 
 import controller.Controller;
 import model.Model;
-import model.*;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.List;
 
@@ -21,6 +23,10 @@ public class GameView extends View {
 
     private final Controller controller;
     private final DragIndicator dragIndicator;
+
+    private SpriteBatch batch;
+    private BitmapFont font;
+
 
     public GameView(Controller cont, Model model) {
 
@@ -96,7 +102,7 @@ public class GameView extends View {
 
         // adds archers, arrows and arena from model
         List<Actor> actors = model.getActors();
-        for (Actor actor : actors) {
+        for (Actor actor: actors) {
             stage.addActor(actor);
         }
 
@@ -133,5 +139,39 @@ public class GameView extends View {
             }
         });
 
+    }
+
+    // FIXME: Identical implementation to render() in superclass
+    //  see if that can be avoided
+    @Override
+    public void render() {
+        float[] values = hextoRGB("#5f8db0");
+        Gdx.gl.glClearColor(values[0], values[1], values[2], 1.0f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        stage.draw();
+        drawText();
+    }
+
+    private void drawText(){
+        batch = new SpriteBatch();
+        font = new BitmapFont();
+
+        List<Integer> hitPoints = controller.getHP();
+        List<Integer> energyPoints = controller.getEnergy();
+
+        // TODO: may only fetch and renew values when changed
+        int hpP1 = hitPoints.get(0);
+        int hpP2 = hitPoints.get(1);
+        int energyP1 = energyPoints.get(0);
+        int energyP2 = energyPoints.get(1);
+
+        String text = ("HitPoints P1: " + hpP1 +
+                "\nHitPoints P2: " + hpP2 +
+                "\nEnergyPoints P1: " + energyP1 +
+                "\nEnergyPoints P2: " + energyP2);
+
+        batch.begin();
+        font.draw(batch, text, 250, 130);
+        batch.end();
     }
 }
