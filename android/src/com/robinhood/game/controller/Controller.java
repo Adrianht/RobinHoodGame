@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.robinhood.game.RobinHood;
 
 import com.robinhood.game.model.Model;
+import com.robinhood.game.model.Player;
 import com.robinhood.game.view.*;
 
 
@@ -31,7 +32,7 @@ public class Controller {
                 game.setView(new LoadingView(this, model));
                 break;
             case "LOBBY":
-                game.setView(new LobbyView(this));
+                game.setView(new RoomView(this));
                 break;
             case "GAME":
                 //TODO: all from somewhere else

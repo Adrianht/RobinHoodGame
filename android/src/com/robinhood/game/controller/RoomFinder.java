@@ -14,6 +14,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.robinhood.game.model.Player;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class RoomFinder {
 
@@ -23,6 +24,8 @@ public class RoomFinder {
     private DatabaseReference mDatabase;
 
     private String roomId;
+
+    private UUID uuid;
 
 
 
@@ -36,9 +39,11 @@ public class RoomFinder {
         //sjekk om det finnes et rom med en spiller - hvis ikke, lag nytt rom
 
 
-        //hente øverste room
         //hvis room.players < 2 legg til player her
         //ellers lag nytt rom
+
+        //reworke denne til å ikke skje hvis det finnes rom med 1 player i
+        mDatabase.push().setValue(uuid);
 
 
         mDatabase.addChildEventListener(new ChildEventListener() {
@@ -46,6 +51,7 @@ public class RoomFinder {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 try{
                     final String roomId = dataSnapshot.getKey();
+                    System.out.println(roomId);
                     mDatabase.child(roomId).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
