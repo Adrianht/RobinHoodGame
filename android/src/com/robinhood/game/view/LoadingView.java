@@ -1,14 +1,14 @@
 package com.robinhood.game.view;
 
-import com.robinhood.game.controller.Controller;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.robinhood.game.model.*;
-
-import com.robinhood.game.view.interfaceObjects.*;
+import com.robinhood.game.controller.Controller;
+import com.robinhood.game.model.Model;
+import com.robinhood.game.view.interfaceObjects.Button;
+import com.robinhood.game.view.interfaceObjects.LoadingObject;
 
 public class LoadingView extends View {
 

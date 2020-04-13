@@ -1,85 +1,165 @@
 package com.robinhood.game.model;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/*
+    Model of the MVC pattern
+    Access point for View and the class triggering appropriate
+        system functions related to ECS
+ */
 
 public class Model {
 
-    /*
-        This is the class and related classes which
-        should store all game data
-
-        Begin by placing all information in few places
-        and spread it when classes get to large.
-     */
-
-    // only examples
-    private Player player1, player2;
-    private Arena arena;
+    // SoundBar is the only class outside ECS because
+    //  because it is not active in-game
     private SoundBar soundBar;
-    private Boolean player1turn = true;
 
-    // constructor
-    public Model() {
-        this.soundBar = new SoundBar();
+    private final int nrOfPlayers = 2;
+
+    // ECS related fields - list index might be used as entity id
+    private List<Entity> entities = new ArrayList<>();
+    private Systems.Render renderingSystem;
+    private Systems.Animation animationSystem;
+    private Systems.UserInput userInputSystem;
+    private Systems.playerInfo playerInfoSystem;
+
+    // ECS related sources - remove pre delivery:
+    // http://vasir.net/blog/game-development/how-to-build-entity-component-system-in-javascript
+    // related GitHub-repo: https://github.com/erikhazzard/RectangleEater/tree/master/scripts
+
+    // https://codereview.stackexchange.com/questions/163215/entity-component-system-ecs
+
+
+    // Method to initiate a new game after two players are matched
+    public void initiateGame() {
+
+        Entity entity;
+
+        /*
+         TODO: initiate Arena entity
+
+        entity = new Entity();
+        entity.addComponent("turf");
+        entity.addComponent("render");
+
+        entities.add(entity);
+
+         */
+
+        // Initiate player entities
+        int[][] startPositions = {{30, 200},{400, 200}};
+        String[] playerNames = {"LARS", "NINA"};
+        String[] playerColor = {"RED", "BLUE"};
+        for (int i = 0; i < nrOfPlayers; i++) {
+            entity = new Entity();
+            entity.addComponent("turn");
+            if(i == 0) {
+                entity.component.turn.turn = true;
+            }
+            entity.addComponent("playernr");
+            entity.component.playernr.nr = i;
+            entity.addComponent("energy");
+            entity.addComponent("hp");
+            entity.addComponent("name");
+            entity.component.name.name = playerNames[i];
+            entity.addComponent("pos");
+            entity.component.pos.x = startPositions[i][0];
+            entity.component.pos.y = startPositions[i][1];
+            entity.addComponent("actor");
+
+            //TODO : possibly create help-method of following switch
+            switch(playerColor[i]) {
+                case "RED":
+                    entity.component.actor.sprite = new Sprite(new Texture("redarcher.png"));
+                    break;
+                case "BLUE":
+                    entity.component.actor.sprite = new Sprite(new Texture("bluearcher.png"));
+                    break;
+                default:
+                    entity.component.actor.sprite = new Sprite(new Texture("redarcher.png"));
+                    break;
+            }
+            entity.component.actor.sprite.setSize(200, 200);
+            entities.add(entity);
+        }
+
+        // Initiate arrow
+        entity = new Entity();
+        entity.addComponent("pos");
+        entity.component.pos.x = 30;
+        entity.component.pos.y = 200;
+        entity.addComponent("actor");
+        entity.component.actor.sprite = new Sprite(new Texture("arrow.png"));
+        entity.component.actor.sprite.setSize(100, 100);
+        entity.addComponent("arrowType");
+        entities.add(entity);
+        // TODO: remove sysout
+        System.out.println("Arrowtype initiated: " + entity.component.arrowtype.type);
+
+
+        // Initiate game system possibilities
+        renderingSystem = new Systems.Render();
+        userInputSystem = new Systems.UserInput();
+        animationSystem = new Systems.Animation();
+        playerInfoSystem = new Systems.playerInfo();
+
     }
 
-    // TODO: add description
+    // Called in GameView to return all active actors
+    //  includes archers, arrow(s), and arena
+    public List<Actor> getActors() {
+        return renderingSystem.getActors(entities);
+    }
+
+    // Method called from Controller to move the active player
+    public void move(Boolean left) {
+        if(left) {
+            userInputSystem.moveLeft(entities);
+        } else {
+            userInputSystem.moveRight(entities);
+        }
+    }
+
+    /* Method called from Controller to buy an arrow, the check and update of weapon type is done
+    * in Systems.java  */
+    public void buyArrow(String type) {
+        userInputSystem.buyArrow(entities, type);
+    }
+
+    // Method runs animation and change players turn
+    public boolean drawBowEndGame(Vector2 vector2) {
+        boolean shotIsVital = animationSystem.arrowAnimationShotIsVital(entities, vector2);
+        if (shotIsVital) {
+            return true;
+        }
+        userInputSystem.changeTurn(entities, nrOfPlayers);
+        return false;
+    }
+
+    // Method that return this game instance's soundbar object
     public SoundBar getSoundBar() {
         return this.soundBar.getSoundBar();
     }
 
-    // TODO: add description
+    // Method used to change sound setting
     public void changeSound() {
         this.soundBar.getSoundBar().changeSound();
     }
 
-    public Player getPlayer1() {
-        return player1;
+    // Method used to fetch players hit point values
+    public List<Integer> getHP(){
+        return playerInfoSystem.getHP(entities, nrOfPlayers);
     }
 
-    public Player getPlayer2() {
-        return player2;
-    }
-
-    // TODO: add description
-    public void move(Boolean left) {
-        // TODO: update appropriate objects
-        if(player1turn) {
-            if (left) {
-                player1.getArcher().moveBy(-10, 0);
-            } else {
-                player1.getArcher().moveBy(10, 0);
-            }
-        } else {
-            if (left) {
-                player2.getArcher().moveBy(-10, 0);
-            } else {
-                player2.getArcher().moveBy(10, 0);
-            }
-        }
-        player1turn = !player1turn;
-    }
-
-    // TODO: add description
-    public void buyArrow(String type) {
-        // TODO: update appropriate objects
-    }
-
-    // TODO: add description
-    public void drawBow(Vector2 vector2) {
-        // TODO: update appropriate objects
-    }
-
-    // TODO: add description
-    public void initiateGame() {
-        player1 = new Player("LARS", "RED");
-        player2 = new Player("NINA", "BLUE");
-         /*
-        TODO:
-
-        should initate all game objects (e.g. Player, arraw)
-
-         */
+    // Method used to fetch players energy values
+    public List<Integer> getEnergy(){
+        return playerInfoSystem.getEnergyPoints(entities, nrOfPlayers);
     }
 
 }

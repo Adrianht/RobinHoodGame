@@ -1,22 +1,32 @@
 package com.robinhood.game.view;
 
-import com.robinhood.game.controller.Controller;
-import com.robinhood.game.model.Model;
-import com.robinhood.game.model.*;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.math.Vector2;
+import com.robinhood.game.controller.Controller;
+import com.robinhood.game.model.Model;
+import com.robinhood.game.view.interfaceObjects.DragIndicator;
+import com.robinhood.game.view.interfaceObjects.Button;
 
 
-import com.robinhood.game.view.interfaceObjects.*;
-
+import java.util.List;
 
 public class GameView extends View {
 
     private final Controller controller;
+    private final DragIndicator dragIndicator;
+
+    private SpriteBatch batch;
+    private BitmapFont font;
 
 
     public GameView(Controller cont, Model model) {
@@ -24,68 +34,145 @@ public class GameView extends View {
         this.controller = cont;
 
         // Stage: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/Stage.html
-        // set the stage of the View superclass - same in all subclasses
+        // set the stage of the View superclass
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
-        // Actor: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/Actor.html
-        // adds all the elements to this interface
+        // Button: view/interfaceObjects/Button.java
+        // Initiate clickable objects within the interface
         Button menuButton = new Button("menu");
         Button leftButton = new Button("left");
         Button rightButton = new Button("right");
-        Archer archer1 = model.getPlayer1().getArcher();
-        Archer archer2 = model.getPlayer2().getArcher();
-        stage.addActor(menuButton);
-        stage.addActor(leftButton);
-        stage.addActor(rightButton);
-        stage.addActor(archer1);
-        stage.addActor(archer2);
+        Button buyLevel2 = new Button("buyLevel2");
+        Button buyLevel3 = new Button("buyLevel3");
+        Button buyLevel4 = new Button("buyLevel4");
 
-        // adds all listeners to this interface
-        stage.addListener(gameListener);
-
-        /*
-         TODO:
-         Use/create methods in model to extract current data
-         from objects related to this view.
-         This includes getting data from stage, players, etc. and
-         checking if the game is over.
-         */
-
-    }
-
-    // ClickListener: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/utils/ClickListener.html
-    // ClickListener triggered by user clicks to call appropriate actions
-    private ClickListener gameListener = new ClickListener() {
-        @Override
-        public void clicked(InputEvent event, float clickX, float clickY) {
-
-            if(clickY < 100 && clickX < 200) {
-                System.out.println("LEFT!");
-                controller.move(true);
-            } else if(clickY < 100 && clickX > 200 && clickX < 450) {
+        // ClickListener: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/utils/ClickListener.html
+        // Add ClickListeners to call appropriate actions at clickable objects
+        menuButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float clickX, float clickY) {
                 System.out.println("TO MENU!");
                 controller.navigateTo("MENU");
-            } else if(clickY < 100 && clickX > 450) {
+            }
+        });
+        leftButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float clickX, float clickY) {
+                System.out.println("LEFT!");
+                controller.move(true);
+            }
+        });
+        rightButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float clickX, float clickY) {
                 System.out.println("RIGHT!");
                 controller.move(false);
             }
+        });
+        buyLevel2.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float clickX, float clickY) {
+                System.out.println("You want to buy a Level 2 weapon!");
+                controller.buyArrow("Level2");
+            }
+        });
+        buyLevel3.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float clickX, float clickY) {
+                System.out.println("You want to buy a Level 3 weapon!");
+                controller.buyArrow("Level3");
+            }
+        });
+        buyLevel4.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float clickX, float clickY) {
+                System.out.println("You want to buy a Level 4 weapon!");
+                controller.buyArrow("Level4");
+            }
+        });
 
-            /*
-                TODO:
-                Clicks in this view should trgger one of the following methods
-                in the controller, based on the position and duration of the click:
-                    - controller.navigateTo("MENU") (ONLY IF GAMEOVER)
-                    - controller.move(Boolean left)
-                    - controller.buyArrow(String type)
-                    - controller.drawBow(Vector2 vector2)
-                Additional:
-                    - if move() or buyArrow is called, they should be followed by
-                        updateView()
-             */
+        // Actor: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/Actor.html
+        // Add all the clickable objects to this interface
+        stage.addActor(menuButton);
+        stage.addActor(leftButton);
+        stage.addActor(rightButton);
+        stage.addActor(buyLevel2);
+        stage.addActor(buyLevel3);
+        stage.addActor(buyLevel4);
 
-
+        // adds archers, arrows and arena from model
+        List<Actor> actors = model.getActors();
+        for (Actor actor: actors) {
+            stage.addActor(actor);
         }
-    };
 
+        // DragListener: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/utils/DragListener.html#drag-com.badlogic.gdx.scenes.scene2d.InputEvent-float-float-int-
+        // Add listener to detect drag on screen and trigger controller.drawBow()-method
+        dragIndicator = new DragIndicator();
+        stage.addActor(dragIndicator);
+        stage.addListener(new DragListener() {
+            @Override
+            public void drag(InputEvent event, float clickX, float clickY, int pointer) {
+                float power = (float)Math.sqrt(Math.pow(clickX - getDragStartX(), 2) +
+                        Math.pow(clickY - getDragStartY(), 2));
+                dragIndicator.sprite.setSize(power, 40);
+
+                double angleRad = Math.atan(Math.abs(clickY-getDragStartY()) / Math.abs(clickX-getDragStartX()));
+                float angleDeg = (float)Math.toDegrees(angleRad);
+                if(clickX < getDragStartX()) {
+                    if(clickY < getDragStartY()) {
+                        dragIndicator.sprite.setRotation(angleDeg);
+                    } else {
+                        dragIndicator.sprite.setRotation(360-angleDeg);
+                    }
+                } else {
+                    if(clickY < getDragStartY()) {
+                        dragIndicator.sprite.setRotation(180-angleDeg);
+                    } else {
+                        dragIndicator.sprite.setRotation(180+angleDeg);
+                    }
+                }
+            }
+            @Override
+            public void dragStop(InputEvent event, float clickX, float clickY, int pointer) {
+                controller.drawBow(new Vector2(clickX-getDragStartX(), clickY-getDragStartY()));
+            }
+        });
+
+    }
+
+    // FIXME: Identical implementation to render() in superclass
+    //  see if that can be avoided
+    @Override
+    public void render() {
+        float[] values = hextoRGB("#5f8db0");
+        Gdx.gl.glClearColor(values[0], values[1], values[2], 1.0f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        stage.draw();
+        drawText();
+    }
+
+    private void drawText(){
+        batch = new SpriteBatch();
+        font = new BitmapFont();
+
+        List<Integer> hitPoints = controller.getHP();
+        List<Integer> energyPoints = controller.getEnergy();
+
+        // TODO: may only fetch and renew values when changed
+        int hpP1 = hitPoints.get(0);
+        int hpP2 = hitPoints.get(1);
+        int energyP1 = energyPoints.get(0);
+        int energyP2 = energyPoints.get(1);
+
+        String text = ("HitPoints P1: " + hpP1 +
+                "\nHitPoints P2: " + hpP2 +
+                "\nEnergyPoints P1: " + energyP1 +
+                "\nEnergyPoints P2: " + energyP2);
+
+        batch.begin();
+        font.draw(batch, text, 250, 130);
+        batch.end();
+    }
 }

@@ -1,13 +1,12 @@
 package com.robinhood.game.controller;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.robinhood.game.RobinHood;
 
 import com.robinhood.game.model.Model;
-import com.robinhood.game.model.Player;
 import com.robinhood.game.view.*;
-
-
+import java.util.List;
 
 public class Controller {
 
@@ -35,23 +34,26 @@ public class Controller {
                 game.setView(new RoomView(this));
                 break;
             case "GAME":
-                //TODO: all from somewhere else
+                //TODO: this method should be called from somewhere else
                 model.initiateGame();
 
                 game.setView(new GameView(this, model));
+                break;
+            case "GAMEOVER":
+                game.setView(new GameOverView(this,model));
                 break;
             default:
                 game.setView(new MenuView(this));
         }
     }
 
-    // Method called from views to update fb and model
+    // Method called from GameView to update fb and model
     public void move(Boolean left) {
         //fbConn.move(left);
         model.move(left);
     }
 
-    // Method called from views to update fb and model
+    // Method called from views to update fb and call model
     public void buyArrow(String type) {
         //fbConn.buyArrow(type);
         model.buyArrow(type);
@@ -60,7 +62,10 @@ public class Controller {
     // Method called from views to update fb and model
     public void drawBow(Vector2 vector2) {
         //fbConn.drawBow(vector2);
-        model.drawBow(vector2);
+        boolean gameOver = model.drawBowEndGame(vector2);
+        if (gameOver) {
+            navigateTo("GAMEOVER");
+        }
     }
 
     // Method to call model about sound settings change
@@ -70,7 +75,6 @@ public class Controller {
 
     // Method to initate Firebase-connector and find another player
     public void findPlayer() {
-
     }
 
     // Method called to initiate game after Firebase has found opponent
@@ -78,8 +82,19 @@ public class Controller {
         model.initiateGame();
     }
 
-    // TODO: description
+    // Method to exit application, called from MenuView
     public void exitApplication() {
-        // TODO: this should be a method callable from MenuView to quit the application
+        Gdx.app.exit();
     }
+
+    // Method call model about players hit point values
+    public List<Integer> getHP(){
+        return model.getHP();
+    }
+
+    // Method call model about players energy values
+    public List<Integer> getEnergy(){
+        return model.getEnergy();
+    }
+
 }
