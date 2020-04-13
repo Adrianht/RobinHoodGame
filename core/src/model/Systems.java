@@ -5,7 +5,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Systems {
 
@@ -98,25 +101,38 @@ public class Systems {
             }
             return false;
         }
+        //Helper-method to find the maximum number of players
+        public static int numberOfPlayers(List<Entity> entities){
+            Set<Integer> max = new HashSet<Integer>();
+            for(Entity entity: entities){
+                if (entity.component.playernr != null){
+                    max.add(entity.component.playernr.nr);
+                }
 
-        //Må hente begge sin HP
+            }
+            int nrOfPlayers = max.size();
+            return nrOfPlayers;
+        }
+
+        
         public static List<Integer> getHP(List<Entity> entities){
-            List<Integer> points = new ArrayList<>(); //Legg til at den opprettes med lengde antall spillere
+            int nrOfPlayers = numberOfPlayers(entities);
+            List<Integer> points = Arrays.asList(new Integer[nrOfPlayers]);
             for(Entity entity: entities){
                 if(entity.component.hp != null){
-                    //playerNr skal hentes ut for aktiv entity og brukes som index i listen
-                    points.add(entity.component.hp.value);
+                    points.set(entity.component.playernr.nr, entity.component.hp.value);
                 }
             }
             return points;
         }
 
-        //Trenger bare å se sin egen energy
+
         public static List<Integer> getEnergyPoints(List<Entity> entities){
-            List<Integer> points = new ArrayList<>();
+            int nrOfPlayers = numberOfPlayers(entities);
+            List<Integer> points = Arrays.asList(new Integer[nrOfPlayers]);
             for (Entity entity: entities){
                 if(entity.component.energy != null){
-                    points.add(entity.component.energy.value);
+                    points.set(entity.component.playernr.nr, entity.component.energy.value);
                 }
             }
             return points;

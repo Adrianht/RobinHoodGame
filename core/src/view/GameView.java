@@ -144,12 +144,15 @@ public class GameView extends View {
         //int energyPoints = controller.getEnergy().get(controller.getEnergy().size()-1);
         List<Integer> hitpoints = new ArrayList<>();
         hitpoints = controller.getHP();
+        List<Integer> energyPoints = new ArrayList<>();
+        energyPoints = controller.getEnergy();
         int hpP1 = hitpoints.get(0);
         int hpP2 = hitpoints.get(1);
+        int energyP1 = energyPoints.get(0); //Trenger kun å oppdateres og hentes ut etter draw() - kan se på dette senere
 
 
 
-        String text = "HitPoints Player 1: " + hpP1  + "\nHitPoints Player 2: " + hpP2 + "\nEnergy points: " ;
+        String text = "HitPoints Player 1: " + hpP1  + "\nHitPoints Player 2: " + hpP2 + "\nEnergy points: " + energyP1;
 
         batch.begin();
         font.draw(batch, text, 250, 100);
