@@ -43,14 +43,11 @@ public class Systems {
 
             // FIXME: try to find more elegant solution(s)
 
-            int nrOfPlayers = 0;
+            int nrOfPlayers = gameOver.numberOfPlayers(entities);
             int prevPlayerNr = 0;
 
             // remove current players turn
             for(Entity entity: entities) {
-                if (entity.component.playernr != null) {
-                    nrOfPlayers++;
-                }
                 if(entity.component.turn != null) {
                     if (entity.component.turn.turn) {
                         prevPlayerNr = entity.component.playernr.nr;
@@ -91,30 +88,30 @@ public class Systems {
     }
 
     public static class gameOver{
-
-        public boolean gameIsOver(List<Entity> entities){
-            for(Entity entity: entities){
-                if(entity.component.hp.value < 1){
-                    System.out.println("Game over...");
-                    return true;
+        //Returns the playerNr that lost the game
+        public static int playerLost(List<Entity> entities){
+            List<Integer> points = getHP(entities);
+            int loser = -1;
+            for (int i = 0; i < points.size(); i++) {
+                if (points.get(i) <= 0) {
+                    loser = i;
                 }
             }
-            return false;
+            return loser;
         }
+
         //Helper-method to find the maximum number of players
         public static int numberOfPlayers(List<Entity> entities){
-            Set<Integer> max = new HashSet<Integer>();
+            int nrOfPlayers = 0;
             for(Entity entity: entities){
                 if (entity.component.playernr != null){
-                    max.add(entity.component.playernr.nr);
+                    nrOfPlayers++;
                 }
-
             }
-            int nrOfPlayers = max.size();
             return nrOfPlayers;
         }
 
-        
+        //Will show HP for both players
         public static List<Integer> getHP(List<Entity> entities){
             int nrOfPlayers = numberOfPlayers(entities);
             List<Integer> points = Arrays.asList(new Integer[nrOfPlayers]);

@@ -9,6 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import controller.Controller;
 import model.Model;
 import view.interfaceObjects.Button;
@@ -45,8 +48,22 @@ public class GameOverView extends View {
         batch = new SpriteBatch();
         font = new BitmapFont();
         
-        //TODO: add who won and points
-        String text = "GAME OVER" ;
+        //TODO: Make sure that the player numbers are correct
+        int loser = controller.gameIsOver() + 1;
+
+        List<Integer> hp = new ArrayList<>();
+        hp = controller.getHP();
+
+        int winner = 0;
+        for (int i = 0; i < hp.size(); i++ ){
+            if (hp.get(i) > hp.get(winner)) {
+                winner = i;
+            }
+        }
+
+        int playerNrWinner = winner + 1;
+
+        String text = "GAME OVER..." + "\ṅPlayer number " + loser + " lost the game." + "\nPlayer number " + playerNrWinner + " won with " + controller.getHP().get(winner) + " HitPoints";
 
         batch.begin();
         font.draw(batch, text, 250, 250);

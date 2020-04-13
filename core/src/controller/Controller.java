@@ -89,4 +89,8 @@ public class Controller {
     public List<Integer> getEnergy(){
         return model.getEnergy();
     }
+
+    public int gameIsOver(){
+        return model.gameOver();
+    }
 }

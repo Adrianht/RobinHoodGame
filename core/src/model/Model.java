@@ -150,13 +150,15 @@ public class Model {
     }
 
     public List<Integer> getHP(){
-        //hitpoints.add(Systems.gameOver.getHP(entities));
         return Systems.gameOver.getHP(entities);
     }
 
     public List<Integer> getEnergy(){
-        //energypoints.add(Systems.gameOver.getEnergyPoints(entities));
         return Systems.gameOver.getEnergyPoints(entities);
+    }
+
+    public int gameOver(){
+        return Systems.gameOver.playerLost(entities);
     }
 
 
