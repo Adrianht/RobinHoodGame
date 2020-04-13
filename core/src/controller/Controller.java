@@ -52,7 +52,7 @@ public class Controller {
         model.move(left);
     }
 
-    // Method called from views to update fb and model
+    // Method called from views to update fb and call model
     public void buyArrow(String type) {
         //fbConn.buyArrow(type);
         model.buyArrow(type);

@@ -32,6 +32,7 @@ public class Components {
         public String type = "Normal";
         public int damage = 10;
     }
+
     public class Energy {
         public Energy() {
             Components.this.energy = this;
