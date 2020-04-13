@@ -20,15 +20,14 @@ public class Model {
     //  because it is not active in-game
     private SoundBar soundBar;
 
+    private final int nrOfPlayers = 2;
+
     // ECS related fields - list index might be used as entity id
     private List<Entity> entities = new ArrayList<>();
     private Systems.Render renderingSystem;
     private Systems.Animation animationSystem;
     private Systems.UserInput userInputSystem;
-
-    private List<Integer> hitpoints = new ArrayList<>();
-
-    private List<Integer> energypoints = new ArrayList<>();
+    private Systems.playerInfo playerInfoSystem;
 
     // ECS related sources - remove pre delivery:
     // http://vasir.net/blog/game-development/how-to-build-entity-component-system-in-javascript
@@ -57,7 +56,7 @@ public class Model {
         int[][] startPositions = {{30, 200},{400, 200}};
         String[] playerNames = {"LARS", "NINA"};
         String[] playerColor = {"RED", "BLUE"};
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < nrOfPlayers; i++) {
             entity = new Entity();
             entity.addComponent("turn");
             if(i == 0) {
@@ -108,6 +107,7 @@ public class Model {
         renderingSystem = new Systems.Render();
         userInputSystem = new Systems.UserInput();
         animationSystem = new Systems.Animation();
+        playerInfoSystem = new Systems.playerInfo();
 
     }
 
@@ -133,12 +133,13 @@ public class Model {
     }
 
     // Method runs animation and change players turn
-    public void drawBow(Vector2 vector2) {
+    public boolean drawBowEndGame(Vector2 vector2) {
         boolean shotIsVital = animationSystem.arrowAnimationShotIsVital(entities, vector2);
         if (shotIsVital) {
-            // TODO: GAME OVER
+            return true;
         }
-        userInputSystem.changeTurn(entities);
+        userInputSystem.changeTurn(entities, nrOfPlayers);
+        return false;
     }
 
     // Method that return this game instance's soundbar object
@@ -151,17 +152,14 @@ public class Model {
         this.soundBar.getSoundBar().changeSound();
     }
 
+    // Method used to fetch players hit point values
     public List<Integer> getHP(){
-        return Systems.gameOver.getHP(entities);
+        return playerInfoSystem.getHP(entities, nrOfPlayers);
     }
 
+    // Method used to fetch players energy values
     public List<Integer> getEnergy(){
-        return Systems.gameOver.getEnergyPoints(entities);
+        return playerInfoSystem.getEnergyPoints(entities, nrOfPlayers);
     }
-
-    public int gameOver(){
-        return Systems.gameOver.playerLost(entities);
-    }
-
 
 }

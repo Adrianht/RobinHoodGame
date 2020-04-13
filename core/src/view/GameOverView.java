@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import controller.Controller;
@@ -32,9 +31,10 @@ public class GameOverView extends View {
         super.stage.addActor(menuButton);
 
         super.stage.addListener(gameOverViewListener);
-
     }
 
+    // FIXME: Identical implementation to render() in superclass
+    //  see if that can be avoided
     @Override
     public void render() {
         float[] values = hextoRGB("#5f8db0");
@@ -47,28 +47,26 @@ public class GameOverView extends View {
     private void drawText(){
         batch = new SpriteBatch();
         font = new BitmapFont();
-        
-        //TODO: Make sure that the player numbers are correct
-        int loser = controller.gameIsOver() + 1;
 
-        List<Integer> hp = new ArrayList<>();
-        hp = controller.getHP();
+        List<Integer> hpList = controller.getHP();
+        int playerNrLoser = 0;
+        int playerNrWinner = 0;
 
-        int winner = 0;
-        for (int i = 0; i < hp.size(); i++ ){
-            if (hp.get(i) > hp.get(winner)) {
-                winner = i;
+        for (int i = 0; i < hpList.size(); i++ ){
+            if(hpList.get(i) > 0) {
+                playerNrWinner = i;
+            } else {
+                playerNrLoser = i;
             }
         }
 
-        int playerNrWinner = winner + 1;
-
-        String text = "GAME OVER..." + "\ṅPlayer number " + loser + " lost the game." + "\nPlayer number " + playerNrWinner + " won with " + controller.getHP().get(winner) + " HitPoints";
+        String text = ("GAME OVER..." +
+                "\ṅPlayer number " + playerNrWinner + " won the game." +
+                "\nPlayer number " + playerNrLoser + " lost");
 
         batch.begin();
         font.draw(batch, text, 250, 250);
         batch.end();
-
     }
 
     private ClickListener gameOverViewListener = new ClickListener() {

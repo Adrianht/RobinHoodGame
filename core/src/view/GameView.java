@@ -2,24 +2,19 @@ package view;
 
 import controller.Controller;
 import model.Model;
-import model.*;
 
 import com.badlogic.gdx.Gdx;
-
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-import com.badlogic.gdx.math.Vector2;
-
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.math.Vector2;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import view.interfaceObjects.*;
@@ -36,7 +31,6 @@ public class GameView extends View {
     public GameView(Controller cont, Model model) {
 
         this.controller = cont;
-
 
         // Stage: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/Stage.html
         // set the stage of the View superclass
@@ -147,7 +141,8 @@ public class GameView extends View {
 
     }
 
-    //This is a quickfix and should be avoided....
+    // FIXME: Identical implementation to render() in superclass
+    //  see if that can be avoided
     @Override
     public void render() {
         float[] values = hextoRGB("#5f8db0");
@@ -158,32 +153,25 @@ public class GameView extends View {
     }
 
     private void drawText(){
-
         batch = new SpriteBatch();
         font = new BitmapFont();
 
-        List<Integer> hitpoints = new ArrayList<>();
-        hitpoints = controller.getHP();
-        List<Integer> energyPoints = new ArrayList<>();
-        energyPoints = controller.getEnergy();
+        List<Integer> hitPoints = controller.getHP();
+        List<Integer> energyPoints = controller.getEnergy();
 
-        int hpP1 = hitpoints.get(0);
-        int hpP2 = hitpoints.get(1);
-        int energyP1 = energyPoints.get(0); //Trenger kun å oppdateres og hentes ut etter draw() - kan se på dette senere
+        // TODO: may only fetch and renew values when changed
+        int hpP1 = hitPoints.get(0);
+        int hpP2 = hitPoints.get(1);
+        int energyP1 = energyPoints.get(0);
         int energyP2 = energyPoints.get(1);
 
-        if(controller.gameIsOver() != -1) {
-            controller.navigateTo("GAMEOVER");
-            System.out.println(controller.gameIsOver());
-        }
-
-
-        String text = "HitPoints P1: " + hpP1 + "\nHitPoints P2: " + hpP2 + "\nEnergyPoints P1: " + energyP1 + "\nEnergyPoints P2: " + energyP2;
-
+        String text = ("HitPoints P1: " + hpP1 +
+                "\nHitPoints P2: " + hpP2 +
+                "\nEnergyPoints P1: " + energyP1 +
+                "\nEnergyPoints P2: " + energyP2);
 
         batch.begin();
         font.draw(batch, text, 250, 130);
         batch.end();
-
     }
 }

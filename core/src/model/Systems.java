@@ -6,9 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class Systems {
 
@@ -39,11 +37,10 @@ public class Systems {
             }
         }
         // FIXME: possibly move elsewhere
-        public void changeTurn(List<Entity> entities) {
+        public void changeTurn(List<Entity> entities, int nrOfPlayers) {
 
             // FIXME: try to find more elegant solution(s)
 
-            int nrOfPlayers = gameOver.numberOfPlayers(entities);
             int prevPlayerNr = 0;
 
             // remove current players turn
@@ -132,34 +129,10 @@ public class Systems {
     }
 
 
+    public static class playerInfo {
 
-    public static class gameOver{
-        //Returns the playerNr that lost the game
-        public static int playerLost(List<Entity> entities){
-            List<Integer> points = getHP(entities);
-            int loser = -1;
-            for (int i = 0; i < points.size(); i++) {
-                if (points.get(i) <= 0) {
-                    loser = i;
-                }
-            }
-            return loser;
-        }
-
-        //Helper-method to find the maximum number of players
-        public static int numberOfPlayers(List<Entity> entities){
-            int nrOfPlayers = 0;
-            for(Entity entity: entities){
-                if (entity.component.playernr != null){
-                    nrOfPlayers++;
-                }
-            }
-            return nrOfPlayers;
-        }
-
-        //Will show HP for both players
-        public static List<Integer> getHP(List<Entity> entities){
-            int nrOfPlayers = numberOfPlayers(entities);
+        // Finds and returns HP values of all players
+        public static List<Integer> getHP(List<Entity> entities, int nrOfPlayers){
             List<Integer> points = Arrays.asList(new Integer[nrOfPlayers]);
             for(Entity entity: entities){
                 if(entity.component.hp != null){
@@ -169,9 +142,7 @@ public class Systems {
             return points;
         }
 
-
-        public static List<Integer> getEnergyPoints(List<Entity> entities){
-            int nrOfPlayers = numberOfPlayers(entities);
+        public static List<Integer> getEnergyPoints(List<Entity> entities, int nrOfPlayers){
             List<Integer> points = Arrays.asList(new Integer[nrOfPlayers]);
             for (Entity entity: entities){
                 if(entity.component.energy != null){
@@ -180,7 +151,6 @@ public class Systems {
             }
             return points;
         }
-
     }
 
 

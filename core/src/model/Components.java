@@ -56,8 +56,6 @@ public class Components {
             Components.this.hp = this;
         }
         public int value = 100;
-
-
     }
     public class PlayerName {
         public PlayerName() {
