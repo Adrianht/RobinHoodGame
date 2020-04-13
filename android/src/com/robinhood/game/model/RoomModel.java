@@ -23,7 +23,6 @@ public class RoomModel {
 
     public RoomModel(String roomId){
         this.roomID = roomId;
-
         mDatabase = FirebaseDatabase.getInstance().getReference().child("rooms").child(roomId).child("players");
 
         //sjekker antall players i room

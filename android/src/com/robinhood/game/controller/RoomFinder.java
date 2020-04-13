@@ -12,11 +12,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.robinhood.game.model.Player;
+import com.robinhood.game.model.RoomModel;
+import com.robinhood.game.view.RoomView;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
 public class RoomFinder {
+
+    private RoomView view;
+    private RoomModel room;
 
     //vil være en liste over rooms hvor game ikke har startet
     private ArrayList<String> rooms = new ArrayList<>();
@@ -27,6 +32,10 @@ public class RoomFinder {
 
     private UUID uuid;
 
+    public RoomFinder(RoomView view, RoomModel model){
+        this.view = view;
+        this.room = room;
+    }
 
 
     public RoomFinder(final Player player) {
@@ -37,15 +46,13 @@ public class RoomFinder {
 
 
         //sjekk om det finnes et rom med en spiller - hvis ikke, lag nytt rom
-
-
         //hvis room.players < 2 legg til player her
         //ellers lag nytt rom
 
         //reworke denne til å ikke skje hvis det finnes rom med 1 player i
         mDatabase.push().setValue(uuid);
 
-
+        //listener på nytt rom under rooms
         mDatabase.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -55,7 +62,7 @@ public class RoomFinder {
                     mDatabase.child(roomId).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            addPlayer(player);
+                            //addPlayer(player);
                         }
 
                         @Override
@@ -91,10 +98,12 @@ public class RoomFinder {
         });
     }
 
-    public void addPlayer(Player player){
+    public void addPlayer(String roomId){
+        this.roomId = roomId;
         mDatabase = FirebaseDatabase.getInstance().getReference().child("rooms").child(roomId).child("players");
-        mDatabase.setValue(player);
 
+        //listener på spesifikt rom under rooms
+        //sjekker antall players i room
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             int counter = 0;
             @Override
@@ -114,7 +123,6 @@ public class RoomFinder {
 
             }
         });
-
     }
 
     public ArrayList<String> getRooms() {
