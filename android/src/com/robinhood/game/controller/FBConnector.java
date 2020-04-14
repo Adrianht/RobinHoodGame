@@ -97,21 +97,21 @@ public class FBConnector {
     // Method to change last movement in players game room
     public void setMove(boolean left) {
         mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("rooms").child(roomid).child("move");
+                .child("rooms").child(roomRef).child("move");
         mDatabase.setValue(left);
     }
 
     // Method to change active arrow type in players game room
     public void setBuy(String type) {
         mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("rooms").child(roomid).child("activeArrow");
+                .child("rooms").child(roomRef).child("activeArrow");
         mDatabase.setValue(type);
     }
 
     // Method to change draw vector in players game room
     public void setDraw(Vector2 vector2) {
         mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("rooms").child(roomid).child("drawBow");
+                .child("rooms").child(roomRef).child("drawBow");
         mDatabase.child("x").setValue(vector2.x);
         mDatabase.child("y").setValue(vector2.y);
         // TODO: check that the onChange does register both values
