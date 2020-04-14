@@ -52,6 +52,7 @@ public class FBConnector {
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 // empty method
             }
+
         });
     }
 
@@ -63,11 +64,11 @@ public class FBConnector {
 
     // creates a new game room in firebase real-time database
     public void createGameRoom(String roomRef) {
-        mDatabase.child("move").setValue(false);
+        mDatabase.child("move").setValue(null);
         mDatabase.child("move").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(controller.isGameInitialized()) {
+                if(dataSnapshot.getValue() != null){
                     controller.registerMove((boolean) dataSnapshot.getValue());
                 }
             }
@@ -78,12 +79,12 @@ public class FBConnector {
             }
         });
 
-        mDatabase.child("activeArrow").setValue("Normal");
+        mDatabase.child("activeArrow").setValue(null);
         mDatabase.child("activeArrow").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(controller.isGameInitialized()) {
-                    controller.registerBuy(dataSnapshot.getValue().toString());
+                if(dataSnapshot.getValue() != null) {
+                    controller.registerBuy((String) dataSnapshot.getValue());
                 }
             }
 
@@ -93,15 +94,11 @@ public class FBConnector {
             }
         });
 
-        //mDatabase.child("drawBow").child("x").setValue(0.0);
-        //mDatabase.child("drawBow").child("y").setValue(1.0);
-        mDatabase.child("drawBow").setValue("(0.0, 1.0)");
+        mDatabase.child("drawBow").setValue(null);
         mDatabase.child("drawBow").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(controller.isGameInitialized()) {
-                    //float x = (float) dataSnapshot.child("x").getValue();
-                    //float y = (float) dataSnapshot.child("y").getValue();
+                if(dataSnapshot.getValue() != null) {
                     String vectorStr = (String) dataSnapshot.getValue();
                     controller.registerDraw(new Vector2().fromString(vectorStr));
                 }
@@ -121,25 +118,26 @@ public class FBConnector {
         return username + "roomhash";
     }
 
-    // TODO: dobbeltsjekk at disse metodene fungerer sammen med lytterne definert i createGameRoom,
-    //  slik at controller.register...-metodene blir kalt.
     // Method to change last movement in players game room
     public void setMove(boolean left) {
+        mDatabase.child("move").setValue(null);
         mDatabase.child("move").setValue(left);
     }
 
     // Method to change active arrow type in players game room
     public void setBuy(String type) {
+        mDatabase.child("activeArrow").setValue(null);
         mDatabase.child("activeArrow").setValue(type);
     }
 
     // Method to change draw vector in players game room
     public void setDraw(Vector2 vector2) {
-        //mDatabase.child("drawBow").child("x").setValue(vector2.x);
-        //mDatabase.child("drawBow").child("y").setValue(vector2.y);
         mDatabase.child("drawBow").setValue(vector2.toString());
-        // TODO: check that the onChange does register both values
-        //  before sending to model
+    }
+
+    // Method to clean database after game is finished
+    public void removeRoom() {
+        mDatabase.removeValue();
     }
 
 }

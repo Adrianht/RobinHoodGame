@@ -18,9 +18,10 @@ public class Model {
 
     // SoundBar is the only class outside ECS because
     //  because it is not active in-game
+    // TODO: check soundbar logic and minimalize code
     private SoundBar soundBar;
 
-    private String myUsername = "Ola";
+    private String myUsername = "Username";
 
     private boolean gameInitialized = false;
     private final int nrOfPlayers = 2;
@@ -31,12 +32,6 @@ public class Model {
     private Systems.Animation animationSystem;
     private Systems.UserInput userInputSystem;
     private Systems.playerInfo playerInfoSystem;
-
-    // ECS related sources - remove pre delivery:
-    // http://vasir.net/blog/game-development/how-to-build-entity-component-system-in-javascript
-    // related GitHub-repo: https://github.com/erikhazzard/RectangleEater/tree/master/scripts
-
-    // https://codereview.stackexchange.com/questions/163215/entity-component-system-ecs
 
 
     // Method to initiate a new game after two players are matched
@@ -135,13 +130,9 @@ public class Model {
     }
 
     // Method runs animation and change players turn
-    public boolean drawBowEndGame(Vector2 vector2) {
-        boolean shotIsVital = animationSystem.arrowAnimationShotIsVital(entities, vector2);
-        if (shotIsVital) {
-            return true;
-        }
+    public void drawBow(Vector2 vector2) {
+        animationSystem.arrowAnimation(entities, vector2);
         userInputSystem.changeTurn(entities, nrOfPlayers);
-        return false;
     }
 
     // Method that return this game instance's soundbar object
@@ -174,9 +165,20 @@ public class Model {
         return myUsername;
     }
 
+    // Method set username
+    public void setMyUsername(String username) {
+         this.myUsername = username;
+    }
+
     // Method returns if game is initialized
     public boolean isGameInitialized() {
         return gameInitialized;
+    }
+
+    // Method returns if game is initialized
+    public void resetModelData() {
+        entities.clear();
+        gameInitialized = false;
     }
 
 }

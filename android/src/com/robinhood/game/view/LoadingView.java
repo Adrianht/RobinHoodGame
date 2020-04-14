@@ -21,7 +21,6 @@ public class LoadingView extends View {
 
         this.controller = cont;
 
-        // Stage: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/Stage.html
         // Set the stage of the View superclass - same in all subclasses
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(super.stage);
