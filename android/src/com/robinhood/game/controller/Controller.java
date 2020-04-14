@@ -33,7 +33,6 @@ public class Controller {
                 game.setView(new LoadingView(this, model));
                 break;
             case "GAME":
-                System.out.println("navigating");
                 game.setView(new GameView(this, model));
                 break;
             case "GAMEOVER":
@@ -77,11 +76,18 @@ public class Controller {
 
     // Method called from views to update fb and model
     public void registerDraw(Vector2 vector2) {
-        boolean gameOver = model.drawBowEndGame(vector2);
-        if (gameOver) {
-            // FIXME: might fail, Ola knows workaround
-            navigateTo("GAMEOVER");
-        }
+        model.drawBow(vector2);
+    }
+
+    //TODO: add description
+    public void handleGameOver() {
+        this.navigateTo("GAMEOVER");
+    }
+
+    //TODO: add description
+    public void endGameInstance() {
+        fbconnector.removeRoom();
+        model.resetModelData();
     }
 
     // Method to call model about sound settings change
@@ -102,7 +108,6 @@ public class Controller {
     // Method called to initiate game after Firebase has found opponent
     // TODO-Ola: change to varargs, to enable more than 2 players (maybe do varags in model)
     public void initiateGame(String username1, String username2) {
-        System.out.println("Init game with: " + username1 + username2);
         model.initiateGame(username1, username2);
     }
 
@@ -124,6 +129,11 @@ public class Controller {
     // Method call model about players energy values
     public List<Integer> getEnergy(){
         return model.getEnergy();
+    }
+
+    // Method sets username in model
+    public void setUsername(String username){
+        model.setMyUsername(username);
     }
 
 }

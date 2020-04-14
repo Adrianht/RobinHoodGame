@@ -94,9 +94,6 @@ public class Systems {
             if(activePlayer != null && arrowEntity != null) {
                 int currentEnergy = activePlayer.component.energy.value;
 
-                // TODO: remove sysout
-                System.out.println("Arrowtype before buying: "+ arrowEntity.component.arrowtype.type);
-
                 // Level 2 arrow - cost: 20, damage: 20
                 if(type.equals("Level2") && currentEnergy >= 20) {
                     arrowEntity.component.arrowtype.type = "Level2";
@@ -181,26 +178,13 @@ public class Systems {
             return actors;
         }
 
-        /*
-           TODO:
-           add system method update() to change correct rendering actor(s)
-
-        public void update(EntityManager manager) {
-            int required_components = Component.POS | Component.RENDER;
-            for (int i = 0; i < manager.size; i++) {
-                if ((manager.flag[i] & required_components) == required_components) {
-                    System.out.println(String.format("%s: (%f x, %f y)", manager.rendering[i].name, manager.pos[i].y, manager.pos[i].y));
-                }
-            }
-        }
-        */
     }
 
 
     // system class handling animations
     // FIXME: currently suited for two players
     public static class Animation {
-        public boolean arrowAnimationShotIsVital(List<Entity> entities, Vector2 vector2) {
+        public void arrowAnimation(List<Entity> entities, Vector2 vector2) {
 
             // FIXME: refac this test of whos turn it is and arrow direction
             float direction = -400;
@@ -228,13 +212,11 @@ public class Systems {
                                 entity2.component.hp.value -= entity.component.arrowtype.damage;
                                 System.out.println("Player " + entity2.component.playernr.nr
                                         + " was hit, HP now: " + entity2.component.hp.value);
-                                return entity2.component.hp.value < 1;
                             }
                         }
                     }
                 }
             }
-            return false;
         }
 
         private boolean isHit(Entity arrow, Entity opponent) {

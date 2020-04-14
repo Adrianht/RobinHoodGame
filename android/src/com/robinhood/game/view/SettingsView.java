@@ -27,6 +27,9 @@ public class SettingsView extends View {
         Button robinHood = new Button("robinhoodpic");
         SoundBar soundBar = model.getSoundBar();
 
+        // TODO: add possibility to change username and do it by calling:
+        //  controller.setUsername(username)
+
         // Checks if soundBar already has a clickListener, adds listener if not
         if(!soundBar.getListener()){
             soundBar.addListener(controller);
