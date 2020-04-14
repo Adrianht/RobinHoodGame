@@ -63,10 +63,8 @@ public class FBConnector {
 
     // creates a new game room in firebase real-time database
     public void createGameRoom(String roomRef) {
-        mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("rooms").child(roomRef);
         mDatabase.child("move").setValue(false);
-        mDatabase.addValueEventListener(new ValueEventListener() {
+        mDatabase.child("move").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(controller.isGameInitialized()) {
@@ -81,7 +79,7 @@ public class FBConnector {
         });
 
         mDatabase.child("activeArrow").setValue("Normal");
-        mDatabase.addValueEventListener(new ValueEventListener() {
+        mDatabase.child("activeArrow").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(controller.isGameInitialized()) {
@@ -97,7 +95,7 @@ public class FBConnector {
 
         mDatabase.child("drawBow").child("x").setValue((float) 1);
         mDatabase.child("drawBow").child("y").setValue((float) 2);
-        mDatabase.addValueEventListener(new ValueEventListener() {
+        mDatabase.child("drawBow").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(controller.isGameInitialized()) {
