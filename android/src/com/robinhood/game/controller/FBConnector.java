@@ -44,7 +44,7 @@ public class FBConnector {
                             playerNames.get(0),
                             playerNames.get(1)
                     );
-                    createGameRoom(hashRoomId(username));
+                    createGameRoom(hashRoomId(playerNames.get(0)));
                 }
                 /*} else if (playerNames.size() == 1) {
                     createGameRoom(hashRoomId(username));
@@ -111,8 +111,8 @@ public class FBConnector {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(controller.isGameInitialized()) {
-                    float x = (float) dataSnapshot.child("x").getValue();
-                    float y = (float) dataSnapshot.child("y").getValue();
+                    float x = (long) dataSnapshot.child("x").getValue();
+                    float y = (long) dataSnapshot.child("y").getValue();
                     controller.registerDraw(new Vector2(x, y));
                 }
             }

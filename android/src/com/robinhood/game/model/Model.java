@@ -58,8 +58,7 @@ public class Model {
 
         // Initiate player entities
         int[][] startPositions = {{30, 200},{400, 200}};
-        String[] playerNames = {username1, "NINA"};
-        //String[] playerNames = {username1, username2};
+        String[] playerNames = {username1, username2};
         String[] playerColor = {"RED", "BLUE"};
         for (int i = 0; i < nrOfPlayers; i++) {
             entity = new Entity();
