@@ -54,6 +54,7 @@ public class FBConnector {
 
             }
         });
+
         // TODO: dersom det er to spillere i "availablePlayer" -> kall
         // controller.initateGame(username1,username2);
 
@@ -65,19 +66,57 @@ public class FBConnector {
         mDatabase.push().setValue(roomRef);
 
 
-
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("rooms").child(roomRef);
-        mDatabase.push().setValue("fieldMove");
         // TODO: lage default field move, og tilhorende listener onChange()
         //  onChange skal kalle controller.registerMove()
+
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("rooms").child(roomRef).child("move");
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //controller.registerMove(datasnapshot)
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        setMove(true);
+
 
 
         // TODO: lage default field activeArrow, og tilhorende listener onChange()
         //  onChange skal kalle controller.registerBuy()
 
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("rooms").child(roomRef).child("activeArrow");
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //controller.registerBuy(datasnapshot)
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        setBuy("123");
         // TODO: lage default field drawBow, og tilhorende listener onChange()
         //  onChange skal kalle controller.registerDraw()
 
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("rooms").child(roomRef).child("drawBow");
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //controller.registerDraw(datasnapshot)
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     // TODO: dobbeltsjekk at disse metodene fungerer sammen med lytterne definert i createGameRoom,
