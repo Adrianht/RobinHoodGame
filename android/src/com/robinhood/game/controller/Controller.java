@@ -10,12 +10,12 @@ import java.util.List;
 
 public class Controller {
 
-    private Model model;
     private RobinHood game;
+    private Model model = new Model();
+    private FBConnector fbconnector = new FBConnector();
 
     public Controller(RobinHood game) {
         this.game = game;
-        this.model = new Model();
     }
 
     // Method called from views to navigate through the application
@@ -70,8 +70,9 @@ public class Controller {
         model.changeSound();
     }
 
-    // Method to initate Firebase-connector and find another player
-    public void findPlayer() {
+    // Method to initiate Firebase-connector and find another player
+    public void findPlayer(String username) {
+        fbconnector.findPlayer(username);
     }
 
     // Method called to initiate game after Firebase has found opponent

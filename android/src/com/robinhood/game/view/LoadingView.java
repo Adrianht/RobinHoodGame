@@ -18,11 +18,6 @@ public class LoadingView extends View {
 
         this.controller = cont;
 
-        // This method initiates the creation of a FirebaseConnector
-        // and search for opponent in the controller
-        //this.controller.findPlayer();
-        model.initiateGame();
-
         // Stage: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/Stage.html
         // Set the stage of the View superclass - same in all subclasses
         super.stage = new Stage(new ScreenViewport());
@@ -39,11 +34,10 @@ public class LoadingView extends View {
         stage.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
-                System.out.println("TO MENU!");
+                System.out.println("CANCEL!");
                 controller.navigateTo("MENU");
             }
         });
-
 
         // TODO: delete and make happen on matching with antoher player
         Button loadingButton = new Button("play");
@@ -54,6 +48,10 @@ public class LoadingView extends View {
                 controller.navigateTo("GAME");
             }
         });
+
+        // This method initiates the creation of a FirebaseConnector
+        // and search for opponent in the controller
+        this.controller.findPlayer("OLA 1");
 
     }
 
