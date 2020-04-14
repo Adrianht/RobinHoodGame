@@ -10,41 +10,55 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FBConnector {
 
-    private final String roomid = "FIX";
+    private String roomRef = "";
     // TODO: legge til unik game room refereanse delt mellom to spillere
 
     private DatabaseReference mDatabase;
+    private Controller controller;
 
-    public void findPlayer(String username) {
+    FBConnector (Controller controller) {
+        this.controller = controller;
+    }
+
+    public void findPlayer(final String username) {
         mDatabase = FirebaseDatabase.getInstance().getReference().child("availablePlayer");
 
         // TODO: push denne spilleren med username
         mDatabase.push().setValue(username);
         System.out.println("player pushed");
 
+        final List<String> playerNames = new ArrayList<>();
 
-        // TODO: telle antall spillere etter endring
+        this.roomRef = username;
+        final String roomRef2 = username;
 
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 int counter = 0;
-                String roomRef = "";
+                //roomRef = "";
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                     System.out.println(snapshot);
                     counter += 1;
                     System.out.println(roomRef);
-                    roomRef += snapshot.getValue().toString();
+                    //roomRef2 = username; //+= snapshot.getValue().toString();
+                    playerNames.add(snapshot.getValue().toString());
                 }
 
                 if(counter == 2){
                     System.out.println("INIT GAME");
                     System.out.println(roomRef);
                     mDatabase.removeValue();
-                    createGameRoom(roomRef);
+                    mDatabase = FirebaseDatabase.getInstance().getReference().child("rooms").child(roomRef2);
+                    //createGameRoom(roomRef);
+                    controller.initiateGame(0, playerNames.get(0), playerNames.get(1));
                 } else {
+                    createGameRoom(username);
                     //fortsette loadingscreen?
                 }
             }
@@ -54,8 +68,6 @@ public class FBConnector {
 
             }
         });
-        // TODO: dersom det er to spillere i "availablePlayer" -> kall
-        // controller.initateGame(username1,username2);
 
     }
 
@@ -86,22 +98,22 @@ public class FBConnector {
     public void setMove(boolean left) {
         mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("rooms").child(roomid).child("move");
-        mDatabase.push().setValue(left);
+        mDatabase.setValue(left);
     }
 
     // Method to change active arrow type in players game room
     public void setBuy(String type) {
         mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("rooms").child(roomid).child("activeArrow");
-        mDatabase.push().setValue(type);
+        mDatabase.setValue(type);
     }
 
     // Method to change draw vector in players game room
     public void setDraw(Vector2 vector2) {
         mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("rooms").child(roomid).child("drawBow");
-        mDatabase.child("x").push().setValue(vector2.x);
-        mDatabase.child("y").push().setValue(vector2.y);
+        mDatabase.child("x").setValue(vector2.x);
+        mDatabase.child("y").setValue(vector2.y);
         // TODO: check that the onChange does register both values
         //  before sending to model
     }

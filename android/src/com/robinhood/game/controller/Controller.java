@@ -11,11 +11,12 @@ import java.util.List;
 public class Controller {
 
     private RobinHood game;
+    private FBConnector fbconnector;
     private Model model = new Model();
-    private FBConnector fbconnector = new FBConnector();
 
     public Controller(RobinHood game) {
         this.game = game;
+        this.fbconnector = new FBConnector(this);
     }
 
     // Method called from views to navigate through the application
@@ -95,8 +96,9 @@ public class Controller {
 
     // Method called to initiate game after Firebase has found opponent
     // TODO-Ola: change to varargs, to enable more than 2 players (maybe do varags in model)
-    public void initiateGame(String username1, String username2) {
-        model.initiateGame(1, username1, username2);
+    public void initiateGame(int index, String username1, String username2) {
+        model.initiateGame(index, username1, username2);
+        navigateTo("GAME"); //TODO: elsewhere?
     }
 
     // Method to exit application, called from MenuView
