@@ -1,7 +1,6 @@
 package com.robinhood.game.controller;
 
 import com.badlogic.gdx.math.Vector2;
-import com.google.firebase.database.ChildEventListener;
 import androidx.annotation.NonNull;
 
 import com.google.firebase.database.DataSnapshot;
@@ -15,9 +14,6 @@ import java.util.List;
 
 public class FBConnector {
 
-    private String roomRef = "";
-    // TODO: legge til unik game room refereanse delt mellom to spillere
-
     private DatabaseReference mDatabase;
     private Controller controller;
 
@@ -25,127 +21,126 @@ public class FBConnector {
         this.controller = controller;
     }
 
+    // attempts to find a match
     public void findPlayer(final String username) {
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("availablePlayer");
 
-        // TODO: push denne spilleren med username
+        mDatabase = FirebaseDatabase.getInstance().getReference()
+                .child("availablePlayer");
         mDatabase.push().setValue(username);
-        System.out.println("player pushed");
-
-        final List<String> playerNames = new ArrayList<>();
-
-        this.roomRef = username;
 
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                int counter = 0;
+                List<String> playerNames = new ArrayList<>();
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    System.out.println(snapshot);
-                    counter += 1;
-                    System.out.println(roomRef);
                     playerNames.add(snapshot.getValue().toString());
                 }
-
-                if(counter == 2){
-                    System.out.println("INIT GAME");
-                    System.out.println(roomRef);
-                    mDatabase.removeValue();
-                    mDatabase = FirebaseDatabase.getInstance().getReference().child("rooms").child(playerNames.get(0));
-                    roomRef = mDatabase.getKey();
-                    controller.initiateGame(0, playerNames.get(0), playerNames.get(1));
-                } else {
-                    createGameRoom(username);
+                if(playerNames.size() == 2) {
+                    FirebaseDatabase.getInstance().getReference()
+                            .child("availablePlayer").removeValue();
+                    mDatabase = FirebaseDatabase.getInstance().getReference()
+                            .child("rooms").child(hashRoomId(playerNames.get(0)));
+                    controller.initiateGame(
+                            playerNames.get(0),
+                            playerNames.get(1)
+                    );
+                } else if (playerNames.size() == 1) {
+                    createGameRoom(hashRoomId(username));
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                // empty method
             }
         });
     }
 
+    // Cancels search for opponent
+    public void cancelFindPlayer() {
+        FirebaseDatabase.getInstance().getReference()
+                .child("availablePlayer").removeValue();
+    }
 
+    // creates a new game room in firebase real-time database
     public void createGameRoom(String roomRef) {
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("rooms");
-        mDatabase.push().setValue(roomRef);
+        mDatabase = FirebaseDatabase.getInstance().getReference()
+                .child("rooms").child(roomRef).child("move");
+        mDatabase.setValue(false);
 
-
-        // TODO: lage default field move, og tilhorende listener onChange()
-        //  onChange skal kalle controller.registerMove()
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("rooms").child(roomRef).child("move");
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                System.out.println("move made " + dataSnapshot);
-                //usikker på om setningen under fungerer
-                controller.registerMove((Boolean) dataSnapshot.getValue());
+                if(controller.isGameInitialized()) {
+                    controller.registerMove((boolean) dataSnapshot.getValue());
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                // empty method
             }
         });
 
-
-        // TODO: lage default field activeArrow, og tilhorende listener onChange()
-        //  onChange skal kalle controller.registerBuy()
-
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("rooms").child(roomRef).child("activeArrow");
+        mDatabase = FirebaseDatabase.getInstance().getReference()
+                .child("rooms").child(roomRef).child("activeArrow");
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //controller.registerBuy(datasnapshot)
+                if(controller.isGameInitialized()) {
+                    controller.registerBuy(dataSnapshot.getValue().toString());
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                // empty method
             }
         });
 
-        // TODO: lage default field drawBow, og tilhorende listener onChange()
-        //  onChange skal kalle controller.registerDraw()
 
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("rooms").child(roomRef).child("drawBow");
+        mDatabase = FirebaseDatabase.getInstance().getReference()
+                .child("rooms").child(roomRef).child("drawBow");
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //controller.registerDraw(datasnapshot)
+                if(controller.isGameInitialized()) {
+                    float x = (float) dataSnapshot.child("x").getValue();
+                    float y = (float) dataSnapshot.child("y").getValue();
+                    controller.registerDraw(new Vector2(x, y));
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                // empty method
             }
         });
+    }
+
+    // Method creating unique game room id
+    private String hashRoomId(String username) {
+        // FIXME: change and change system generally,
+        //  cannot have similar roomIDs
+        return username + "roomhash";
     }
 
     // TODO: dobbeltsjekk at disse metodene fungerer sammen med lytterne definert i createGameRoom,
     //  slik at controller.register...-metodene blir kalt.
     // Method to change last movement in players game room
     public void setMove(boolean left) {
-        mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("rooms").child(roomRef).child("move");
-        mDatabase.setValue(left);
+        mDatabase.child("move").setValue(left);
     }
 
     // Method to change active arrow type in players game room
     public void setBuy(String type) {
-        mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("rooms").child(roomRef).child("activeArrow");
-        mDatabase.setValue(type);
+        mDatabase.child("activeArrow").setValue(type);
     }
 
     // Method to change draw vector in players game room
     public void setDraw(Vector2 vector2) {
-        mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("rooms").child(roomRef).child("drawBow");
-        mDatabase.child("x").setValue(vector2.x);
-        mDatabase.child("y").setValue(vector2.y);
+        mDatabase.child("drawBow").child("x").setValue(vector2.x);
+        mDatabase.child("drawBow").child("y").setValue(vector2.y);
         // TODO: check that the onChange does register both values
         //  before sending to model
     }

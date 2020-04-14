@@ -20,8 +20,9 @@ public class Model {
     //  because it is not active in-game
     private SoundBar soundBar;
 
-    private String myUsername = "";
+    private String myUsername = "Ola1";
 
+    private boolean gameInitialized = false;
     private final int nrOfPlayers = 2;
 
     // ECS related fields - list index might be used as entity id
@@ -40,9 +41,7 @@ public class Model {
 
     // Method to initiate a new game after two players are matched
     // TODO-Ola: coordinate with controller.initateGame-input
-    public void initiateGame(int myUsernameIndex, String username1, String username2) {
-
-        myUsername = username1;
+    public void initiateGame(String username1, String username2) {
 
         Entity entity;
 
@@ -59,7 +58,7 @@ public class Model {
 
         // Initiate player entities
         int[][] startPositions = {{30, 200},{400, 200}};
-        String[] playerNames = {"LARS", "NINA"};
+        String[] playerNames = {username1, "NINA"};
         //String[] playerNames = {username1, username2};
         String[] playerColor = {"RED", "BLUE"};
         for (int i = 0; i < nrOfPlayers; i++) {
@@ -115,6 +114,7 @@ public class Model {
         animationSystem = new Systems.Animation();
         playerInfoSystem = new Systems.playerInfo();
 
+        this.gameInitialized = true;
     }
 
     // Called in GameView to return all active actors
@@ -171,6 +171,16 @@ public class Model {
     // Method used to check if it's this player's turn
     public boolean isMyTurn(){
         return playerInfoSystem.isMyTurn(entities, myUsername);
+    }
+
+    // Method returns username
+    public String getMyUsername() {
+        return myUsername;
+    }
+
+    // Method returns if game is initialized
+    public boolean isGameInitialized() {
+        return gameInitialized;
     }
 
 }

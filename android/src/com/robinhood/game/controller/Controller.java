@@ -12,11 +12,12 @@ public class Controller {
 
     private RobinHood game;
     private FBConnector fbconnector;
-    private Model model = new Model();
+    private Model model;
 
     public Controller(RobinHood game) {
         this.game = game;
         this.fbconnector = new FBConnector(this);
+        this.model = new Model();
     }
 
     // Method called from views to navigate through the application
@@ -31,10 +32,8 @@ public class Controller {
             case "LOADING":
                 game.setView(new LoadingView(this, model));
                 break;
-            case "LOBBY":
-                game.setView(new RoomView(this));
-                break;
             case "GAME":
+                System.out.println("navigating");
                 game.setView(new GameView(this, model));
                 break;
             case "GAMEOVER":
@@ -80,6 +79,7 @@ public class Controller {
     public void registerDraw(Vector2 vector2) {
         boolean gameOver = model.drawBowEndGame(vector2);
         if (gameOver) {
+            // FIXME: might fail, Ola knows workaround
             navigateTo("GAMEOVER");
         }
     }
@@ -90,15 +90,25 @@ public class Controller {
     }
 
     // Method to initiate Firebase-connector and find another player
-    public void findPlayer(String username) {
-        fbconnector.findPlayer(username);
+    public void findPlayer() {
+        fbconnector.findPlayer(model.getMyUsername());
+    }
+
+    // Method to cancel a players search for opponent
+    public void cancelFindPlayer() {
+        fbconnector.cancelFindPlayer();
     }
 
     // Method called to initiate game after Firebase has found opponent
     // TODO-Ola: change to varargs, to enable more than 2 players (maybe do varags in model)
-    public void initiateGame(int index, String username1, String username2) {
-        model.initiateGame(index, username1, username2);
-        navigateTo("GAME"); //TODO: elsewhere?
+    public void initiateGame(String username1, String username2) {
+        System.out.println("Init game with: " + username1 + username2);
+        model.initiateGame(username1, username2);
+    }
+
+    // Method returns if game is initialized
+    public boolean isGameInitialized() {
+        return model.isGameInitialized();
     }
 
     // Method to exit application, called from MenuView

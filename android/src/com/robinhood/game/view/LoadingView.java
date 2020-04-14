@@ -14,45 +14,53 @@ public class LoadingView extends View {
 
     private Controller controller;
 
+    private Button playButton;
+    private Button menuButton;
+
     public LoadingView(Controller cont, Model model) {
 
         this.controller = cont;
 
         // Stage: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/Stage.html
         // Set the stage of the View superclass - same in all subclasses
-        super.stage = new Stage(new ScreenViewport());
+        stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(super.stage);
 
         // adds all the elements to this interface
         LoadingObject loadingObject = new LoadingObject();
         stage.addActor(loadingObject);
 
-        // the following button and clicklistener are only examples to
-        // demonstrate navigation logic
-        Button menuButton = new Button("menu");
-        super.stage.addActor(menuButton);
-        stage.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float clickX, float clickY) {
-                System.out.println("CANCEL!");
-                controller.navigateTo("MENU");
-            }
-        });
+        // This method initiates the creation of a FirebaseConnector
+        // and search for opponent in the controller
+        this.controller.findPlayer();
 
-        // TODO: delete and make happen on matching with antoher player
-        Button loadingButton = new Button("play");
-        super.stage.addActor(loadingButton);
-        stage.addListener(new ClickListener() {
+        playButton = new Button("play");
+        playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
                 controller.navigateTo("GAME");
             }
         });
 
-        // This method initiates the creation of a FirebaseConnector
-        // and search for opponent in the controller
-        this.controller.findPlayer("OLA");
-
+        menuButton = new Button("menu");
+        menuButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float clickX, float clickY) {
+                controller.cancelFindPlayer();
+                controller.navigateTo("MENU");
+            }
+        });
     }
 
+    @Override
+    public void render() {
+            if(controller.isGameInitialized()) {
+                menuButton.remove();
+                stage.addActor(playButton);
+            } else {
+                playButton.remove();
+                stage.addActor(menuButton);
+            }
+        super.render();
+    }
 }
