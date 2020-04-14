@@ -93,15 +93,17 @@ public class FBConnector {
             }
         });
 
-        mDatabase.child("drawBow").child("x").setValue((float) 1);
-        mDatabase.child("drawBow").child("y").setValue((float) 2);
+        //mDatabase.child("drawBow").child("x").setValue(0.0);
+        //mDatabase.child("drawBow").child("y").setValue(1.0);
+        mDatabase.child("drawBow").setValue("(0.0, 1.0)");
         mDatabase.child("drawBow").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(controller.isGameInitialized()) {
-                    float x = (long) dataSnapshot.child("x").getValue();
-                    float y = (long) dataSnapshot.child("y").getValue();
-                    controller.registerDraw(new Vector2(x, y));
+                    //float x = (float) dataSnapshot.child("x").getValue();
+                    //float y = (float) dataSnapshot.child("y").getValue();
+                    String vectorStr = (String) dataSnapshot.getValue();
+                    controller.registerDraw(new Vector2().fromString(vectorStr));
                 }
             }
 
@@ -133,8 +135,9 @@ public class FBConnector {
 
     // Method to change draw vector in players game room
     public void setDraw(Vector2 vector2) {
-        mDatabase.child("drawBow").child("x").setValue(vector2.x);
-        mDatabase.child("drawBow").child("y").setValue(vector2.y);
+        //mDatabase.child("drawBow").child("x").setValue(vector2.x);
+        //mDatabase.child("drawBow").child("y").setValue(vector2.y);
+        mDatabase.child("drawBow").setValue(vector2.toString());
         // TODO: check that the onChange does register both values
         //  before sending to model
     }
