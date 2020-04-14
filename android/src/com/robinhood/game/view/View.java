@@ -1,4 +1,4 @@
-package view;
+package com.robinhood.game.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;

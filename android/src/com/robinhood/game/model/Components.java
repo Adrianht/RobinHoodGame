@@ -1,10 +1,8 @@
-package model;
+package com.robinhood.game.model;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-
-import java.awt.event.ComponentEvent;
 
 /*
      Component in ECS
