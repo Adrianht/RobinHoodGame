@@ -51,7 +51,7 @@ public class LoadingView extends View {
 
         // This method initiates the creation of a FirebaseConnector
         // and search for opponent in the controller
-        this.controller.findPlayer("OLA 1");
+        this.controller.findPlayer("OLA");
 
     }
 
