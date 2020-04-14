@@ -1,5 +1,7 @@
-package com.robinhood.game.view;
+package view;
 
+import controller.Controller;
+import model.Model;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -12,13 +14,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.math.Vector2;
-import com.robinhood.game.controller.Controller;
-import com.robinhood.game.model.Model;
-import com.robinhood.game.view.interfaceObjects.DragIndicator;
-import com.robinhood.game.view.interfaceObjects.Button;
-
 
 import java.util.List;
+
+import view.interfaceObjects.*;
 
 public class GameView extends View {
 

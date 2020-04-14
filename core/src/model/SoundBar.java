@@ -1,5 +1,6 @@
-package com.robinhood.game.model;
+package model;
 
+import controller.Controller;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -7,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.robinhood.game.controller.Controller;
 
 
 public final class SoundBar extends Actor {
