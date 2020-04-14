@@ -35,18 +35,15 @@ public class FBConnector {
         final List<String> playerNames = new ArrayList<>();
 
         this.roomRef = username;
-        final String roomRef2 = username;
 
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 int counter = 0;
-                //roomRef = "";
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                     System.out.println(snapshot);
                     counter += 1;
                     System.out.println(roomRef);
-                    //roomRef2 = username; //+= snapshot.getValue().toString();
                     playerNames.add(snapshot.getValue().toString());
                 }
 
@@ -54,12 +51,11 @@ public class FBConnector {
                     System.out.println("INIT GAME");
                     System.out.println(roomRef);
                     mDatabase.removeValue();
-                    mDatabase = FirebaseDatabase.getInstance().getReference().child("rooms").child(roomRef2);
-                    //createGameRoom(roomRef);
+                    mDatabase = FirebaseDatabase.getInstance().getReference().child("rooms").child(playerNames.get(0));
+                    roomRef = mDatabase.getKey();
                     controller.initiateGame(0, playerNames.get(0), playerNames.get(1));
                 } else {
                     createGameRoom(username);
-                    //fortsette loadingscreen?
                 }
             }
 
@@ -68,10 +64,6 @@ public class FBConnector {
 
             }
         });
-
-        // TODO: dersom det er to spillere i "availablePlayer" -> kall
-        // controller.initateGame(username1,username2);
-
     }
 
 
@@ -82,12 +74,14 @@ public class FBConnector {
 
         // TODO: lage default field move, og tilhorende listener onChange()
         //  onChange skal kalle controller.registerMove()
-
         mDatabase = FirebaseDatabase.getInstance().getReference().child("rooms").child(roomRef).child("move");
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //controller.registerMove(datasnapshot)
+
+                System.out.println("move made " + dataSnapshot);
+                //usikker på om setningen under fungerer
+                controller.registerMove((Boolean) dataSnapshot.getValue());
             }
 
             @Override
@@ -95,8 +89,6 @@ public class FBConnector {
 
             }
         });
-        setMove(true);
-
 
 
         // TODO: lage default field activeArrow, og tilhorende listener onChange()
@@ -115,7 +107,6 @@ public class FBConnector {
             }
         });
 
-        setBuy("123");
         // TODO: lage default field drawBow, og tilhorende listener onChange()
         //  onChange skal kalle controller.registerDraw()
 
