@@ -36,21 +36,16 @@ public class FBConnector {
                     playerNames.add(snapshot.getValue().toString());
                 }
                 if(playerNames.size() == 2) {
-                    FirebaseDatabase.getInstance().getReference()
-                            .child("availablePlayer").removeValue();
-                    mDatabase = FirebaseDatabase.getInstance().getReference()
-                            .child("rooms").child(hashRoomId(playerNames.get(0)));
                     controller.initiateGame(
                             playerNames.get(0),
                             playerNames.get(1)
                     );
+                    FirebaseDatabase.getInstance().getReference()
+                            .child("availablePlayer").removeValue();
+                    mDatabase = FirebaseDatabase.getInstance().getReference()
+                            .child("rooms").child(hashRoomId(playerNames.get(0)));
                     createGameRoom(hashRoomId(playerNames.get(0)));
                 }
-                /*} else if (playerNames.size() == 1) {
-                    createGameRoom(hashRoomId(username));
-                }
-
-                 */
             }
 
             @Override
@@ -69,8 +64,8 @@ public class FBConnector {
     // creates a new game room in firebase real-time database
     public void createGameRoom(String roomRef) {
         mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("rooms").child(roomRef).child("move");
-        mDatabase.setValue(false);
+                .child("rooms").child(roomRef);
+        mDatabase.child("move").setValue(false);
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -85,9 +80,7 @@ public class FBConnector {
             }
         });
 
-        mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("rooms").child(roomRef).child("activeArrow");
-        mDatabase.setValue("Normal");
+        mDatabase.child("activeArrow").setValue("Normal");
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -102,11 +95,8 @@ public class FBConnector {
             }
         });
 
-
-        mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("rooms").child(roomRef).child("drawBow");
-        mDatabase.child("x").setValue((float) 1);
-        mDatabase.child("y").setValue((float) 2);
+        mDatabase.child("drawBow").child("x").setValue((float) 1);
+        mDatabase.child("drawBow").child("y").setValue((float) 2);
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
