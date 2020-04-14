@@ -25,21 +25,26 @@ public class FBConnector {
 
 
         // TODO: telle antall spillere etter endring
-        //mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
 
         mDatabase.addValueEventListener(new ValueEventListener() {
-            int counter = 0;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int counter = 0;
+                String roomRef = "";
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                     System.out.println(snapshot);
                     counter += 1;
-                    if(counter == 2){
-                        System.out.println("INIT GAME");
-                        //controller.initiateGame()
-                    } else {
-                        //fortsette loadingscreen?
-                    }
+                    System.out.println(roomRef);
+                    roomRef += snapshot.getValue().toString();
+                }
+
+                if(counter == 2){
+                    System.out.println("INIT GAME");
+                    System.out.println(roomRef);
+                    mDatabase.removeValue();
+                    createGameRoom(roomRef);
+                } else {
+                    //fortsette loadingscreen?
                 }
             }
 
@@ -54,8 +59,14 @@ public class FBConnector {
     }
 
 
-    public void createGameRoom() {
+    public void createGameRoom(String roomRef) {
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("rooms");
+        mDatabase.push().setValue(roomRef);
 
+
+
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("rooms").child(roomRef);
+        mDatabase.push().setValue("fieldMove");
         // TODO: lage default field move, og tilhorende listener onChange()
         //  onChange skal kalle controller.registerMove()
 
