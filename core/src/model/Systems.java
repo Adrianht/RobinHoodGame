@@ -1,4 +1,4 @@
-package com.robinhood.game.model;
+package model;
 
 
 import com.badlogic.gdx.math.Vector2;
@@ -150,19 +150,6 @@ public class Systems {
                 }
             }
             return points;
-        }
-
-        public boolean isMyTurn(List<Entity> entities, String username) {
-            for (Entity entity: entities){
-
-                if(entity.component.turn != null
-                        && entity.component.turn.turn
-                        && entity.component.name != null
-                        && entity.component.name.name == username ){
-                    return true;
-                }
-            }
-            return false;
         }
     }
 

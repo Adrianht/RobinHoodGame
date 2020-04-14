@@ -1,4 +1,4 @@
-package com.robinhood.game.model;
+package model;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -20,8 +20,6 @@ public class Model {
     //  because it is not active in-game
     private SoundBar soundBar;
 
-    private String myUsername = "";
-
     private final int nrOfPlayers = 2;
 
     // ECS related fields - list index might be used as entity id
@@ -39,10 +37,7 @@ public class Model {
 
 
     // Method to initiate a new game after two players are matched
-    // TODO-Ola: coordinate with controller.initateGame-input
-    public void initiateGame(int myUsernameIndex, String username1, String username2) {
-
-        myUsername = username1;
+    public void initiateGame() {
 
         Entity entity;
 
@@ -60,7 +55,6 @@ public class Model {
         // Initiate player entities
         int[][] startPositions = {{30, 200},{400, 200}};
         String[] playerNames = {"LARS", "NINA"};
-        //String[] playerNames = {username1, username2};
         String[] playerColor = {"RED", "BLUE"};
         for (int i = 0; i < nrOfPlayers; i++) {
             entity = new Entity();
@@ -166,11 +160,6 @@ public class Model {
     // Method used to fetch players energy values
     public List<Integer> getEnergy(){
         return playerInfoSystem.getEnergyPoints(entities, nrOfPlayers);
-    }
-
-    // Method used to check if it's this player's turn
-    public boolean isMyTurn(){
-        return playerInfoSystem.isMyTurn(entities, myUsername);
     }
 
 }

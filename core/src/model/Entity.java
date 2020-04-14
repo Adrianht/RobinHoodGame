@@ -1,4 +1,4 @@
-package com.robinhood.game.model;
+package model;
 
 /*
      Entity in ECS

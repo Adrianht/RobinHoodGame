@@ -1,14 +1,14 @@
-package com.robinhood.game.view;
+package view;
 
+import controller.Controller;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.robinhood.game.controller.Controller;
-import com.robinhood.game.model.Model;
-import com.robinhood.game.view.interfaceObjects.Button;
-import com.robinhood.game.view.interfaceObjects.LoadingObject;
+import model.*;
+
+import view.interfaceObjects.*;
 
 public class LoadingView extends View {
 
@@ -17,6 +17,10 @@ public class LoadingView extends View {
     public LoadingView(Controller cont, Model model) {
 
         this.controller = cont;
+
+        // This method initiates the creation of a FirebaseConnector
+        // and search for opponent in the controller
+        //this.controller.findPlayer();
 
         // Stage: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/Stage.html
         // Set the stage of the View superclass - same in all subclasses
@@ -34,25 +38,10 @@ public class LoadingView extends View {
         stage.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
-                System.out.println("CANCEL!");
+                System.out.println("TO MENU!");
                 controller.navigateTo("MENU");
             }
         });
-
-        // TODO: delete and make happen on matching with antoher player
-        Button loadingButton = new Button("play");
-        super.stage.addActor(loadingButton);
-        stage.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float clickX, float clickY) {
-                controller.navigateTo("GAME");
-            }
-        });
-
-        // This method initiates the creation of a FirebaseConnector
-        // and search for opponent in the controller
-        this.controller.findPlayer("OLA");
-
     }
 
 }

@@ -1,22 +1,22 @@
-package com.robinhood.game.controller;
+package controller;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.robinhood.game.RobinHood;
 
-import com.robinhood.game.model.Model;
-import com.robinhood.game.view.*;
 import java.util.List;
+
+import model.Model;
+import view.*;
 
 public class Controller {
 
+    private Model model;
     private RobinHood game;
-    private FBConnector fbconnector;
-    private Model model = new Model();
 
     public Controller(RobinHood game) {
         this.game = game;
-        this.fbconnector = new FBConnector(this);
+        this.model = new Model();
     }
 
     // Method called from views to navigate through the application
@@ -31,10 +31,10 @@ public class Controller {
             case "LOADING":
                 game.setView(new LoadingView(this, model));
                 break;
-            case "LOBBY":
-                game.setView(new RoomView(this));
-                break;
             case "GAME":
+                //TODO: this method should be called from somewhere else
+                model.initiateGame();
+
                 game.setView(new GameView(this, model));
                 break;
             case "GAMEOVER":
@@ -45,39 +45,21 @@ public class Controller {
         }
     }
 
-    // Method called from GameView to update fb
+    // Method called from GameView to update fb and model
     public void move(Boolean left) {
-        if(model.isMyTurn()) {
-            fbconnector.setMove(left);
-        }
-    }
-
-    // Method called from FBConnector to update model
-    public void registerMove(Boolean left) {
+        //fbConn.move(left);
         model.move(left);
     }
 
-    // Method called from views to update fb
+    // Method called from views to update fb and call model
     public void buyArrow(String type) {
-        if(model.isMyTurn()) {
-            fbconnector.setBuy(type);
-        }
-    }
-
-    // Method called from FBConnector to update model
-    public void registerBuy(String type) {
+        //fbConn.buyArrow(type);
         model.buyArrow(type);
     }
 
     // Method called from views to update fb and model
     public void drawBow(Vector2 vector2) {
-        if(model.isMyTurn()) {
-            fbconnector.setDraw(vector2);
-        }
-    }
-
-    // Method called from views to update fb and model
-    public void registerDraw(Vector2 vector2) {
+        //fbConn.drawBow(vector2);
         boolean gameOver = model.drawBowEndGame(vector2);
         if (gameOver) {
             navigateTo("GAMEOVER");
@@ -89,16 +71,13 @@ public class Controller {
         model.changeSound();
     }
 
-    // Method to initiate Firebase-connector and find another player
-    public void findPlayer(String username) {
-        fbconnector.findPlayer(username);
+    // Method to initate Firebase-connector and find another player
+    public void findPlayer() {
     }
 
     // Method called to initiate game after Firebase has found opponent
-    // TODO-Ola: change to varargs, to enable more than 2 players (maybe do varags in model)
-    public void initiateGame(int index, String username1, String username2) {
-        model.initiateGame(index, username1, username2);
-        navigateTo("GAME"); //TODO: elsewhere?
+    public void initiateGame() {
+        model.initiateGame();
     }
 
     // Method to exit application, called from MenuView
