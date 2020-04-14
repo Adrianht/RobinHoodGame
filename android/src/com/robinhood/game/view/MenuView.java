@@ -40,7 +40,7 @@ public class MenuView extends View {
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
                 System.out.println("TO GAME!");
-                controller.navigateTo("GAME");
+                controller.navigateTo("LOADING");
             }
         });
         exitButton.addListener(new ClickListener(){

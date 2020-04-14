@@ -34,9 +34,6 @@ public class Controller {
                 game.setView(new RoomView(this));
                 break;
             case "GAME":
-                //TODO: this method should be called from somewhere else
-                model.initiateGame();
-
                 game.setView(new GameView(this, model));
                 break;
             case "GAMEOVER":
