@@ -80,7 +80,7 @@ public class Controller {
     }
 
     //TODO: add description
-    public void gameIsOver() {
+    public void handleGameOver() {
         this.navigateTo("GAMEOVER");
     }
 

@@ -105,11 +105,12 @@ public class GameView extends View {
         stage.addListener(new DragListener() {
             @Override
             public void drag(InputEvent event, float clickX, float clickY, int pointer) {
-                float power = (float)Math.sqrt(Math.pow(clickX - getDragStartX(), 2) +
-                        Math.pow(clickY - getDragStartY(), 2));
+                float power = (float)Math.sqrt(Math.pow(clickX -
+                        getDragStartX(), 2) + Math.pow(clickY - getDragStartY(), 2));
                 dragIndicator.sprite.setSize(power, 40);
 
-                double angleRad = Math.atan(Math.abs(clickY-getDragStartY()) / Math.abs(clickX-getDragStartX()));
+                double angleRad = Math.atan(Math.abs(clickY-getDragStartY())
+                        / Math.abs(clickX-getDragStartX()));
                 float angleDeg = (float)Math.toDegrees(angleRad);
                 if(clickX < getDragStartX()) {
                     if(clickY < getDragStartY()) {
@@ -126,8 +127,14 @@ public class GameView extends View {
                 }
             }
             @Override
-            public void dragStop(InputEvent event, float clickX, float clickY, int pointer) {
-                controller.drawBow(new Vector2(clickX-getDragStartX(), clickY-getDragStartY()));
+            public void dragStop(InputEvent event,
+                                 float clickX,
+                                 float clickY,
+                                 int pointer) {
+                controller.drawBow(new Vector2(
+                        clickX-getDragStartX(),
+                        clickY-getDragStartY())
+                );
                 dragIndicator.sprite.setSize(0,0);
             }
         });
@@ -149,9 +156,9 @@ public class GameView extends View {
         String hpText = "";
         String energyText = "";
         for (int i = 0; i < hitPoints.size(); i++) {
-            //FIXME: change check, no game over with only one player at hp=0
+            //FIXME: change check, now game over with only one player at hp=0
             if(hitPoints.get(i) <= 0) {
-                controller.gameIsOver();
+                controller.handleGameOver();
             }
             hpText += "HitPoints P" + i + ": " + hitPoints.get(i) + "\n";
             energyText += "EnergyPoints P" + i + ": " + energyPoints.get(i) + "\n";
