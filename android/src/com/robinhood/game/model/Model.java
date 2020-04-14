@@ -20,7 +20,7 @@ public class Model {
     //  because it is not active in-game
     private SoundBar soundBar;
 
-    private String myUsername = "Ola1";
+    private String myUsername = "Ola";
 
     private boolean gameInitialized = false;
     private final int nrOfPlayers = 2;
@@ -104,9 +104,6 @@ public class Model {
         entity.component.actor.sprite.setSize(100, 100);
         entity.addComponent("arrowType");
         entities.add(entity);
-        // TODO: remove sysout
-        System.out.println("Arrowtype initiated: " + entity.component.arrowtype.type);
-
 
         // Initiate game system possibilities
         renderingSystem = new Systems.Render();

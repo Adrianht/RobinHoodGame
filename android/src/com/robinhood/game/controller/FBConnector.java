@@ -44,9 +44,13 @@ public class FBConnector {
                             playerNames.get(0),
                             playerNames.get(1)
                     );
-                } else if (playerNames.size() == 1) {
                     createGameRoom(hashRoomId(username));
                 }
+                /*} else if (playerNames.size() == 1) {
+                    createGameRoom(hashRoomId(username));
+                }
+
+                 */
             }
 
             @Override
@@ -67,7 +71,6 @@ public class FBConnector {
         mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("rooms").child(roomRef).child("move");
         mDatabase.setValue(false);
-
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -84,6 +87,7 @@ public class FBConnector {
 
         mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("rooms").child(roomRef).child("activeArrow");
+        mDatabase.setValue("Normal");
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -101,6 +105,8 @@ public class FBConnector {
 
         mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("rooms").child(roomRef).child("drawBow");
+        mDatabase.child("x").setValue((float) 1);
+        mDatabase.child("y").setValue((float) 2);
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
