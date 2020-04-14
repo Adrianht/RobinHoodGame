@@ -37,7 +37,8 @@ public class Model {
 
 
     // Method to initiate a new game after two players are matched
-    public void initiateGame() {
+    // TODO-Ola: coordinate with controller.initateGame-input
+    public void initiateGame(String username1, String username2) {
 
         Entity entity;
 
@@ -55,6 +56,7 @@ public class Model {
         // Initiate player entities
         int[][] startPositions = {{30, 200},{400, 200}};
         String[] playerNames = {"LARS", "NINA"};
+        //String[] playerNames = {username1, username2};
         String[] playerColor = {"RED", "BLUE"};
         for (int i = 0; i < nrOfPlayers; i++) {
             entity = new Entity();
