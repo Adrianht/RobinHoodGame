@@ -12,6 +12,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class FBConnector {
 
+    private final String roomid = "FIX";
     // TODO: legge til unik game room refereanse delt mellom to spillere
 
     private DatabaseReference mDatabase;
@@ -81,15 +82,28 @@ public class FBConnector {
 
     // TODO: dobbeltsjekk at disse metodene fungerer sammen med lytterne definert i createGameRoom,
     //  slik at controller.register...-metodene blir kalt.
-    public static void setMove(boolean left) {
-        // TODO: push boolean-verdi "left" til move i gameroom
+    // Method to change last movement in players game room
+    public void setMove(boolean left) {
+        mDatabase = FirebaseDatabase.getInstance().getReference()
+                .child("rooms").child(roomid).child("move");
+        mDatabase.push().setValue(left);
     }
-    public static void setBuy(String type) {
-        // TODO: push string-verdi "type" til activeArrow i gameroom
+
+    // Method to change active arrow type in players game room
+    public void setBuy(String type) {
+        mDatabase = FirebaseDatabase.getInstance().getReference()
+                .child("rooms").child(roomid).child("activeArrow");
+        mDatabase.push().setValue(type);
     }
-    public static void setDraw(Vector2 vector2) {
-        // TODO: check if Firebase can handle Vector2-objects
-        // TODO: push Vector2-verdi "vector2" til drawBow i gameroom
+
+    // Method to change draw vector in players game room
+    public void setDraw(Vector2 vector2) {
+        mDatabase = FirebaseDatabase.getInstance().getReference()
+                .child("rooms").child(roomid).child("drawBow");
+        mDatabase.child("x").push().setValue(vector2.x);
+        mDatabase.child("y").push().setValue(vector2.y);
+        // TODO: check that the onChange does register both values
+        //  before sending to model
     }
 
 }

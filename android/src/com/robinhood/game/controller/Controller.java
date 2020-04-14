@@ -46,7 +46,9 @@ public class Controller {
 
     // Method called from GameView to update fb
     public void move(Boolean left) {
-        FBConnector.setMove(left);
+        if(model.isMyTurn()) {
+            fbconnector.setMove(left);
+        }
     }
 
     // Method called from FBConnector to update model
@@ -56,7 +58,9 @@ public class Controller {
 
     // Method called from views to update fb
     public void buyArrow(String type) {
-        FBConnector.setBuy(type);
+        if(model.isMyTurn()) {
+            fbconnector.setBuy(type);
+        }
     }
 
     // Method called from FBConnector to update model
@@ -66,7 +70,9 @@ public class Controller {
 
     // Method called from views to update fb and model
     public void drawBow(Vector2 vector2) {
-        FBConnector.setDraw(vector2);
+        if(model.isMyTurn()) {
+            fbconnector.setDraw(vector2);
+        }
     }
 
     // Method called from views to update fb and model
@@ -90,7 +96,7 @@ public class Controller {
     // Method called to initiate game after Firebase has found opponent
     // TODO-Ola: change to varargs, to enable more than 2 players (maybe do varags in model)
     public void initiateGame(String username1, String username2) {
-        model.initiateGame(username1, username2);
+        model.initiateGame(1, username1, username2);
     }
 
     // Method to exit application, called from MenuView
