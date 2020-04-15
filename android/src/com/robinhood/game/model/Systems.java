@@ -199,48 +199,46 @@ public class Systems {
     // FIXME: currently suited for two players
     public static class Animation {
 
-        private boolean flying = true;
+        private boolean flying;
         private Body[] contactBodies = new Body[2];
 
         public void arrowAnimation(World world, final List<Entity> entities, Vector2 vector2) {
-
-            world.setContactListener(new ContactListener() {
-                @Override
-                public void beginContact(Contact contact) {
-                    Fixture fixtureA = contact.getFixtureA();
-                    Fixture fixtureB = contact.getFixtureB();
-                    contactBodies[0] = fixtureA.getBody();
-                    contactBodies[1] = fixtureB.getBody();
-                    flying = false;
-                }
-
-                @Override
-                public void endContact(Contact contact) {
-                }
-
-                @Override
-                public void preSolve(Contact contact, Manifold oldManifold) {
-                }
-
-                @Override
-                public void postSolve(Contact contact, ContactImpulse impulse) {
-                }
-            });
-
 
             for(Entity entity: entities) {
                 // finds arrow object
                 if (entity.component.arrowtype != null) {
 
                     entity.component.box2dBody.body.setLinearVelocity(vector2.scl(-.05f));
+                    flying = true;
 
                     // TODO: find way to detect screen edge
                     while(flying) {
                         world.step(.001f, 1, 1);
+                        world.setContactListener(new ContactListener() {
+                            @Override
+                            public void beginContact(Contact contact) {
+                                Fixture fixtureA = contact.getFixtureA();
+                                Fixture fixtureB = contact.getFixtureB();
+                                contactBodies[0] = fixtureA.getBody();
+                                contactBodies[1] = fixtureB.getBody();
+                                flying = false;
+                            }
+
+                            @Override
+                            public void endContact(Contact contact) {
+                            }
+
+                            @Override
+                            public void preSolve(Contact contact, Manifold oldManifold) {
+                            }
+
+                            @Override
+                            public void postSolve(Contact contact, ContactImpulse impulse) {
+                            }
+                        });
                         //counter++;
 
                     }
-                    world.destroyBody(entity.component.box2dBody.body);
 
                     Body hitBody;
                     // ignore arrow entity
@@ -256,12 +254,12 @@ public class Systems {
                         if(entity2.component.playernr != null
                                 && hitBody == entity2.component.box2dBody.body) {
                             entity2.component.hp.value -= entity.component.arrowtype.damage;
-                            entity.component.arrowtype = null;
-                            System.out.println("Player " + entity2.component.playernr.nr
-                                    + " was hit, HP now: " + entity2.component.hp.value);
                         }
                     }
 
+                    // remove used arrow body
+                    entity.component.arrowtype = null;
+                    world.destroyBody(entity.component.box2dBody.body);
                 }
             }
         }

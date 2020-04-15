@@ -30,7 +30,7 @@ public class EntityFactory {
 
         // Shape - long and narrow
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(50, 3);
+        shape.setAsBox(500, 3);
         entity.component.box2dBody.body.createFixture(shape, 0.0f);
         shape.dispose();
 
