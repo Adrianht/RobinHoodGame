@@ -2,6 +2,7 @@ package com.robinhood.game.model;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /*
@@ -18,7 +19,7 @@ public class Components {
     public PlayerName name;
     public PlayerNr playernr;
     public Position pos;
-    public Turf turf;
+    public Box2dBody box2dBody;
     public Turn turn;
     public ArrowType arrowtype;
 
@@ -73,11 +74,11 @@ public class Components {
         }
         public float x, y;
     }
-    public class Turf {
-        public Turf() {
-            Components.this.turf = this;
+    public class Box2dBody {
+        public Box2dBody() {
+            Components.this.box2dBody = this;
         }
-        public int[] y;
+        public Body body;
     }
     public class Turn extends Components {
         public Turn() {

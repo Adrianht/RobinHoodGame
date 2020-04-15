@@ -2,8 +2,11 @@ package com.robinhood.game.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -16,8 +19,8 @@ import com.robinhood.game.model.Model;
 import com.robinhood.game.view.interfaceObjects.DragIndicator;
 import com.robinhood.game.view.interfaceObjects.Button;
 
-
 import java.util.List;
+
 
 public class GameView extends View {
 
@@ -27,10 +30,15 @@ public class GameView extends View {
     private SpriteBatch batch = new SpriteBatch();
     private BitmapFont font = new BitmapFont();
 
+    private final Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer(true, true, true, true, true, true);
+    private final OrthographicCamera cam = new OrthographicCamera(32, 24);
+
+    private World world;
 
     public GameView(Controller cont, Model model) {
 
         this.controller = cont;
+        this.world = model.world;
 
         // Set the stage of the View superclass
         stage = new Stage(new ScreenViewport());
@@ -60,6 +68,7 @@ public class GameView extends View {
         rightButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
+                System.out.println("OKKK!");
                 controller.move(false);
             }
         });
@@ -96,7 +105,7 @@ public class GameView extends View {
         // Add archers, arrows and arena from model
         List<Actor> actors = model.getActors();
         for (Actor actor: actors) {
-            stage.addActor(actor);
+            //stage.addActor(actor);
         }
 
         // Add listener to detect drag on screen and trigger controller.drawBow()-method
@@ -147,6 +156,7 @@ public class GameView extends View {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
         handlePlayerInfo();
+        debugRenderer.render(world, cam.combined);
     }
 
     private void handlePlayerInfo(){
@@ -165,7 +175,8 @@ public class GameView extends View {
         }
 
         batch.begin();
-        font.draw(batch, (hpText + energyText), 250, 130);
+        font.draw(batch, (hpText + energyText), 750, 830);
         batch.end();
     }
+
 }

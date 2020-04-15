@@ -38,8 +38,8 @@ public class Entity {
             case "actor":
                 this.component.new GameActor();
                 break;
-            case "turf":
-                this.component.new Turf();
+            case "box2d":
+                this.component.new Box2dBody();
                 break;
             case "turn":
                 this.component.new Turn();
