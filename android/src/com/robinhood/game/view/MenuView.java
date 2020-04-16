@@ -13,7 +13,6 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import com.robinhood.game.controller.Controller;
-import com.robinhood.game.view.interfaceObjects.*;
 
 public class MenuView extends View  {
 
@@ -29,7 +28,6 @@ public class MenuView extends View  {
 
         this.controller = cont;
 
-        // Stage: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/Stage.html
         // set the stage of the View superclass - same in all subclasses
         super.stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(super.stage);
@@ -38,7 +36,13 @@ public class MenuView extends View  {
         Table table = new Table();
         table.setFillParent(true);
         // Cheap way to add background, fix later using asset manager
-        table.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture("background.png"))));
+        table.setBackground(
+                new TextureRegionDrawable(
+                        new TextureRegion(
+                                new Texture("background-smaller.png")
+                        )
+                )
+        );
         // table.setPosition(400, 0);      // Want to move the buttons to the right
         stage.addActor(table);
 
@@ -49,8 +53,6 @@ public class MenuView extends View  {
         table.row().pad(20, 0, 20, 0);
         table.add(exit).fillX().uniform().width(200f).height(150f);
 
-
-        // ClickListener: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/utils/ClickListener.html
         // ClickListener triggered by user clicks on Button/Actor to call appropriate actions
         settings.addListener(new ClickListener(){
             @Override

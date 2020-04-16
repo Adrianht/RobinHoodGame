@@ -2,7 +2,6 @@ package com.robinhood.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.robinhood.game.controller.Controller;
-import com.robinhood.game.model.Model;
 import com.robinhood.game.view.MenuView;
 import com.robinhood.game.view.View;
 
