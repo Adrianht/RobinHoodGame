@@ -64,5 +64,4 @@ public class GameOverView extends View {
                 250, 250);
         batch.end();
     }
-
 }
