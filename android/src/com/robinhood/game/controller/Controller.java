@@ -27,7 +27,7 @@ public class Controller {
                 game.setView(new MenuView(this));
                 break;
             case "SETTINGS":
-                game.setView(new SettingsView(this, model));
+                game.setView(new SettingsView(this));
                 break;
             case "LOADING":
                 game.setView(new LoadingView(this, model));
@@ -90,10 +90,18 @@ public class Controller {
         model.resetModelData();
     }
 
-    // Method to call model about sound settings change
-    public void changeSound() {
-        model.changeSound();
+    // NEW Music/Sound methods
+    public boolean getMusicEnabled() {
+        return model.getMusicEnabled();
     }
+
+    public void setMusicEnabled(boolean enabled) { model.setMusicEnabled(enabled); }
+
+    public boolean getSoundEnabled() {
+        return model.getSoundEnabled();
+    }
+
+    public void setSoundEnabled(boolean enabled) { model.setSoundEnabled(enabled); }
 
     // Method to initiate Firebase-connector and find another player
     public void findPlayer() {
