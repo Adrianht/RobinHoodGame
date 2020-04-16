@@ -2,78 +2,48 @@ package com.robinhood.game.model;
 
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.Manifold;
+import com.badlogic.gdx.physics.box2d.World;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+// TODO: maybe separate in to own classes in package Systems
 public class Systems {
 
     // system class handling rendering entities
     public static class UserInput {
-        public void moveLeft(List<Entity> entities) {
+        private void move(World world, List<Entity> entities, int movement) {
+            Body arrowBody = null;
+            for(Entity entity: entities) {
+                if (entity.component.arrowtype != null) {
+                    arrowBody = entity.component.box2dBody.body;
+                    arrowBody.setActive(false);
+                }
+            }
             for(Entity entity: entities) {
                 if(entity.component.turn != null) {
                     if (entity.component.turn.turn & entity.component.energy.value > 0) {
-                        entity.component.pos.x -= 20;
-                        entity.component.energy.value -= 2;
-                        System.out.println("Player, whose turn it is moved left, energy points reduced to: " +
-                                entity.component.energy.value);
-                    }
-                }
-            }
-        }
-        public void moveRight(List<Entity> entities) {
-            for(Entity entity: entities) {
-                if (entity.component.turn != null) {
-                    if (entity.component.turn.turn & entity.component.energy.value > 0) {
-                        entity.component.pos.x += 20;
-                        entity.component.energy.value -= 2;
-                        System.out.println("Player, whose turn it is moved right, energy points reduced to: " +
-                                entity.component.energy.value);
-                    }
-                }
-            }
-        }
-        // FIXME: possibly move elsewhere
-        public void changeTurn(List<Entity> entities, int nrOfPlayers) {
-
-            // FIXME: try to find more elegant solution(s)
-
-            int prevPlayerNr = 0;
-
-            // remove current players turn
-            for(Entity entity: entities) {
-                if(entity.component.turn != null) {
-                    if (entity.component.turn.turn) {
-                        prevPlayerNr = entity.component.playernr.nr;
-                        entity.component.turn.turn = false;
-                    }
-                }
-            }
-
-            // give turn to next player and add 10 energy points
-            for(Entity entity: entities) {
-                if(entity.component.playernr != null) {
-                    if (entity.component.playernr.nr == (prevPlayerNr + 1) % nrOfPlayers) {
-                        entity.component.turn.turn = true;
-                        if (entity.component.energy.value < 90) {
-                            entity.component.energy.value += 10;
-                        } else {
-                            entity.component.energy.value = 100;
+                        entity.component.box2dBody.body.setLinearVelocity(movement, 0);
+                        while (entity.component.box2dBody.body.getLinearVelocity().x != 0) {
+                            world.step(.001f, 1, 1);
                         }
+                        entity.component.energy.value -= 2;
+                        arrowBody.setActive(true);
                     }
                 }
             }
-
-            // reset arrow attributes to "Normal" arrow
-            for(Entity entity: entities) {
-                if(entity.component.arrowtype != null) {
-                    entity.component.arrowtype.type = "Normal";
-                    entity.component.arrowtype.damage = 10;
-                }
-            }
+        }
+        public void moveLeft(World world, List<Entity> entities) {
+            move(world, entities, -1);
+        }
+        public void moveRight(World world, List<Entity> entities) {
+            move(world, entities, 1);
         }
 
         /* Checks if the player has enough energy to buy that arrow type, if yes,
@@ -161,85 +131,100 @@ public class Systems {
             }
             return false;
         }
-    }
 
+        public void changeTurn(List<Entity> entities, int nrOfPlayers) {
 
-    // system class handling rendering entities
-    public static class Render {
-        public List<Actor> getActors(List<Entity> entities) {
-            List<Actor> actors = new ArrayList<>();
+            int prevPlayerNr = 0;
 
+            // remove current players turn
             for(Entity entity: entities) {
-                if (entity.component.actor != null) {
-                    actors.add(entity.component.actor);
+                if(entity.component.turn != null) {
+                    if (entity.component.turn.turn) {
+                        prevPlayerNr = entity.component.playernr.nr;
+                        entity.component.turn.turn = false;
+                    }
                 }
             }
 
-            return actors;
-        }
-
-    }
-
-
-    // system class handling animations
-    // FIXME: currently suited for two players
-    public static class Animation {
-        public void arrowAnimation(List<Entity> entities, Vector2 vector2) {
-
-            // FIXME: refac this test of whos turn it is and arrow direction
-            float direction = -400;
-            for(Entity playerTurn: entities) {
-                if(playerTurn.component.turn != null
-                        && playerTurn.component.turn.turn
-                        && playerTurn.component.playernr.nr == 0) {
-                    direction = 400;
-                    break;
-                }
-            }
-
+            // give turn to next player and add 10 energy points
             for(Entity entity: entities) {
-                // finds arrow object
-                if (entity.component.arrowtype != null) {
-
-                    //TODO-Lars: add correct flying pattern and direction
-                    entity.component.pos.x += direction;
-                    entity.component.pos.y += 0;
-
-                    // finds opponent object
-                    for(Entity entity2: entities) {
-                        if(entity2.component.playernr != null && !entity2.component.turn.turn) {
-                            if (this.isHit(entity, entity2)) {
-                                entity2.component.hp.value -= entity.component.arrowtype.damage;
-                                System.out.println("Player " + entity2.component.playernr.nr
-                                        + " was hit, HP now: " + entity2.component.hp.value);
-                            }
+                if(entity.component.playernr != null) {
+                    if (entity.component.playernr.nr == (prevPlayerNr + 1) % nrOfPlayers) {
+                        entity.component.turn.turn = true;
+                        if (entity.component.energy.value < 90) {
+                            entity.component.energy.value += 10;
+                        } else {
+                            entity.component.energy.value = 100;
                         }
                     }
                 }
             }
         }
+    }
 
-        private boolean isHit(Entity arrow, Entity opponent) {
 
-            Float arrowLeftmost = arrow.component.pos.x;
-            Float arrowRightmost = arrow.component.pos.x + arrow.component.actor.sprite.getWidth();
-            Float arrowLowest = arrow.component.pos.y;
-            Float arrowHighest = arrow.component.pos.y + arrow.component.actor.sprite.getHeight();
+    // system class handling animations
+    public static class Animation {
 
-            Float opponentLeftmost = opponent.component.pos.x;
-            Float opponentRightmost = opponent.component.pos.x + opponent.component.actor.sprite.getWidth();
-            Float opponentLowest = opponent.component.pos.y;
-            Float opponentHighest = opponent.component.pos.y + arrow.component.actor.sprite.getHeight();
+        private boolean flying = true;
+        private Body[] contactBodies = new Body[2];
 
-            // check if any of arrow sprite corners are inside opponent sprite
-            if (((arrowLeftmost <= opponentRightmost && arrowLeftmost >= opponentLeftmost)
-                    || (arrowRightmost <= opponentRightmost && arrowRightmost >= opponentLeftmost))
-                && ((arrowLowest <= opponentHighest && arrowLowest >= opponentLowest)
-                    || (arrowHighest <= opponentHighest && arrowHighest >= opponentLowest))) {
-                return true;
+        public void arrowAnimation(World world, final List<Entity> entities, Vector2 vector2) {
+
+            world.setContactListener(new ContactListener() {
+                @Override
+                public void beginContact(Contact contact) {
+                    Fixture fixtureA = contact.getFixtureA();
+                    Fixture fixtureB = contact.getFixtureB();
+                    contactBodies[0] = fixtureA.getBody();
+                    contactBodies[1] = fixtureB.getBody();
+                    flying = false;
+                }
+
+                @Override
+                public void endContact(Contact contact) {
+                }
+
+                @Override
+                public void preSolve(Contact contact, Manifold oldManifold) {
+                }
+
+                @Override
+                public void postSolve(Contact contact, ContactImpulse impulse) {
+                }
+            });
+
+            for(Entity entity: entities) {
+                // finds arrow object
+                if (entity.component.arrowtype != null) {
+                    entity.component.box2dBody.body.setLinearVelocity(vector2.scl(-.05f));
+                    flying = true;
+                    while(flying) {
+                        world.step(.001f, 1, 1);
+                    }
+
+                    Body hitBody;
+                    // ignore arrow entity
+                    if (contactBodies[0] != entity.component.box2dBody.body) {
+                        hitBody = contactBodies[0];
+                    } else {
+                        hitBody = contactBodies[1];
+                    }
+                    hitBody.setLinearVelocity(0,0);
+
+                    // hit player body object
+                    for(Entity entity2: entities) {
+                        if(entity2.component.playernr != null
+                                && hitBody == entity2.component.box2dBody.body) {
+                            entity2.component.hp.value -= entity.component.arrowtype.damage;
+                        }
+                    }
+
+                    // remove used arrow
+                    entity.component.arrowtype = null;
+                    world.destroyBody(entity.component.box2dBody.body);
+                }
             }
-
-            return false;
         }
     }
 }

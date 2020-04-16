@@ -3,6 +3,11 @@ package com.robinhood.game.model;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import java.util.ArrayList;
@@ -28,111 +33,75 @@ public class Model {
 
     // ECS related fields - list index might be used as entity id
     private List<Entity> entities = new ArrayList<>();
-    private Systems.Render renderingSystem;
     private Systems.Animation animationSystem;
     private Systems.UserInput userInputSystem;
     private Systems.playerInfo playerInfoSystem;
+
+    // box2D
+    // TODO: make world private and make getter
+    public World world;
+    private EntityFactory entityFactory;
 
 
     // Method to initiate a new game after two players are matched
     // TODO-Ola: coordinate with controller.initateGame-input
     public void initiateGame(String username1, String username2) {
 
-        Entity entity;
+        // initiate box2d
+        world = new World(new Vector2(0,-10f), true);
+        entityFactory = new EntityFactory(world);
 
-        /*
-         TODO: initiate Arena entity
-
-        entity = new Entity();
-        entity.addComponent("turf");
-        entity.addComponent("render");
-
-        entities.add(entity);
-
-         */
+        // Initiate ground entity
+        entities.add(entityFactory.createGround());
 
         // Initiate player entities
-        int[][] startPositions = {{30, 200},{400, 200}};
+        // FIXME: try to avoid hard codings
+        int[] bodyDefPos = {-10, 10};
         String[] playerNames = {username1, username2};
-        String[] playerColor = {"RED", "BLUE"};
         for (int i = 0; i < nrOfPlayers; i++) {
-            entity = new Entity();
-            entity.addComponent("turn");
-            if(i == 0) {
-                entity.component.turn.turn = true;
-            }
-            entity.addComponent("playernr");
-            entity.component.playernr.nr = i;
-            entity.addComponent("energy");
-            entity.addComponent("hp");
-            entity.addComponent("name");
-            entity.component.name.name = playerNames[i];
-            entity.addComponent("pos");
-            entity.component.pos.x = startPositions[i][0];
-            entity.component.pos.y = startPositions[i][1];
-            entity.addComponent("actor");
-
-            //TODO : possibly create help-method of following switch
-            switch(playerColor[i]) {
-                case "RED":
-                    entity.component.actor.sprite = new Sprite(new Texture("redarcher.png"));
-                    break;
-                case "BLUE":
-                    entity.component.actor.sprite = new Sprite(new Texture("bluearcher.png"));
-                    break;
-                default:
-                    entity.component.actor.sprite = new Sprite(new Texture("redarcher.png"));
-                    break;
-            }
-            entity.component.actor.sprite.setSize(200, 200);
-            entities.add(entity);
+            Entity player = entityFactory.createPlayer(
+                playerNames[i],
+                bodyDefPos[i],
+                i
+            );
+            entities.add(player);
         }
 
         // Initiate arrow
-        entity = new Entity();
-        entity.addComponent("pos");
-        entity.component.pos.x = 30;
-        entity.component.pos.y = 200;
-        entity.addComponent("actor");
-        entity.component.actor.sprite = new Sprite(new Texture("arrow.png"));
-        entity.component.actor.sprite.setSize(100, 100);
-        entity.addComponent("arrowType");
-        entities.add(entity);
+        entities.add(entityFactory.newArrow());
 
         // Initiate game system possibilities
-        renderingSystem = new Systems.Render();
         userInputSystem = new Systems.UserInput();
         animationSystem = new Systems.Animation();
         playerInfoSystem = new Systems.playerInfo();
 
         this.gameInitialized = true;
-    }
 
-    // Called in GameView to return all active actors
-    //  includes archers, arrow(s), and arena
-    public List<Actor> getActors() {
-        return renderingSystem.getActors(entities);
+        // FIXME: this run on iteration to land players on ground
+        //    attempt to find workaround
+        world.step(.001f, 1, 1);
     }
 
     // Method called from Controller to move the active player
     public void move(Boolean left) {
         if(left) {
-            userInputSystem.moveLeft(entities);
+            userInputSystem.moveLeft(world, entities);
         } else {
-            userInputSystem.moveRight(entities);
+            userInputSystem.moveRight(world, entities);
         }
     }
 
-    /* Method called from Controller to buy an arrow, the check and update of weapon type is done
-    * in Systems.java  */
+    // Method called from Controller to buy an arrow, the check and
+    //  update of weapon type is done in Systems.java
     public void buyArrow(String type) {
         userInputSystem.buyArrow(entities, type);
     }
 
     // Method runs animation and change players turn
     public void drawBow(Vector2 vector2) {
-        animationSystem.arrowAnimation(entities, vector2);
-        userInputSystem.changeTurn(entities, nrOfPlayers);
+        animationSystem.arrowAnimation(world, entities, vector2);
+        playerInfoSystem.changeTurn(entities, nrOfPlayers);
+        entities.add(entityFactory.newArrow());
     }
 
     // Method that return this game instance's soundbar object

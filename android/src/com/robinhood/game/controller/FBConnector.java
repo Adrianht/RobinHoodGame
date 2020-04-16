@@ -24,6 +24,17 @@ public class FBConnector {
     // attempts to find a match
     public void findPlayer(final String username) {
 
+        // TODO-OLA: back to normal
+        controller.initiateGame(
+                "Username",
+                "Username"
+        );
+        FirebaseDatabase.getInstance().getReference()
+                .child("availablePlayer").removeValue();
+        mDatabase = FirebaseDatabase.getInstance().getReference()
+                .child("rooms").child(hashRoomId("Username"));
+        createGameRoom(hashRoomId("Username"));
+/*
         mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("availablePlayer");
         mDatabase.push().setValue(username);
@@ -53,7 +64,7 @@ public class FBConnector {
                 // empty method
             }
 
-        });
+        });*/
     }
 
     // Cancels search for opponent

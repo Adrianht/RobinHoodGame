@@ -2,6 +2,7 @@ package com.robinhood.game.model;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /*
@@ -13,12 +14,10 @@ public class Components {
 
     // holders for all possible components
     public Energy energy;
-    public GameActor actor;
     public HitPoints hp;
     public PlayerName name;
     public PlayerNr playernr;
-    public Position pos;
-    public Turf turf;
+    public Box2dBody box2dBody;
     public Turn turn;
     public ArrowType arrowtype;
 
@@ -30,24 +29,11 @@ public class Components {
         public String type = "Normal";
         public int damage = 10;
     }
-
     public class Energy {
         public Energy() {
             Components.this.energy = this;
         }
         public int value = 20;
-    }
-    public class GameActor extends Actor {
-        public GameActor() {
-            Components.this.actor = this;
-        }
-        public Sprite sprite;
-
-        @Override
-        public void draw(Batch batch, float parentAlpha) {
-            sprite.setPosition(Components.this.pos.x, Components.this.pos.y);
-            sprite.draw(batch);
-        }
     }
     public class HitPoints {
         public HitPoints() {
@@ -67,17 +53,11 @@ public class Components {
         }
         public int nr;
     }
-    public class Position {
-        public Position() {
-            Components.this.pos = this;
+    public class Box2dBody {
+        public Box2dBody() {
+            Components.this.box2dBody = this;
         }
-        public float x, y;
-    }
-    public class Turf {
-        public Turf() {
-            Components.this.turf = this;
-        }
-        public int[] y;
+        public Body body;
     }
     public class Turn extends Components {
         public Turn() {

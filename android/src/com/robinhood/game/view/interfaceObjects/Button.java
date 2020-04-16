@@ -28,7 +28,7 @@ public class Button extends Actor {
                 break;
             case "menu":
                 sprite = new Sprite(new Texture("menu.png"));
-                setBounds(410, 50, sprite.getWidth(), sprite.getHeight());
+                setBounds(1110, 50, sprite.getWidth(), sprite.getHeight());
                 break;
             case "exit":
                 sprite = new Sprite(new Texture("exit.png"));
@@ -43,7 +43,7 @@ public class Button extends Actor {
             case "right":
                 sprite = new Sprite(new Texture("right.png"));
                 sprite.setSize(100,100);
-                setBounds(500, 0, sprite.getWidth(), sprite.getHeight());
+                setBounds(1500, 0, sprite.getWidth(), sprite.getHeight());
                 break;
             case "robinhoodpic":
                 sprite = new Sprite(new Texture("robinhood.png"));
@@ -58,17 +58,17 @@ public class Button extends Actor {
             case "buyLevel2":
                 sprite = new Sprite(new Texture("buyLevel2.png"));
                 sprite.setSize(30,30);
-                setBounds(250, 25, sprite.getWidth(), sprite.getHeight());
+                setBounds(750, 25, sprite.getWidth(), sprite.getHeight());
                 break;
             case "buyLevel3":
                 sprite = new Sprite(new Texture("buyLevel3.png"));
                 sprite.setSize(30,30);
-                setBounds(290, 25, sprite.getWidth(), sprite.getHeight());
+                setBounds(790, 25, sprite.getWidth(), sprite.getHeight());
                 break;
             case "buyLevel4":
                 sprite = new Sprite(new Texture("buyLevel4.png"));
                 sprite.setSize(30,30);
-                setBounds(330, 25, sprite.getWidth(), sprite.getHeight());
+                setBounds(830, 25, sprite.getWidth(), sprite.getHeight());
                 break;
             default:
                 // code block

@@ -19,7 +19,7 @@ public class LoadingObject extends Actor {
 
     public LoadingObject() {
         sprite = new Sprite(new Texture("loadingObj.png"));
-        setPosition(200, 200);
+        setPosition(500, 500);
     }
 
     @Override
