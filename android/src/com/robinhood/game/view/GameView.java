@@ -67,7 +67,6 @@ public class GameView extends View {
         rightButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
-                System.out.println("OKKK!");
                 controller.move(false);
             }
         });
