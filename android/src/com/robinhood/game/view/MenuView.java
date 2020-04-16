@@ -42,11 +42,11 @@ public class MenuView extends View  {
         // table.setPosition(400, 0);      // Want to move the buttons to the right
         stage.addActor(table);
 
-        table.row().pad(200, 0, 10, 0);
-        table.add(newGame).fillX().uniform();
-        table.row().pad(10, 0, 10, 0);
+        table.row().pad(200, 0, 20, 0);
+        table.add(newGame).fillX().uniform().width(200f).height(150f);
+        table.row().pad(20, 0, 20, 0).width(200f).height(150f);
         table.add(settings).fillX().uniform();
-        table.row().pad(10, 0, 10, 0);
+        table.row().pad(20, 0, 20, 0).width(200f).height(150f);
         table.add(exit).fillX().uniform();
 
 
