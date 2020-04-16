@@ -82,16 +82,16 @@ public class SettingsView extends View {
         });
 
         // Table generated
-        table.row().pad(350,0,0,10);
+        table.row().pad(350,0,0,0);
         table.add(musicOnOffLabel).left();
         table.add(musicCheckbox);
-        table.row().pad(10,0,0,10);
+        table.row().pad(10,0,0,0);
         table.add(soundOnOffLabel).left();
         table.add(soundCheckbox);
         // Back button
-        table.row().pad(50, 0, 0, 10);
-        table.add(backButton).left();
+        table.row().pad(50, 0, 0, 0);
+        table.add(backButton).colspan(3).center().fillX().height(100f);
 
-        super.stage.addActor(table);
+        stage.addActor(table);
     }
 }

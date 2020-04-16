@@ -22,11 +22,6 @@ import java.util.List;
 
 public class Model {
 
-    // SoundBar is the only class outside ECS because
-    //  because it is not active in-game
-    // TODO: check soundbar logic and minimalize code
-    private SoundBar soundBar;
-
     // Sound Settings
     private Boolean MUSIC_ENABLED = true;
     private Boolean SOUND_ENABLED = true;
