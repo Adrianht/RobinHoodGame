@@ -51,5 +51,4 @@ public class SettingsView extends View {
         super.stage.addActor(robinHood);
         super.stage.addActor(soundBar);
     }
-
 }
