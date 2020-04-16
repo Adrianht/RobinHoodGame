@@ -1,43 +1,84 @@
 package com.robinhood.game.view;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.robinhood.game.controller.Controller;
-import com.robinhood.game.model.Model;
-import com.robinhood.game.model.SoundBar;
-import com.robinhood.game.view.interfaceObjects.Button;
 
 public class SettingsView extends View {
 
     private final Controller controller;
 
-    public SettingsView(Controller cont, Model model) {
+    // Labels
+    private Label musicOnOffLabel;
+    private Label soundOnOffLabel;
+
+    // Skin
+    private Skin skin = new Skin(Gdx.files.internal("skin/dark-hdpi/Holo-dark-hdpi.json"));
+
+    private final CheckBox musicCheckbox = new CheckBox(null, skin);
+    private final CheckBox soundCheckbox = new CheckBox(null, skin);
+    private final TextButton backButton = new TextButton("Back", skin);
+
+    public SettingsView(Controller cont) {
 
         this.controller = cont;
 
-        // Stage: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/Stage.html
-        // set the stage of the View superclass - same in all subclasses
         super.stage = new Stage(new ScreenViewport());
+
+        stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+
         Gdx.input.setInputProcessor(super.stage);
 
-        Button menuButton = new Button("backbutton");
-        Button robinHood = new Button("robinhoodpic");
-        SoundBar soundBar = model.getSoundBar();
+        // Create new table that fills the screen -> Table added to stage
+        Table table = new Table();
+        table.setFillParent(true);
+        table.setDebug(false);
+
+        // Cheap way to add background, TODO: fix later using asset manager
+        table.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture("background.png"))));
+
+        musicCheckbox.setChecked(controller.getMusicEnabled());
+        soundCheckbox.setChecked(controller.getSoundEnabled());
+
+        musicOnOffLabel = new Label("Music", skin);
+        soundOnOffLabel = new Label("Effects", skin);
 
         // TODO: add possibility to change username and do it by calling:
         //  controller.setUsername(username)
 
-        // Checks if soundBar already has a clickListener, adds listener if not
-        if(!soundBar.getListener()){
-            soundBar.addListener(controller);
-        }
+        musicCheckbox.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float clickX, float clickY) {
+                boolean enabled = musicCheckbox.isChecked();
+                System.out.println(controller.getMusicEnabled());
+                controller.setMusicEnabled( enabled );
+                System.out.println(controller.getMusicEnabled());
+            }
+        });
 
-        // ClickListener: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/utils/ClickListener.html
-        // ClickListener triggered by user clicks on Button/Actor to call appropriate actions
-        menuButton.addListener(new ClickListener(){
+        soundCheckbox.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float clickX, float clickY) {
+                boolean enabled = soundCheckbox.isChecked();
+                System.out.println("Hallo?");
+                System.out.println(controller.getSoundEnabled());
+                controller.setSoundEnabled( enabled );
+                System.out.println(controller.getSoundEnabled());
+            }
+        });
+
+        backButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
                 System.out.println("TO MENU!");
@@ -45,11 +86,17 @@ public class SettingsView extends View {
             }
         });
 
-        // Actor: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/Actor.html
-        // adds all the elements to this interface
-        super.stage.addActor(menuButton);
-        super.stage.addActor(robinHood);
-        super.stage.addActor(soundBar);
-    }
+        // Table generated
+        table.row().pad(350,0,0,10);
+        table.add(musicOnOffLabel).left();
+        table.add(musicCheckbox);
+        table.row().pad(10,0,0,10);
+        table.add(soundOnOffLabel).left();
+        table.add(soundCheckbox);
+        // Back button
+        table.row().pad(50, 0, 0, 10);
+        table.add(backButton).left();
 
+        super.stage.addActor(table);
+    }
 }

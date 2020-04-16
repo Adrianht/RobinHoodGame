@@ -1,5 +1,6 @@
 package com.robinhood.game.model;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
@@ -25,6 +26,10 @@ public class Model {
     //  because it is not active in-game
     // TODO: check soundbar logic and minimalize code
     private SoundBar soundBar;
+
+    // Sound Settings
+    private Boolean MUSIC_ENABLED = true;
+    private Boolean SOUND_ENABLED = true;
 
     private String myUsername = "Username";
 
@@ -104,16 +109,6 @@ public class Model {
         entities.add(entityFactory.newArrow());
     }
 
-    // Method that return this game instance's soundbar object
-    public SoundBar getSoundBar() {
-        return this.soundBar.getSoundBar();
-    }
-
-    // Method used to change sound setting
-    public void changeSound() {
-        this.soundBar.getSoundBar().changeSound();
-    }
-
     // Method used to fetch players hit point values
     public List<Integer> getHP(){
         return playerInfoSystem.getHP(entities, nrOfPlayers);
@@ -149,5 +144,16 @@ public class Model {
         entities.clear();
         gameInitialized = false;
     }
+
+    // NEW Music/Sound methods
+    public boolean getMusicEnabled() { return MUSIC_ENABLED; }
+
+    public void setMusicEnabled(boolean enabled) { MUSIC_ENABLED = enabled; }
+
+    public boolean getSoundEnabled() {
+        return SOUND_ENABLED;
+    }
+
+    public void setSoundEnabled(boolean enabled) { SOUND_ENABLED = enabled; }
 
 }
