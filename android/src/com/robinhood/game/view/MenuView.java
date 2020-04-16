@@ -44,10 +44,10 @@ public class MenuView extends View  {
 
         table.row().pad(200, 0, 20, 0);
         table.add(newGame).fillX().uniform().width(200f).height(150f);
-        table.row().pad(20, 0, 20, 0).width(200f).height(150f);
-        table.add(settings).fillX().uniform();
-        table.row().pad(20, 0, 20, 0).width(200f).height(150f);
-        table.add(exit).fillX().uniform();
+        table.row().pad(20, 0, 20, 0);
+        table.add(settings).fillX().uniform().width(200f).height(150f);
+        table.row().pad(20, 0, 20, 0);
+        table.add(exit).fillX().uniform().width(200f).height(150f);
 
 
         // ClickListener: https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/utils/ClickListener.html
