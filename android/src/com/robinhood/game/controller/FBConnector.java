@@ -24,7 +24,13 @@ public class FBConnector {
     }
 
     // attempts to find a match
-    public void findPlayer(final String username) {
+    // TODO-ola: need expandable implementation
+    public void findPlayers(String username, int nrOfPlayers) {
+
+
+        // TODO: add dummy til design finished
+
+
         firstPlayer = false;
         mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("availablePlayer");
@@ -40,7 +46,6 @@ public class FBConnector {
                 if (playerNames.size() == 1) {
                     firstPlayer = true;
                 }
-                // TODO-Ola: make dependent on nrOfPlayers, not hard coding
                 if(playerNames.size() == 2) {
                     if (playerNames.get(0).equals(playerNames.get(1))) {
                         if (!firstPlayer) {

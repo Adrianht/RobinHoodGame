@@ -13,6 +13,7 @@ public class Controller {
     private RobinHood game;
     private FBConnector fbconnector;
     private Model model;
+    private final int nrOfPlayers = 2;
 
     public Controller(RobinHood game) {
         this.game = game;
@@ -105,7 +106,7 @@ public class Controller {
 
     // Method to initiate Firebase-connector and find another player
     public void findPlayer() {
-        fbconnector.findPlayer(model.getMyUsername());
+        fbconnector.findPlayers(model.getMyUsername(), nrOfPlayers);
     }
 
     // Method to cancel a players search for opponent
