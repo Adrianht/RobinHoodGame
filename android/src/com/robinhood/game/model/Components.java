@@ -14,11 +14,9 @@ public class Components {
 
     // holders for all possible components
     public Energy energy;
-    public GameActor actor;
     public HitPoints hp;
     public PlayerName name;
     public PlayerNr playernr;
-    public Position pos;
     public Box2dBody box2dBody;
     public Turn turn;
     public ArrowType arrowtype;
@@ -31,24 +29,11 @@ public class Components {
         public String type = "Normal";
         public int damage = 10;
     }
-
     public class Energy {
         public Energy() {
             Components.this.energy = this;
         }
         public int value = 20;
-    }
-    public class GameActor extends Actor {
-        public GameActor() {
-            Components.this.actor = this;
-        }
-        public Sprite sprite;
-
-        @Override
-        public void draw(Batch batch, float parentAlpha) {
-            sprite.setPosition(Components.this.pos.x, Components.this.pos.y);
-            sprite.draw(batch);
-        }
     }
     public class HitPoints {
         public HitPoints() {
@@ -67,12 +52,6 @@ public class Components {
             Components.this.playernr = this;
         }
         public int nr;
-    }
-    public class Position {
-        public Position() {
-            Components.this.pos = this;
-        }
-        public float x, y;
     }
     public class Box2dBody {
         public Box2dBody() {

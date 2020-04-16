@@ -79,12 +79,12 @@ public class Controller {
         model.drawBow(vector2);
     }
 
-    //TODO: add description
+    // Method called from GameView when only one player has hp
     public void handleGameOver() {
         this.navigateTo("GAMEOVER");
     }
 
-    //TODO: add description
+    // Method called to delete game data from firebase and model
     public void endGameInstance() {
         fbconnector.removeRoom();
         model.resetModelData();

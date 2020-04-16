@@ -33,7 +33,6 @@ public class Model {
 
     // ECS related fields - list index might be used as entity id
     private List<Entity> entities = new ArrayList<>();
-    private Systems.Render renderingSystem;
     private Systems.Animation animationSystem;
     private Systems.UserInput userInputSystem;
     private Systems.playerInfo playerInfoSystem;
@@ -46,24 +45,19 @@ public class Model {
 
     // Method to initiate a new game after two players are matched
     // TODO-Ola: coordinate with controller.initateGame-input
-    // TODO: separate into helper-methods
     public void initiateGame(String username1, String username2) {
 
         // initiate box2d
         world = new World(new Vector2(0,-10f), true);
         entityFactory = new EntityFactory(world);
 
-
         // Initiate ground entity
         entities.add(entityFactory.createGround());
 
-
         // Initiate player entities
         // FIXME: try to avoid hard codings
-        //int[][] startPositions = {{30, 200},{400, 200}};
         int[] bodyDefPos = {-10, 10};
         String[] playerNames = {username1, username2};
-        //String[] playerColor = {"RED", "BLUE"};
         for (int i = 0; i < nrOfPlayers; i++) {
             Entity player = entityFactory.createPlayer(
                 playerNames[i],
@@ -73,24 +67,19 @@ public class Model {
             entities.add(player);
         }
 
-
         // Initiate arrow
         entities.add(entityFactory.newArrow());
 
-
         // Initiate game system possibilities
-        renderingSystem = new Systems.Render();
         userInputSystem = new Systems.UserInput();
         animationSystem = new Systems.Animation();
         playerInfoSystem = new Systems.playerInfo();
 
         this.gameInitialized = true;
-    }
 
-    // Called in GameView to return all active actors
-    //  includes archers, arrow(s), and arena
-    public List<Actor> getActors() {
-        return renderingSystem.getActors(entities);
+        // FIXME: this run on iteration to land players on ground
+        //    attempt to find workaround
+        world.step(.001f, 1, 1);
     }
 
     // Method called from Controller to move the active player
@@ -100,20 +89,18 @@ public class Model {
         } else {
             userInputSystem.moveRight(world, entities);
         }
-        //entities.add(entityFactory.newArrow());
     }
 
-    /* Method called from Controller to buy an arrow, the check and update of weapon type is done
-    * in Systems.java  */
+    // Method called from Controller to buy an arrow, the check and
+    //  update of weapon type is done in Systems.java
     public void buyArrow(String type) {
         userInputSystem.buyArrow(entities, type);
     }
 
     // Method runs animation and change players turn
     public void drawBow(Vector2 vector2) {
-        System.out.println("draw called");
         animationSystem.arrowAnimation(world, entities, vector2);
-        userInputSystem.changeTurn(entities, nrOfPlayers);
+        playerInfoSystem.changeTurn(entities, nrOfPlayers);
         entities.add(entityFactory.newArrow());
     }
 

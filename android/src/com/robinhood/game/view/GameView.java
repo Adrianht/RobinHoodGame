@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -101,12 +100,6 @@ public class GameView extends View {
         stage.addActor(buyLevel2);
         stage.addActor(buyLevel3);
         stage.addActor(buyLevel4);
-
-        // Add archers, arrows and arena from model
-        List<Actor> actors = model.getActors();
-        for (Actor actor: actors) {
-            //stage.addActor(actor);
-        }
 
         // Add listener to detect drag on screen and trigger controller.drawBow()-method
         dragIndicator = new DragIndicator();

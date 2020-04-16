@@ -1,7 +1,6 @@
 package com.robinhood.game.model;
 
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -10,13 +9,11 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-// TODO: separate in to own classes in package Systems
+// TODO: maybe separate in to own classes in package Systems
 public class Systems {
 
     // system class handling rendering entities
@@ -27,7 +24,6 @@ public class Systems {
                 if (entity.component.arrowtype != null) {
                     arrowBody = entity.component.box2dBody.body;
                     arrowBody.setActive(false);
-                    //world.destroyBody(entity.component.box2dBody.body);
                 }
             }
             for(Entity entity: entities) {
@@ -48,46 +44,6 @@ public class Systems {
         }
         public void moveRight(World world, List<Entity> entities) {
             move(world, entities, 1);
-        }
-
-        // FIXME: possibly move elsewhere
-        public void changeTurn(List<Entity> entities, int nrOfPlayers) {
-
-            // FIXME: try to find more elegant solution(s)
-
-            int prevPlayerNr = 0;
-
-            // remove current players turn
-            for(Entity entity: entities) {
-                if(entity.component.turn != null) {
-                    if (entity.component.turn.turn) {
-                        prevPlayerNr = entity.component.playernr.nr;
-                        entity.component.turn.turn = false;
-                    }
-                }
-            }
-
-            // give turn to next player and add 10 energy points
-            for(Entity entity: entities) {
-                if(entity.component.playernr != null) {
-                    if (entity.component.playernr.nr == (prevPlayerNr + 1) % nrOfPlayers) {
-                        entity.component.turn.turn = true;
-                        if (entity.component.energy.value < 90) {
-                            entity.component.energy.value += 10;
-                        } else {
-                            entity.component.energy.value = 100;
-                        }
-                    }
-                }
-            }
-
-            // reset arrow attributes to "Normal" arrow
-            for(Entity entity: entities) {
-                if(entity.component.arrowtype != null) {
-                    entity.component.arrowtype.type = "Normal";
-                    entity.component.arrowtype.damage = 10;
-                }
-            }
         }
 
         /* Checks if the player has enough energy to buy that arrow type, if yes,
@@ -175,69 +131,76 @@ public class Systems {
             }
             return false;
         }
-    }
 
+        public void changeTurn(List<Entity> entities, int nrOfPlayers) {
 
-    // system class handling rendering entities
-    public static class Render {
-        public List<Actor> getActors(List<Entity> entities) {
-            List<Actor> actors = new ArrayList<>();
+            int prevPlayerNr = 0;
 
+            // remove current players turn
             for(Entity entity: entities) {
-                if (entity.component.actor != null) {
-                    actors.add(entity.component.actor);
+                if(entity.component.turn != null) {
+                    if (entity.component.turn.turn) {
+                        prevPlayerNr = entity.component.playernr.nr;
+                        entity.component.turn.turn = false;
+                    }
                 }
             }
 
-            return actors;
+            // give turn to next player and add 10 energy points
+            for(Entity entity: entities) {
+                if(entity.component.playernr != null) {
+                    if (entity.component.playernr.nr == (prevPlayerNr + 1) % nrOfPlayers) {
+                        entity.component.turn.turn = true;
+                        if (entity.component.energy.value < 90) {
+                            entity.component.energy.value += 10;
+                        } else {
+                            entity.component.energy.value = 100;
+                        }
+                    }
+                }
+            }
         }
-
     }
 
 
     // system class handling animations
-    // FIXME: currently suited for two players
     public static class Animation {
 
-        private boolean flying;
+        private boolean flying = true;
         private Body[] contactBodies = new Body[2];
 
         public void arrowAnimation(World world, final List<Entity> entities, Vector2 vector2) {
 
+            world.setContactListener(new ContactListener() {
+                @Override
+                public void beginContact(Contact contact) {
+                    Fixture fixtureA = contact.getFixtureA();
+                    Fixture fixtureB = contact.getFixtureB();
+                    contactBodies[0] = fixtureA.getBody();
+                    contactBodies[1] = fixtureB.getBody();
+                    flying = false;
+                }
+
+                @Override
+                public void endContact(Contact contact) {
+                }
+
+                @Override
+                public void preSolve(Contact contact, Manifold oldManifold) {
+                }
+
+                @Override
+                public void postSolve(Contact contact, ContactImpulse impulse) {
+                }
+            });
+
             for(Entity entity: entities) {
                 // finds arrow object
                 if (entity.component.arrowtype != null) {
-
                     entity.component.box2dBody.body.setLinearVelocity(vector2.scl(-.05f));
                     flying = true;
-
-                    // TODO: find way to detect screen edge
                     while(flying) {
                         world.step(.001f, 1, 1);
-                        world.setContactListener(new ContactListener() {
-                            @Override
-                            public void beginContact(Contact contact) {
-                                Fixture fixtureA = contact.getFixtureA();
-                                Fixture fixtureB = contact.getFixtureB();
-                                contactBodies[0] = fixtureA.getBody();
-                                contactBodies[1] = fixtureB.getBody();
-                                flying = false;
-                            }
-
-                            @Override
-                            public void endContact(Contact contact) {
-                            }
-
-                            @Override
-                            public void preSolve(Contact contact, Manifold oldManifold) {
-                            }
-
-                            @Override
-                            public void postSolve(Contact contact, ContactImpulse impulse) {
-                            }
-                        });
-                        //counter++;
-
                     }
 
                     Body hitBody;
@@ -257,36 +220,11 @@ public class Systems {
                         }
                     }
 
-                    // remove used arrow body
+                    // remove used arrow
                     entity.component.arrowtype = null;
                     world.destroyBody(entity.component.box2dBody.body);
                 }
             }
         }
-/*
-        private boolean isHit(Entity arrow, Entity opponent) {
-
-            Float arrowLeftmost = arrow.component.pos.x;
-            Float arrowRightmost = arrow.component.pos.x + arrow.component.actor.sprite.getWidth();
-            Float arrowLowest = arrow.component.pos.y;
-            Float arrowHighest = arrow.component.pos.y + arrow.component.actor.sprite.getHeight();
-
-            Float opponentLeftmost = opponent.component.pos.x;
-            Float opponentRightmost = opponent.component.pos.x + opponent.component.actor.sprite.getWidth();
-            Float opponentLowest = opponent.component.pos.y;
-            Float opponentHighest = opponent.component.pos.y + arrow.component.actor.sprite.getHeight();
-
-            // check if any of arrow sprite corners are inside opponent sprite
-            if (((arrowLeftmost <= opponentRightmost && arrowLeftmost >= opponentLeftmost)
-                    || (arrowRightmost <= opponentRightmost && arrowRightmost >= opponentLeftmost))
-                && ((arrowLowest <= opponentHighest && arrowLowest >= opponentLowest)
-                    || (arrowHighest <= opponentHighest && arrowHighest >= opponentLowest))) {
-                return true;
-            }
-
-            return false;
-        }
-
- */
     }
 }
