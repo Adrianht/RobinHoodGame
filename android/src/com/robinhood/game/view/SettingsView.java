@@ -61,9 +61,7 @@ public class SettingsView extends View {
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
                 boolean enabled = musicCheckbox.isChecked();
-                System.out.println(controller.getMusicEnabled());
                 controller.setMusicEnabled( enabled );
-                System.out.println(controller.getMusicEnabled());
             }
         });
 
@@ -71,10 +69,7 @@ public class SettingsView extends View {
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
                 boolean enabled = soundCheckbox.isChecked();
-                System.out.println("Hallo?");
-                System.out.println(controller.getSoundEnabled());
                 controller.setSoundEnabled( enabled );
-                System.out.println(controller.getSoundEnabled());
             }
         });
 
