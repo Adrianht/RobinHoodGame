@@ -46,12 +46,12 @@ public class MenuView extends View  {
         // table.setPosition(400, 0);      // Want to move the buttons to the right
         stage.addActor(table);
 
-        table.row().pad(200, 0, 20, 0);
-        table.add(newGame).fillX().uniform().width(200f).height(150f);
-        table.row().pad(20, 0, 20, 0);
-        table.add(settings).fillX().uniform().width(200f).height(150f);
-        table.row().pad(20, 0, 20, 0);
-        table.add(exit).fillX().uniform().width(200f).height(150f);
+        table.row().pad(400, 0, 10, 0);
+        table.add(newGame).fillX().uniform().width(300f).height(100f);
+        table.row().pad(10, 0, 10, 0);
+        table.add(settings).fillX().uniform().width(300f).height(100f);
+        table.row().pad(10, 0, 10, 0);
+        table.add(exit).fillX().uniform().width(300f).height(100f);
 
         // ClickListener triggered by user clicks on Button/Actor to call appropriate actions
         settings.addListener(new ClickListener(){
