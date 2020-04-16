@@ -46,7 +46,7 @@ public class SettingsView extends View {
         table.setDebug(false);
 
         // Cheap way to add background, TODO: fix later using asset manager
-        table.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture("background.png"))));
+        table.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture("background-smaller.png"))));
 
         musicCheckbox.setChecked(controller.getMusicEnabled());
         soundCheckbox.setChecked(controller.getSoundEnabled());
@@ -83,14 +83,14 @@ public class SettingsView extends View {
 
         // Table generated
         table.row().pad(350,0,0,0);
-        table.add(musicOnOffLabel).left();
+        table.add(musicOnOffLabel).left().width(300f).height(100f);
         table.add(musicCheckbox);
         table.row().pad(10,0,0,0);
-        table.add(soundOnOffLabel).left();
+        table.add(soundOnOffLabel).left().width(300f).height(100f);
         table.add(soundCheckbox);
         // Back button
         table.row().pad(50, 0, 0, 0);
-        table.add(backButton).colspan(3).center().fillX().height(100f);
+        table.add(backButton).colspan(3).center().width(300f).height(100f);
 
         stage.addActor(table);
     }
