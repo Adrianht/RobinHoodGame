@@ -170,5 +170,4 @@ public class GameView extends View {
         font.draw(batch, (hpText + energyText), 750, 830);
         batch.end();
     }
-
 }

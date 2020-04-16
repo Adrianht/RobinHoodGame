@@ -62,4 +62,5 @@ public class LoadingView extends View {
             }
         super.render();
     }
+
 }
