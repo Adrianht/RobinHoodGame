@@ -11,11 +11,13 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class FBConnector {
 
     private DatabaseReference mDatabase;
     private Controller controller;
+    private boolean firstPlayer;
 
     FBConnector (Controller controller) {
         this.controller = controller;
@@ -23,18 +25,7 @@ public class FBConnector {
 
     // attempts to find a match
     public void findPlayer(final String username) {
-
-        // TODO-OLA: back to normal
-        controller.initiateGame(
-                "Username",
-                "Username"
-        );
-        FirebaseDatabase.getInstance().getReference()
-                .child("availablePlayer").removeValue();
-        mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("rooms").child(hashRoomId("Username"));
-        createGameRoom(hashRoomId("Username"));
-/*
+        firstPlayer = false;
         mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("availablePlayer");
         mDatabase.push().setValue(username);
@@ -43,19 +34,34 @@ public class FBConnector {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<String> playerNames = new ArrayList<>();
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     playerNames.add(snapshot.getValue().toString());
                 }
+                if (playerNames.size() == 1) {
+                    firstPlayer = true;
+                }
+                // TODO-Ola: make dependent on nrOfPlayers, not hard coding
                 if(playerNames.size() == 2) {
-                    controller.initiateGame(
-                            playerNames.get(0),
-                            playerNames.get(1)
-                    );
+                    if (playerNames.get(0).equals(playerNames.get(1))) {
+                        if (!firstPlayer) {
+                            controller.setUsername(playerNames.get(1) + "2");
+                        }
+                        mDatabase.removeValue();
+                        mDatabase.setValue(playerNames.get(0));
+                        mDatabase.setValue(playerNames.get(1) + "2");
+                    }
+                    mDatabase.setValue(UUID.randomUUID().toString());
+                } else if(playerNames.size() == 3) {
+                    controller.initiateGame(playerNames.subList(0, 2));
+
                     FirebaseDatabase.getInstance().getReference()
                             .child("availablePlayer").removeValue();
                     mDatabase = FirebaseDatabase.getInstance().getReference()
-                            .child("rooms").child(hashRoomId(playerNames.get(0)));
-                    createGameRoom(hashRoomId(playerNames.get(0)));
+                            .child("rooms").child(playerNames.get(2));
+                    mDatabase.child("move").setValue(null);
+                    mDatabase.child("activeArrow").setValue(null);
+                    mDatabase.child("drawBow").setValue(null);
+                    createGameRoomListeners();
                 }
             }
 
@@ -64,7 +70,7 @@ public class FBConnector {
                 // empty method
             }
 
-        });*/
+        });
     }
 
     // Cancels search for opponent
@@ -74,8 +80,7 @@ public class FBConnector {
     }
 
     // creates a new game room in firebase real-time database
-    public void createGameRoom(String roomRef) {
-        mDatabase.child("move").setValue(null);
+    public void createGameRoomListeners() {
         mDatabase.child("move").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -90,7 +95,6 @@ public class FBConnector {
             }
         });
 
-        mDatabase.child("activeArrow").setValue(null);
         mDatabase.child("activeArrow").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -105,7 +109,6 @@ public class FBConnector {
             }
         });
 
-        mDatabase.child("drawBow").setValue(null);
         mDatabase.child("drawBow").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -120,13 +123,6 @@ public class FBConnector {
                 // empty method
             }
         });
-    }
-
-    // Method creating unique game room id
-    private String hashRoomId(String username) {
-        // FIXME: change and change system generally,
-        //  cannot have similar roomIDs
-        return username + "roomhash";
     }
 
     // Method to change last movement in players game room

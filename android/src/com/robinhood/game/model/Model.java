@@ -26,7 +26,7 @@ public class Model {
     private Boolean MUSIC_ENABLED = true;
     private Boolean SOUND_ENABLED = true;
 
-    private String myUsername = "Username";
+    private String myUsername = "Ola";
 
     private boolean gameInitialized = false;
     private final int nrOfPlayers = 2;
@@ -44,8 +44,7 @@ public class Model {
 
 
     // Method to initiate a new game after two players are matched
-    // TODO-Ola: coordinate with controller.initateGame-input
-    public void initiateGame(String username1, String username2) {
+    public void initiateGame(List<String> usernames) {
 
         // initiate box2d
         world = new World(new Vector2(0,-10f), true);
@@ -57,10 +56,9 @@ public class Model {
         // Initiate player entities
         // FIXME: try to avoid hard codings
         int[] bodyDefPos = {-10, 10};
-        String[] playerNames = {username1, username2};
         for (int i = 0; i < nrOfPlayers; i++) {
             Entity player = entityFactory.createPlayer(
-                playerNames[i],
+                usernames.get(i),
                 bodyDefPos[i],
                 i
             );

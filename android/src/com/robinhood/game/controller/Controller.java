@@ -114,9 +114,8 @@ public class Controller {
     }
 
     // Method called to initiate game after Firebase has found opponent
-    // TODO-Ola: change to varargs, to enable more than 2 players (maybe do varags in model)
-    public void initiateGame(String username1, String username2) {
-        model.initiateGame(username1, username2);
+    public void initiateGame(List<String> usernames) {
+        model.initiateGame(usernames);
     }
 
     // Method returns if game is initialized
