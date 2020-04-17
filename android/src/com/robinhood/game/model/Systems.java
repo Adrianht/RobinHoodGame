@@ -119,6 +119,20 @@ public class Systems {
             return points;
         }
 
+        public int getPlayerNr(List<Entity> entities, String username){
+            int nr = new Integer(3);
+            System.out.println(username);
+            for(Entity entity: entities){
+                if(entity.component.energy != null){
+                    if(entity.component.name.name.equals(username)){
+                        System.out.println(entity.component.playernr.nr);
+                        nr = entity.component.playernr.nr;
+                    }
+                }
+            }
+            return nr;
+        }
+
         public boolean isMyTurn(List<Entity> entities, String username) {
             for (Entity entity: entities){
 

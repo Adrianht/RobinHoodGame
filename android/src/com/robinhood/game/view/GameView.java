@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.math.Vector2;
 import com.robinhood.game.controller.Controller;
+import com.robinhood.game.model.Components;
 import com.robinhood.game.model.Model;
 import com.robinhood.game.view.interfaceObjects.DragIndicator;
 import com.robinhood.game.view.interfaceObjects.Button;
@@ -96,6 +97,13 @@ public class GameView extends View {
         stage.addActor(menuButton);
         stage.addActor(leftButton);
         stage.addActor(rightButton);
+        System.out.println(controller.getPlayerNr());
+
+        if (controller.getEnergy().get(controller.getPlayerNr()) >= 20) {
+            System.out.println("yeehaw");
+        } else{
+            System.out.println("nah");
+        }
         stage.addActor(buyLevel2);
         stage.addActor(buyLevel3);
         stage.addActor(buyLevel4);

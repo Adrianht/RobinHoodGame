@@ -26,7 +26,7 @@ public class Model {
     private Boolean MUSIC_ENABLED = true;
     private Boolean SOUND_ENABLED = true;
 
-    private String myUsername = "Username";
+    private String myUsername = "UsernameTes";
 
     private boolean gameInitialized = false;
     private final int nrOfPlayers = 2;
@@ -122,6 +122,10 @@ public class Model {
     // Method returns username
     public String getMyUsername() {
         return myUsername;
+    }
+
+    public int getPlayerNr(){
+        return playerInfoSystem.getPlayerNr(entities, myUsername);
     }
 
     // Method set username

@@ -95,6 +95,8 @@ public class Controller {
         return model.getMusicEnabled();
     }
 
+    public int getPlayerNr(){return model.getPlayerNr();}
+
     public void setMusicEnabled(boolean enabled) { model.setMusicEnabled(enabled); }
 
     public boolean getSoundEnabled() {
