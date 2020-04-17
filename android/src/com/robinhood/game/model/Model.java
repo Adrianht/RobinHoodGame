@@ -29,7 +29,6 @@ public class Model {
     private String myUsername = "Username";
 
     private boolean gameInitialized = false;
-    private final int nrOfPlayers = 2;
 
     // ECS related fields - list index might be used as entity id
     private List<Entity> entities = new ArrayList<>();
@@ -44,8 +43,7 @@ public class Model {
 
 
     // Method to initiate a new game after two players are matched
-    // TODO-Ola: coordinate with controller.initateGame-input
-    public void initiateGame(String username1, String username2) {
+    public void initiateGame(List<String> usernames) {
 
         // initiate box2d
         world = new World(new Vector2(0,-10f), true);
@@ -55,13 +53,11 @@ public class Model {
         entities.add(entityFactory.createGround());
 
         // Initiate player entities
-        // FIXME: try to avoid hard codings
-        int[] bodyDefPos = {-10, 10};
-        String[] playerNames = {username1, username2};
-        for (int i = 0; i < nrOfPlayers; i++) {
+        int playerSpace = 24 / (usernames.size()-1);
+        for (int i = 0; i < usernames.size(); i++) {
             Entity player = entityFactory.createPlayer(
-                playerNames[i],
-                bodyDefPos[i],
+                usernames.get(i),
+                (playerSpace*i - 12),
                 i
             );
             entities.add(player);
@@ -100,18 +96,21 @@ public class Model {
     // Method runs animation and change players turn
     public void drawBow(Vector2 vector2) {
         animationSystem.arrowAnimation(world, entities, vector2);
-        playerInfoSystem.changeTurn(entities, nrOfPlayers);
+        // TODO-ola: send only players (stream) and calc nrOfPlayers
+        playerInfoSystem.changeTurn(entities, 2);
         entities.add(entityFactory.newArrow());
     }
 
     // Method used to fetch players hit point values
     public List<Integer> getHP(){
-        return playerInfoSystem.getHP(entities, nrOfPlayers);
+        // TODO-ola: send only players (stream) and calc nrOfPlayers
+        return playerInfoSystem.getHP(entities, 2);
     }
 
     // Method used to fetch players energy values
     public List<Integer> getEnergy(){
-        return playerInfoSystem.getEnergyPoints(entities, nrOfPlayers);
+        // TODO-ola: send only players (stream) and calc nrOfPlayers
+        return playerInfoSystem.getEnergyPoints(entities, 2);
     }
 
     // Method used to check if it's this player's turn
