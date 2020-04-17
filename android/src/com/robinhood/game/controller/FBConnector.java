@@ -26,8 +26,8 @@ public class FBConnector {
 
     public void findPlayers(final String username, final int nrOfPlayers) {
 
-        /*
-        // TODO-OLA: back to normal after design finished
+
+        // TODO: replace following with commented after design finished
         List<String> usernames = new ArrayList<>();
         usernames.add("Username");
         usernames.add("Username");
@@ -36,8 +36,8 @@ public class FBConnector {
                 .child("rooms").child("UsernameRoom");
         createGameRoomListeners();
 
-         */
 
+        /*
         nameIsValid = false;
         cancelFindPlayer = false;
 
@@ -84,7 +84,6 @@ public class FBConnector {
                     nameIsValid = true;
                     if (playerNames.size() == nrOfPlayers) {
                         mDatabase.push().setValue(UUID.randomUUID().toString());
-                        // TODO: possebly add init values in room (null)
                     }
                 }
 
@@ -94,7 +93,7 @@ public class FBConnector {
                     mDatabase.removeEventListener(this);
                     controller.initiateGame(playerNames.subList(0, nrOfPlayers));
                     mDatabase = FirebaseDatabase.getInstance().getReference()
-                            .child("rooms").child(playerNames.get(2));
+                            .child("rooms").child(playerNames.get(playerNames.size()-1));
                     createGameRoomListeners();
                 }
             }
@@ -105,22 +104,13 @@ public class FBConnector {
             }
 
         });
+         */
     }
 
     // Cancels search for opponent(s)
     public void cancelFindPlayer() {
         cancelFindPlayer = true;
         mDatabase.push().setValue("cancelFindPlayer");
-    }
-
-    // Checks if last element is unique
-    private boolean lastUsernameIsUnique(List<String> usernames) {
-        for (int i = 1; i < (usernames.size()-1); i++) {
-            if (usernames.get(usernames.size()-1).equals(usernames.get(i))) {
-                return false;
-            }
-        }
-        return true;
     }
 
     // Creates listeners within the designated game room
@@ -196,4 +186,13 @@ public class FBConnector {
         mDatabase.child("drawBow").removeEventListener(drawBowListener);
     }
 
+    // Checks if last element is unique
+    private boolean lastUsernameIsUnique(List<String> usernames) {
+        for (int i = 0; i < (usernames.size()-1); i++) {
+            if (usernames.get(usernames.size()-1).equals(usernames.get(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
