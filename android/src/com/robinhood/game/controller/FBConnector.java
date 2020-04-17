@@ -19,6 +19,7 @@ public class FBConnector {
     private DatabaseReference mDatabase;
     private ValueEventListener moveListener, activeArrowListener, drawBowListener;
     private boolean nameIsValid, cancelFindPlayer;
+    private String removeUsername;
 
     FBConnector (Controller controller) {
         this.controller = controller;
@@ -37,7 +38,7 @@ public class FBConnector {
         createGameRoomListeners();
 
 
-        /*
+    /*
         nameIsValid = false;
         cancelFindPlayer = false;
 
@@ -57,11 +58,12 @@ public class FBConnector {
                 if (cancelFindPlayer) {
                     mDatabase.removeValue();
                     for (String name: playerNames) {
-                        if(!name.equals(username)
+                        if(!name.equals(removeUsername)
                                 && !name.equals("cancelFindPlayer")) {
                             mDatabase.push().setValue(name);
                         }
                     }
+                    cancelFindPlayer = false;
                 }
 
                 // Ensure last username is unique
@@ -104,12 +106,13 @@ public class FBConnector {
             }
 
         });
-         */
+    */
     }
 
     // Cancels search for opponent(s)
-    public void cancelFindPlayer() {
+    public void cancelFindPlayer(String username) {
         cancelFindPlayer = true;
+        removeUsername = username;
         mDatabase.push().setValue("cancelFindPlayer");
     }
 
