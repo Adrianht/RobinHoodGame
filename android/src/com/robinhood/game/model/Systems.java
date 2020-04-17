@@ -121,11 +121,10 @@ public class Systems {
 
         public boolean isMyTurn(List<Entity> entities, String username) {
             for (Entity entity: entities){
-
                 if(entity.component.turn != null
                         && entity.component.turn.turn
                         && entity.component.name != null
-                        && entity.component.name.name == username ){
+                        && entity.component.name.name.equals(username) ){
                     return true;
                 }
             }

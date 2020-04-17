@@ -17,14 +17,14 @@ public class FBConnector {
 
     private DatabaseReference mDatabase;
     private Controller controller;
-    private boolean firstPlayer;
+    private boolean firstPlayer, sameUsername;
 
     FBConnector (Controller controller) {
         this.controller = controller;
     }
 
     // attempts to find a match
-    // TODO-ola: need expandable implementation
+    // TODO-ola: need expandable implementation (index-based replace bool firstPlayer
     public void findPlayers(String username, int nrOfPlayers) {
 
 
@@ -32,6 +32,8 @@ public class FBConnector {
 
 
         firstPlayer = false;
+        sameUsername = false;
+
         mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("availablePlayer");
         mDatabase.push().setValue(username);
@@ -43,29 +45,35 @@ public class FBConnector {
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     playerNames.add(snapshot.getValue().toString());
                 }
-                if (playerNames.size() == 1) {
+                if (playerNames.size() == 1 && !sameUsername) {
                     firstPlayer = true;
-                }
-                if(playerNames.size() == 2) {
+                } else if(playerNames.size() == 2 && !sameUsername) {
+                    // TODO-ola: have to compare all names and adapt
                     if (playerNames.get(0).equals(playerNames.get(1))) {
-                        if (!firstPlayer) {
+                        sameUsername = true;
+                        if(!firstPlayer) {
                             controller.setUsername(playerNames.get(1) + "2");
+                            mDatabase.removeValue();
+                            mDatabase.push().setValue(playerNames.get(0));
+                            mDatabase.push().setValue(playerNames.get(1) + "2");
+                            mDatabase.push().setValue(UUID.randomUUID().toString());
                         }
-                        mDatabase.removeValue();
-                        mDatabase.setValue(playerNames.get(0));
-                        mDatabase.setValue(playerNames.get(1) + "2");
+                    } else {
+                        if (firstPlayer) {
+                            mDatabase.push().setValue(UUID.randomUUID().toString());
+                        }
                     }
-                    mDatabase.setValue(UUID.randomUUID().toString());
                 } else if(playerNames.size() == 3) {
+                    mDatabase.removeValue();
                     controller.initiateGame(playerNames.subList(0, 2));
 
-                    FirebaseDatabase.getInstance().getReference()
-                            .child("availablePlayer").removeValue();
                     mDatabase = FirebaseDatabase.getInstance().getReference()
                             .child("rooms").child(playerNames.get(2));
-                    mDatabase.child("move").setValue(null);
-                    mDatabase.child("activeArrow").setValue(null);
-                    mDatabase.child("drawBow").setValue(null);
+                    if(firstPlayer) {
+                        mDatabase.child("move").setValue(true);
+                        mDatabase.child("activeArrow").setValue("Normal");
+                        mDatabase.child("drawBow").setValue("(0,0)");
+                    }
                     createGameRoomListeners();
                 }
             }

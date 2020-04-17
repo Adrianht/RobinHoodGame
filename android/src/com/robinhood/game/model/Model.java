@@ -53,7 +53,7 @@ public class Model {
         entities.add(entityFactory.createGround());
 
         // Initiate player entities
-        int playerSpace = 24 / usernames.size();
+        int playerSpace = 24 / (usernames.size()-1);
         for (int i = 0; i < usernames.size(); i++) {
             Entity player = entityFactory.createPlayer(
                 usernames.get(i),
