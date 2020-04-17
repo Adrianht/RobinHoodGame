@@ -27,10 +27,16 @@ public class FBConnector {
     // TODO-ola: need expandable implementation (index-based replace bool firstPlayer
     public void findPlayers(String username, int nrOfPlayers) {
 
+        // TODO-OLA: back to normal after design finished
+        List<String> usernames = new ArrayList<>();
+        usernames.add("Username");
+        usernames.add("Username");
+        controller.initiateGame(usernames);
+        mDatabase = FirebaseDatabase.getInstance().getReference()
+                .child("rooms").child("UsernameRoom");
+        createGameRoomListeners();
 
-        // TODO: add dummy til design finished
-
-
+        /*
         firstPlayer = false;
         sameUsername = false;
 
@@ -84,6 +90,8 @@ public class FBConnector {
             }
 
         });
+
+         */
     }
 
     // Cancels search for opponent
