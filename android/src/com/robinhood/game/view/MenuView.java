@@ -23,7 +23,7 @@ public class MenuView extends View  {
     TextButton newGame = new TextButton("New Game", skin);
     TextButton settings = new TextButton("Settings", skin);
     TextButton exit = new TextButton("Exit", skin);
-    TextButton gameOver = new TextButton("GAME OVER", skin);
+    //TextButton gameOver = new TextButton("GAME OVER", skin);
 
     public MenuView(Controller cont) {
 
@@ -53,8 +53,8 @@ public class MenuView extends View  {
         table.add(settings).fillX().uniform().width(300f).height(100f);
         table.row().pad(10, 0, 10, 0);
         table.add(exit).fillX().uniform().width(300f).height(100f);
-        table.row().pad(10, 0, 10, 0);
-        table.add(gameOver).fillX().uniform().width(300f).height(100f);
+        //table.row().pad(10, 0, 10, 0);
+        //table.add(gameOver).fillX().uniform().width(300f).height(100f);
 
         // ClickListener triggered by user clicks on Button/Actor to call appropriate actions
         settings.addListener(new ClickListener(){
@@ -78,6 +78,7 @@ public class MenuView extends View  {
                 controller.exitApplication();
             }
         });
+        /*
         gameOver.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
@@ -85,5 +86,7 @@ public class MenuView extends View  {
                 controller.navigateTo("GAMEOVER");
             }
         });
+        
+         */
     }
 }
