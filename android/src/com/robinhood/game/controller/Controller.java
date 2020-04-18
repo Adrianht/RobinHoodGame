@@ -13,6 +13,7 @@ public class Controller {
     private RobinHood game;
     private FBConnector fbconnector;
     private Model model;
+    private final int nrOfPlayers = 2;
 
     public Controller(RobinHood game) {
         this.game = game;
@@ -107,7 +108,7 @@ public class Controller {
 
     // Method to initiate Firebase-connector and find another player
     public void findPlayer() {
-        fbconnector.findPlayer(model.getMyUsername());
+        fbconnector.findPlayers(model.getMyUsername(), nrOfPlayers);
     }
 
     // Method to cancel a players search for opponent
@@ -116,9 +117,8 @@ public class Controller {
     }
 
     // Method called to initiate game after Firebase has found opponent
-    // TODO-Ola: change to varargs, to enable more than 2 players (maybe do varags in model)
-    public void initiateGame(String username1, String username2) {
-        model.initiateGame(username1, username2);
+    public void initiateGame(List<String> usernames) {
+        model.initiateGame(usernames);
     }
 
     // Method returns if game is initialized

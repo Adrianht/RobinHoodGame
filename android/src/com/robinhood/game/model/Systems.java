@@ -121,11 +121,11 @@ public class Systems {
 
         public int getPlayerNr(List<Entity> entities, String username){
             int nr = new Integer(3);
-            System.out.println(username);
+
             for(Entity entity: entities){
                 if(entity.component.energy != null){
                     if(entity.component.name.name.equals(username)){
-                        System.out.println(entity.component.playernr.nr);
+
                         nr = entity.component.playernr.nr;
                     }
                 }
@@ -135,11 +135,10 @@ public class Systems {
 
         public boolean isMyTurn(List<Entity> entities, String username) {
             for (Entity entity: entities){
-
                 if(entity.component.turn != null
                         && entity.component.turn.turn
                         && entity.component.name != null
-                        && entity.component.name.name == username ){
+                        && entity.component.name.name.equals(username) ){
                     return true;
                 }
             }
