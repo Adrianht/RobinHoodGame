@@ -67,8 +67,8 @@ public class Model {
         entities.add(entityFactory.newArrow());
 
         // Initiate game system possibilities
-        userInputSystem = new Systems.UserInputSystem();
         arrowSystem = new Systems.ArrowSystem();
+        userInputSystem = new Systems.UserInputSystem();
         playerInfoSystem = new Systems.PlayerInfoSystem();
 
         this.gameInitialized = true;
@@ -79,8 +79,8 @@ public class Model {
     }
 
     // Method called from Controller to move the active player
-    public void move(Boolean left) {
-        userInputSystem.moveActivePlayer(world, entities, left);
+    public void move(Boolean moveIsLeft) {
+        userInputSystem.moveActivePlayer(world, entities, moveIsLeft);
     }
 
     // Method called from Controller to buy an arrow, the check and
@@ -97,14 +97,22 @@ public class Model {
     }
 
     // Method used to fetch players hit point values
+    // TODO: change return from List to int[], overkill
     public List<Integer> getHP(){
-        return playerInfoSystem.getPlayersHitPoints(entities);
+        List<Integer> DUMMY1 = new ArrayList<>();
+        int[] DUMMY2 = playerInfoSystem.getPlayersHitPoints(entities);
+        for (int DUM: DUMMY2) {
+            DUMMY1.add(DUM);
+        }
+        return DUMMY1;
+        //return playerInfoSystem.getPlayersHitPoints(entities);
     }
 
     // Method used to fetch players energy values
     // TODO: change return from List to int
     public List<Integer> getEnergy(){
         List<Integer> DUMMY = new ArrayList<>();
+        DUMMY.add(playerInfoSystem.getMyEnergyPoints(entities, myUsername));
         DUMMY.add(playerInfoSystem.getMyEnergyPoints(entities, myUsername));
         return DUMMY;
         //return playerInfoSystem.getMyEnergyPoints(entities, myUsername);

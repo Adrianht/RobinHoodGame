@@ -9,7 +9,6 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 
 import java.util.List;
-import java.util.ArrayList;
 
 /**
  * Class representing System in Entity-Component-System.
@@ -85,18 +84,14 @@ public class Systems {
     public static class PlayerInfoSystem {
 
         // Find and return hit point values of all players
-        // TODO-ola: change return from List to int[] to ensure correct order
-        // TODO-ola: make sure this is ok up the hierarchy
-        public List<Integer> getPlayersHitPoints(List<Entity> entities){
+        public int[] getPlayersHitPoints(List<Entity> entities){
             List<Entity> players = SystemsHelpers.findPlayers(entities);
             int[] points = new int[players.size()];
-            List<Integer> pointsREMOVE = new ArrayList<>();
             for(Entity player: players){
-                pointsREMOVE.add(player.components.playerInfo.hitPoints);
                 points[player.components.playerInfo.index] =
                         player.components.playerInfo.hitPoints;
             }
-            return pointsREMOVE;
+            return points;
         }
 
         // Find and return energy points of local player
