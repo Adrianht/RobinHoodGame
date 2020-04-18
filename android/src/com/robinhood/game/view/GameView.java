@@ -37,7 +37,8 @@ public class GameView extends View {
     private World world;
 
     private boolean buyLv2 = true;
-    boolean buyLv2Switch = true;
+    private boolean buyLv3 = true;
+    private boolean buyLv4 = true;
 
 
     public GameView(Controller cont, Model model) {
@@ -53,8 +54,6 @@ public class GameView extends View {
         Button menuButton = new Button("menu");
         Button leftButton = new Button("left");
         Button rightButton = new Button("right");
-        Button buyLevel3 = new Button("buyLevel3");
-        Button buyLevel4 = new Button("buyLevel4");
 
         // Add ClickListeners to call appropriate actions at clickable objects
         menuButton.addListener(new ClickListener() {
@@ -76,32 +75,13 @@ public class GameView extends View {
             }
         });
 
-        buyLevel3.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float clickX, float clickY) {
-                System.out.println("You want to buy a Level 3 weapon!");
-                controller.buyArrow("Level3");
-            }
-        });
-        buyLevel4.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float clickX, float clickY) {
-                System.out.println("You want to buy a Level 4 weapon!");
-                controller.buyArrow("Level4");
-            }
-        });
-
-
 
         // Add all the clickable objects to this interface
         stage.addActor(menuButton);
         stage.addActor(leftButton);
         stage.addActor(rightButton);
 
-        stage.addActor(buyLevel3);
-        stage.addActor(buyLevel4);
-
-        addStuff();
+        addBuys();
 
         // Add listener to detect drag on screen and trigger controller.drawBow()-method
         dragIndicator = new DragIndicator();
@@ -154,10 +134,6 @@ public class GameView extends View {
         debugRenderer.render(world, cam.combined);
     }
 
-    public void renderBuys(){
-
-    }
-
     private void handlePlayerInfo(){
         List<Integer> hitPoints = controller.getHP();
         List<Integer> energyPoints = controller.getEnergy();
@@ -175,23 +151,58 @@ public class GameView extends View {
         }
 
         if (controller.getEnergy().get(controller.getPlayerNr()) >= 20) {
+            if(!this.buyLv2){
+                System.out.println("add lv2");
+                addBuys();
+            }
             this.buyLv2 = true;
-            addStuff();
         } else {
-            System.out.println("false");
             if(this.buyLv2){
-                System.out.println("inside true");
+                System.out.println("remove lv2");
                 removeStuff("buyLevel2");
             }
+            System.out.println("buy lvl 2 false");
             this.buyLv2 = false;
+        }
+
+        if(controller.getEnergy().get(controller.getPlayerNr()) >= 30){
+            if(!this.buyLv3){
+                System.out.println("add lv3");
+                addBuys();
+            }
+            this.buyLv3 = true;
+        } else {
+            if(this.buyLv3){
+                System.out.println("remove lv3");
+                removeStuff("buyLevel3");
+            }
+            System.out.println("buy lvl 3 false");
+            this.buyLv3 = false;
+        }
+
+        if(controller.getEnergy().get(controller.getPlayerNr()) >= 40){
+            if(!this.buyLv4){
+                System.out.println("add lv4");
+                addBuys();
+            }
+            this.buyLv4 = true;
+        } else {
+            if(this.buyLv4){
+                System.out.println("remove lv4");
+                removeStuff("buyLevel4");
+            }
+            System.out.println("buy lvl 4 false");
+            this.buyLv4 = false;
         }
 
         batch.begin();
         font.draw(batch, (hpText + energyText), 750, 830);
         batch.end();
     }
-    public void addStuff(){
+    public void addBuys(){
         Button buyLevel2 = new Button("buyLevel2");
+        Button buyLevel3 = new Button("buyLevel3");
+        Button buyLevel4 = new Button("buyLevel4");
 
         buyLevel2.addListener(new ClickListener() {
             @Override
@@ -201,11 +212,35 @@ public class GameView extends View {
             }
         });
 
+        buyLevel3.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float clickX, float clickY) {
+                System.out.println("You want to buy a Level 3 weapon!");
+                controller.buyArrow("Level3");
+            }
+        });
+
+        buyLevel4.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float clickX, float clickY) {
+                System.out.println("You want to buy a Level 4 weapon!");
+                controller.buyArrow("Level4");
+            }
+        });
+
         stage.addActor(buyLevel2);
+        stage.addActor(buyLevel3);
+        stage.addActor(buyLevel4);
+
         buyLevel2.setName("buyLevel2");
+        buyLevel3.setName("buyLevel3");
+        buyLevel4.setName("buyLevel4");
+
     }
 
     public void removeStuff(String name){
+        System.out.println(name);
+        System.out.println(stage.getRoot().findActor(name));
         stage.getRoot().findActor(name).remove();
     }
 }
