@@ -10,8 +10,8 @@ package com.robinhood.game.model;
  */
 public class Entity {
 
-    // TODO-Ola: swap to components everywhere
-    final Components component = new Components();
+    // TODO-Ola: swap to components everywhere (NB! also outside this file)
+    public final Components component = new Components();
 
     // Add component to this entity
     public void addComponent(String componentName) {

@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 public class Components {
 
     // TODO: create names with same convention and change everywhere used
+    // TODO: possibly merge playername, playernr, energy, hitpoints, and turn to playerInfo
     // TODO: check that all components are used
     public Energy energy;
     public HitPoints hp;
