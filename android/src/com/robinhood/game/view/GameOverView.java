@@ -33,7 +33,6 @@ public class GameOverView extends View {
         menuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
-                controller.cancelFindPlayer();
                 controller.navigateTo("MENU");
             }
         });

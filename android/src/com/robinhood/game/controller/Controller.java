@@ -111,7 +111,7 @@ public class Controller {
 
     // Method to cancel a players search for opponent
     public void cancelFindPlayer() {
-        fbconnector.cancelFindPlayer();
+        fbconnector.cancelFindPlayer(model.getMyUsername());
     }
 
     // Method called to initiate game after Firebase has found opponent
