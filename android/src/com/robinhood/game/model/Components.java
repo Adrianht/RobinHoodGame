@@ -12,51 +12,16 @@ import com.badlogic.gdx.physics.box2d.Body;
  */
 public class Components {
 
-    // TODO: create names with same convention and change everywhere used
-    // TODO: possibly merge playername, playernr, energy, hitpoints, and turn to playerInfo
-    // TODO: check that all components are used
-    public Energy energy;
-    public HitPoints hp;
-    public PlayerName name;
-    public PlayerNr playernr;
+    public ArrowType arrowType;
     public Box2dBody box2dBody;
-    public Turn turn;
-    public ArrowType arrowtype;
+    public PlayerInfo playerInfo;
 
     public class ArrowType {
         public ArrowType() {
-            Components.this.arrowtype = this;
+            Components.this.arrowType = this;
         }
         public String type = "Normal";
         public int damage = 10;
-    }
-
-    public class Energy {
-        public Energy() {
-            Components.this.energy = this;
-        }
-        public int value = 20;
-    }
-
-    public class HitPoints {
-        public HitPoints() {
-            Components.this.hp = this;
-        }
-        public int value = 100;
-    }
-
-    public class PlayerName {
-        public PlayerName() {
-            Components.this.name = this;
-        }
-        public String name;
-    }
-
-    public class PlayerNr {
-        public PlayerNr() {
-            Components.this.playernr = this;
-        }
-        public int nr;
     }
 
     public class Box2dBody {
@@ -66,10 +31,14 @@ public class Components {
         public Body body;
     }
 
-    public class Turn extends Components {
-        public Turn() {
-            Components.this.turn = this;
+    public class PlayerInfo {
+        public PlayerInfo() {
+            Components.this.playerInfo = this;
         }
-        public boolean turn = false;
+        public String username;
+        public int index;
+        public int hitPoints = 100;
+        public int energy = 20;
+        public boolean isMyTurn = false;
     }
 }

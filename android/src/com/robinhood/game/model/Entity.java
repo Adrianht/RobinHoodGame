@@ -10,8 +10,7 @@ package com.robinhood.game.model;
  */
 public class Entity {
 
-    // TODO-Ola: swap to components everywhere (NB! also outside this file)
-    public final Components component = new Components();
+    public final Components components = new Components();
 
     // Add component to this entity
     public void addComponent(String componentName) {
@@ -23,57 +22,28 @@ public class Entity {
         componentAction(componentName, false);
     }
 
-    // TODO: fix better case-names after fixed classnames in Components
     // Finds and execute action on correct component
     private void componentAction(String componentName, boolean isAddAction) {
         switch(componentName) {
             case "arrowType":
                 if (isAddAction) {
-                    this.component.new ArrowType();
+                    this.components.new ArrowType();
                 } else {
-                    this.component.arrowtype = null;
+                    this.components.arrowType = null;
                 }
                 break;
-            case "energy":
+            case "box2dBody":
                 if (isAddAction) {
-                    this.component.new Energy();
+                    this.components.new Box2dBody();
                 } else {
-                    this.component.energy = null;
+                    this.components.box2dBody = null;
                 }
                 break;
-            case "hp":
+            case "playerInfo":
                 if (isAddAction) {
-                    this.component.new HitPoints();
+                    this.components.new PlayerInfo();
                 } else {
-                    this.component.hp = null;
-                }
-                break;
-            case "name":
-                if (isAddAction) {
-                    this.component.new PlayerName();
-                } else {
-                    this.component.name = null;
-                }
-                break;
-            case "playernr":
-                if (isAddAction) {
-                    this.component.new PlayerNr();
-                } else {
-                    this.component.playernr = null;
-                }
-                break;
-            case "box2d":
-                if (isAddAction) {
-                    this.component.new Box2dBody();
-                } else {
-                    this.component.box2dBody = null;
-                }
-                break;
-            case "turn":
-                if (isAddAction) {
-                    this.component.new Turn();
-                } else {
-                    this.component.turn = null;
+                    this.components.playerInfo = null;
                 }
                 break;
             default:

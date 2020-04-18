@@ -20,43 +20,40 @@ public class EntityFactory {
         bodyDef.position.set(0, -9);
 
         Entity entity = new Entity();
-        entity.addComponent("box2d");
-        entity.component.box2dBody.body = world.createBody(bodyDef);
+        entity.addComponent("box2dBody");
+        entity.components.box2dBody.body = world.createBody(bodyDef);
 
         // Shape - long and narrow
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(500, 3);
-        entity.component.box2dBody.body.createFixture(shape, 0.0f);
+        entity.components.box2dBody.body.createFixture(shape, 0.0f);
         shape.dispose();
 
         return entity;
     }
 
-    public Entity createPlayer(String username, int posX, int i) {
+    public Entity createPlayer(String username, int posX, int index) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(posX, -3);
 
         Entity entity = new Entity();
-        entity.addComponent("turn");
-        if(i == 0) {
-            entity.component.turn.turn = true;
+        entity.addComponent("playerInfo");
+        entity.components.playerInfo.username = username;
+        entity.components.playerInfo.index = index;
+        if(index == 0) {
+            entity.components.playerInfo.isMyTurn = true;
         }
-        entity.addComponent("playernr");
-        entity.component.playernr.nr = i;
-        entity.addComponent("energy");
-        entity.addComponent("hp");
-        entity.addComponent("name");
-        entity.component.name.name = username;
-        entity.addComponent("box2d");
-        entity.component.box2dBody.body = world.createBody(bodyDef);
+
+        entity.addComponent("box2dBody");
+        entity.components.box2dBody.body = world.createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(1, 3);
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 1f;
-        entity.component.box2dBody.body.createFixture(shape, 0.0f);
+        entity.components.box2dBody.body.createFixture(shape, 0.0f);
         shape.dispose();
 
         return entity;
@@ -70,8 +67,8 @@ public class EntityFactory {
 
         Entity entity = new Entity();
         entity.addComponent("arrowType");
-        entity.addComponent("box2d");
-        entity.component.box2dBody.body = world.createBody(arrowBodyDef);
+        entity.addComponent("box2dBody");
+        entity.components.box2dBody.body = world.createBody(arrowBodyDef);
 
         PolygonShape polygonShape = new PolygonShape();
         polygonShape.setAsBox(.5f,.2f);
@@ -80,7 +77,7 @@ public class EntityFactory {
         fixtureDef.density = 0.5f;
         fixtureDef.friction = 0.7f;
         fixtureDef.restitution = 0.3f;
-        entity.component.box2dBody.body.createFixture(fixtureDef);
+        entity.components.box2dBody.body.createFixture(fixtureDef);
         polygonShape.dispose();
 
         return entity;
