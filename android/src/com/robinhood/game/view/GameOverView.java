@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -25,15 +26,17 @@ public class GameOverView extends View {
 
     private final Controller controller;
 
-    private SpriteBatch batch = new SpriteBatch();
-    private BitmapFont font = new BitmapFont();
+    //private SpriteBatch batch = new SpriteBatch();
+    //private BitmapFont font = new BitmapFont();
     private int playerNrWinner;
 
     // Creating text field for game results
-    Skin skin = new Skin(Gdx.files.internal("skin/dark-hdpi/Holo-dark-hdpi.json"));
-    TextButton gameOver = new TextButton("Game Over", skin);
-    TextButton gameResult = new TextButton("Player 1 won the game", skin);
-    TextButton menu = new TextButton("Menu", skin);
+    Skin skinButton = new Skin(Gdx.files.internal("skin/dark-hdpi/Holo-dark-hdpi.json"));
+    Skin skinGameOver = new Skin(Gdx.files.internal("skin/dark-hdpi/Holo-dark-hdpi.json"));
+    Skin skinResult = new Skin(Gdx.files.internal("skin/dark-hdpi/Holo-dark-hdpi.json"));
+    Label gameOver = new Label("GAME OVER", skinGameOver);
+    Label gameResult = new Label("Player " + playerNrWinner + " won the game!", skinResult);
+    TextButton menu = new TextButton("Menu", skinButton);
 
     public GameOverView(Controller cont, Model model) {
         this.controller = cont;
@@ -83,6 +86,7 @@ public class GameOverView extends View {
         controller.endGameInstance();
     }
 
+    /*
     @Override
     public void render() {
         float[] values = hextoRGB("#5f8db0");
@@ -96,4 +100,6 @@ public class GameOverView extends View {
                 250, 250);
         batch.end();
     }
+
+     */
 }
