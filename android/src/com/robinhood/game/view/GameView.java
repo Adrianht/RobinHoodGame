@@ -153,7 +153,7 @@ public class GameView extends View {
         if (controller.getEnergy().get(controller.getPlayerNr()) >= 20) {
             if(!this.buyLv2){
                 System.out.println("add lv2");
-                addBuys();
+                addLv2();
             }
             this.buyLv2 = true;
         } else {
@@ -165,10 +165,10 @@ public class GameView extends View {
             this.buyLv2 = false;
         }
 
-        if(controller.getEnergy().get(controller.getPlayerNr()) >= 30){
+        if(controller.getEnergy().get(controller.getPlayerNr()) >= 50){
             if(!this.buyLv3){
                 System.out.println("add lv3");
-                addBuys();
+                addLv3();
             }
             this.buyLv3 = true;
         } else {
@@ -180,10 +180,10 @@ public class GameView extends View {
             this.buyLv3 = false;
         }
 
-        if(controller.getEnergy().get(controller.getPlayerNr()) >= 40){
+        if(controller.getEnergy().get(controller.getPlayerNr()) >= 70){
             if(!this.buyLv4){
                 System.out.println("add lv4");
-                addBuys();
+                addLv4();
             }
             this.buyLv4 = true;
         } else {
@@ -236,6 +236,51 @@ public class GameView extends View {
         buyLevel3.setName("buyLevel3");
         buyLevel4.setName("buyLevel4");
 
+    }
+
+    public void addLv2(){
+        Button buyLevel2 = new Button("buyLevel2");
+
+        buyLevel2.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float clickX, float clickY) {
+                System.out.println("You want to buy a Level 2 weapon!");
+                controller.buyArrow("Level2");
+            }
+        });
+
+        stage.addActor(buyLevel2);
+        buyLevel2.setName("buyLevel2");
+    }
+
+    public void addLv3(){
+        Button buyLevel3 = new Button("buyLevel3");
+
+        buyLevel3.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float clickX, float clickY) {
+                System.out.println("You want to buy a Level 3 weapon!");
+                controller.buyArrow("Level3");
+            }
+        });
+
+        stage.addActor(buyLevel3);
+        buyLevel3.setName("buyLevel3");
+    }
+
+    public void addLv4(){
+        Button buyLevel4 = new Button("buyLevel4");
+
+        buyLevel4.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float clickX, float clickY) {
+                System.out.println("You want to buy a Level 4 weapon!");
+                controller.buyArrow("Level4");
+            }
+        });
+
+        stage.addActor(buyLevel4);
+        buyLevel4.setName("buyLevel4");
     }
 
     public void removeStuff(String name){
