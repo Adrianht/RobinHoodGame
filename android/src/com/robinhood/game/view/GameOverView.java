@@ -58,15 +58,15 @@ public class GameOverView extends View {
         );
         stage.addActor(table);
 
-        table.row().pad(400, 0, 10, 0);
+        table.row().pad(500, 0, 10, 0);
         table.add(gameOver).fillX().uniform().width(300f).height(100f);
         table.row().pad(10, 0, 10, 0);
         gameOver.setAlignment(Align.center); // Align center
         table.add(gameResult).fillX().uniform().width(300f).height(100f);
-        table.row().pad(10, 0, 50, 0);
+        table.row().pad(70, 0, 70, 0);
         gameResult.setAlignment(Align.center); // Align center
         table.add(menu).fillX().uniform().width(300f).height(100f);
-        table.row().pad(50, 0, 10, 0);
+        table.row().pad(70, 0, 10, 0);
 
         gameOver.setFontScale(4.0f );
         gameResult.setFontScale(3.0f);
