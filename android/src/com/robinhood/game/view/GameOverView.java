@@ -40,8 +40,7 @@ public class GameOverView extends View {
 
         super.stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(super.stage);
-
-
+        
         // Create new table that fills the screen -> Table added to stage
         Table table = new Table();
         table.setFillParent(true);
@@ -53,7 +52,6 @@ public class GameOverView extends View {
                         )
                 )
         );
-        // table.setPosition(400, 0);      // Want to move the buttons to the right
         stage.addActor(table);
 
         table.row().pad(400, 0, 10, 0);
@@ -72,20 +70,6 @@ public class GameOverView extends View {
                 controller.navigateTo("MENU");
             }
         });
-
-
-/*
-        Button menuButton = new Button("menu");
-        menuButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float clickX, float clickY) {
-                controller.cancelFindPlayer();
-                controller.navigateTo("MENU");
-            }
-        });
-        stage.addActor(menuButton);
-
- */
 
         List<Integer> hpList = controller.getHP();
         playerNrWinner = 0;
