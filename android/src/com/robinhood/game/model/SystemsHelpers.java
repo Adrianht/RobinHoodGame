@@ -22,7 +22,7 @@ class SystemsHelpers {
         return players;
     }
 
-    static Entity findActivePlayer(final List<Entity> entities) {
+    static Entity findActivePlayer(List<Entity> entities) {
         Entity activePlayer = null;
         for(Entity entity: entities) {
             if (entity.components.playerInfo != null &&
