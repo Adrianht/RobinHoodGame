@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.robinhood.game.controller.Controller;
 import com.robinhood.game.model.Model;
@@ -32,8 +33,8 @@ public class GameOverView extends View {
 
     // Creating text field for game results
     Skin skinButton = new Skin(Gdx.files.internal("skin/dark-hdpi/Holo-dark-hdpi.json"));
-    Skin skinGameOver = new Skin(Gdx.files.internal("skin/dark-hdpi/Holo-dark-hdpi.json"));
-    Skin skinResult = new Skin(Gdx.files.internal("skin/dark-hdpi/Holo-dark-hdpi.json"));
+    Skin skinGameOver = new Skin(Gdx.files.internal("skin/craftacular/craftacular-ui.json"));
+    Skin skinResult = new Skin(Gdx.files.internal("skin/shade/uiskin.json"));
     Label gameOver = new Label("GAME OVER", skinGameOver);
     Label gameResult = new Label("Player " + playerNrWinner + " won the game!", skinResult);
     TextButton menu = new TextButton("Menu", skinButton);
@@ -60,10 +61,15 @@ public class GameOverView extends View {
         table.row().pad(400, 0, 10, 0);
         table.add(gameOver).fillX().uniform().width(300f).height(100f);
         table.row().pad(10, 0, 10, 0);
+        gameOver.setAlignment(Align.center); // Align center
         table.add(gameResult).fillX().uniform().width(300f).height(100f);
-        table.row().pad(10, 0, 10, 0);
+        table.row().pad(10, 0, 50, 0);
+        gameResult.setAlignment(Align.center); // Align center
         table.add(menu).fillX().uniform().width(300f).height(100f);
-        table.row().pad(10, 0, 10, 0);
+        table.row().pad(50, 0, 10, 0);
+
+        gameOver.setFontScale(4.0f );
+        gameResult.setFontScale(3.0f);
 
         // ClickListener triggered by user clicks on Button/Actor to call appropriate actions
         menu.addListener(new ClickListener(){

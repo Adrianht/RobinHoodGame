@@ -23,7 +23,7 @@ public class MenuView extends View  {
     TextButton newGame = new TextButton("New Game", skin);
     TextButton settings = new TextButton("Settings", skin);
     TextButton exit = new TextButton("Exit", skin);
-    TextButton gameOver = new TextButton("gameOver", skin);
+    TextButton gameOver = new TextButton("GAME OVER", skin);
 
     public MenuView(Controller cont) {
 
