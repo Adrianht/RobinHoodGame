@@ -1,57 +1,54 @@
 package com.robinhood.game.model;
 
-/*
-     Entity in ECS
-     Holds a identificator and a component
-     with inner classes relavant for this entiy
+/**
+ * Class representing Entity in Entity-Component-System.
+ * Holds a Components object with inner classes relevant to this entity.
+ *
+ * @author group 11
+ * @version 1.0
+ * @since 2020-04-25
  */
 public class Entity {
 
-    final Components component;
+    public final Components components = new Components();
 
-    public Entity() {
-        this.component = new Components();
+    // Add component to this entity
+    public void addComponent(String componentName) {
+        componentAction(componentName, true);
     }
 
-    // Creates the correct inner class instance within the
-    //  component related to this entity
-    public void addComponent(String componentName) {
+    // Remove component from this entity
+    public void removeComponent(String componentName) {
+        componentAction(componentName, false);
+    }
+
+    // Finds and execute action on correct component
+    private void componentAction(String componentName, boolean isAddAction) {
         switch(componentName) {
             case "arrowType":
-                this.component.new ArrowType();
+                if (isAddAction) {
+                    this.components.new ArrowType();
+                } else {
+                    this.components.arrowType = null;
+                }
                 break;
-            case "energy":
-                this.component.new Energy();
+            case "box2dBody":
+                if (isAddAction) {
+                    this.components.new Box2dBody();
+                } else {
+                    this.components.box2dBody = null;
+                }
                 break;
-            case "hp":
-                this.component.new HitPoints();
-                break;
-            case "name":
-                this.component.new PlayerName();
-                break;
-            case "playernr":
-                this.component.new PlayerNr();
-                break;
-            case "box2d":
-                this.component.new Box2dBody();
-                break;
-            case "turn":
-                this.component.new Turn();
+            case "playerInfo":
+                if (isAddAction) {
+                    this.components.new PlayerInfo();
+                } else {
+                    this.components.playerInfo = null;
+                }
                 break;
             default:
-                //
+                // no action
                 break;
         }
     }
-
-    // FIXME: method should remove a inner component class
-    public void removeComponent(String componentName) {
-
-        /*
-        TODO:
-            something like this this.component[componentName] = null;
-         */
-
-    }
-
 }

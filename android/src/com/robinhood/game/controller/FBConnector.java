@@ -13,21 +13,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Class responsible for communication with applications
+ * Firebase real-time database.
+ *
+ * @author group 11
+ * @version 1.0
+ * @since 2020-04-25
+ */
 public class FBConnector {
 
-    private DatabaseReference mDatabase;
     private Controller controller;
-    private boolean firstPlayer, sameUsername;
+    private DatabaseReference mDatabase;
+    private ValueEventListener moveListener, activeArrowListener, drawBowListener;
+    private boolean nameIsValid, cancelFindPlayer;
+    private String removeUsername;
 
     FBConnector (Controller controller) {
         this.controller = controller;
     }
 
-    // TODO-ola: need expandable implementation (index-based replace bool firstPlayer
-    public void findPlayers(String username, int nrOfPlayers) {
 
-        /*
-        // TODO-OLA: back to normal after design finished
+    public void findPlayers(final String username, final int nrOfPlayers) {
+
+    /*
+
+        // TODO: replace following with commented after design finished
         List<String> usernames = new ArrayList<>();
         usernames.add("Username");
         usernames.add("Username");
@@ -36,9 +47,9 @@ public class FBConnector {
                 .child("rooms").child("UsernameRoom");
         createGameRoomListeners();
 
-        */
-        firstPlayer = false;
-        sameUsername = false;
+*/
+        nameIsValid = false;
+        cancelFindPlayer = false;
 
         mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("availablePlayer");

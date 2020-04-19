@@ -96,8 +96,6 @@ public class Controller {
         return model.getMusicEnabled();
     }
 
-    public int getPlayerNr(){return model.getPlayerNr();}
-
     public void setMusicEnabled(boolean enabled) { model.setMusicEnabled(enabled); }
 
     public boolean getSoundEnabled() {
@@ -113,7 +111,7 @@ public class Controller {
 
     // Method to cancel a players search for opponent
     public void cancelFindPlayer() {
-        fbconnector.cancelFindPlayer();
+        fbconnector.cancelFindPlayer(model.getMyUsername());
     }
 
     // Method called to initiate game after Firebase has found opponent
@@ -137,8 +135,13 @@ public class Controller {
     }
 
     // Method call model about players energy values
-    public List<Integer> getEnergy(){
+    public int getEnergy(){
         return model.getEnergy();
+    }
+
+    // Fetch winners username from model
+    public String getWinner() {
+        return model.getWinner();
     }
 
     // Method sets username in model

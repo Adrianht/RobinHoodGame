@@ -136,7 +136,7 @@ public class GameView extends View {
 
     private void handlePlayerInfo(){
         List<Integer> hitPoints = controller.getHP();
-        List<Integer> energyPoints = controller.getEnergy();
+        int energyPoints = controller.getEnergy();
 
 
         String hpText = "";
@@ -147,11 +147,11 @@ public class GameView extends View {
                 controller.handleGameOver();
             }
             hpText += "HitPoints P" + i + ": " + hitPoints.get(i) + "\n";
-            energyText += "EnergyPoints P" + i + ": " + energyPoints.get(i) + "\n";
+            energyText += "EnergyPoints P" + i + ": " + energyPoints + "\n";
         }
 
         //Getmyenergypoints now returns current players energypoints
-        if (controller.getEnergy().get(controller.getPlayerNr()) >= 20) {
+        if (energyPoints >= 20) {
             if(!this.buyLv2){
                 System.out.println("add lv2");
                 addLv2();
@@ -166,7 +166,7 @@ public class GameView extends View {
             this.buyLv2 = false;
         }
 
-        if(controller.getEnergy().get(controller.getPlayerNr()) >= 50){
+        if(energyPoints >= 50){
             if(!this.buyLv3){
                 System.out.println("add lv3");
                 addLv3();
@@ -181,7 +181,7 @@ public class GameView extends View {
             this.buyLv3 = false;
         }
 
-        if(controller.getEnergy().get(controller.getPlayerNr()) >= 70){
+        if(energyPoints >= 70){
             if(!this.buyLv4){
                 System.out.println("add lv4");
                 addLv4();

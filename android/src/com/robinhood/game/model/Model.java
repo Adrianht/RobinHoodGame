@@ -26,15 +26,15 @@ public class Model {
     private Boolean MUSIC_ENABLED = true;
     private Boolean SOUND_ENABLED = true;
 
-    private String myUsername = "UsernameTes";
+    private String myUsername = "Username";
 
     private boolean gameInitialized = false;
 
     // ECS related fields - list index might be used as entity id
     private List<Entity> entities = new ArrayList<>();
-    private Systems.Animation animationSystem;
-    private Systems.UserInput userInputSystem;
-    private Systems.playerInfo playerInfoSystem;
+    private Systems.ArrowSystem arrowSystem;
+    private Systems.PlayerInfoSystem playerInfoSystem;
+    private Systems.UserInputSystem userInputSystem;
 
     // box2D
     // TODO: make world private and make getter
@@ -67,9 +67,9 @@ public class Model {
         entities.add(entityFactory.newArrow());
 
         // Initiate game system possibilities
-        userInputSystem = new Systems.UserInput();
-        animationSystem = new Systems.Animation();
-        playerInfoSystem = new Systems.playerInfo();
+        arrowSystem = new Systems.ArrowSystem();
+        userInputSystem = new Systems.UserInputSystem();
+        playerInfoSystem = new Systems.PlayerInfoSystem();
 
         this.gameInitialized = true;
 
@@ -79,12 +79,8 @@ public class Model {
     }
 
     // Method called from Controller to move the active player
-    public void move(Boolean left) {
-        if(left) {
-            userInputSystem.moveLeft(world, entities);
-        } else {
-            userInputSystem.moveRight(world, entities);
-        }
+    public void move(Boolean moveIsLeft) {
+        userInputSystem.moveActivePlayer(world, entities, moveIsLeft);
     }
 
     // Method called from Controller to buy an arrow, the check and
@@ -95,22 +91,31 @@ public class Model {
 
     // Method runs animation and change players turn
     public void drawBow(Vector2 vector2) {
-        animationSystem.arrowAnimation(world, entities, vector2);
-        // TODO-ola: send only players (stream) and calc nrOfPlayers
-        playerInfoSystem.changeTurn(entities, 2);
+        arrowSystem.arrowAnimation(world, entities, vector2);
+        playerInfoSystem.changeActivePlayer(entities);
         entities.add(entityFactory.newArrow());
     }
 
     // Method used to fetch players hit point values
+    // TODO: change return from List to int[], overkill
     public List<Integer> getHP(){
-        // TODO-ola: send only players (stream) and calc nrOfPlayers
-        return playerInfoSystem.getHP(entities, 2);
+        List<Integer> DUMMY1 = new ArrayList<>();
+        int[] DUMMY2 = playerInfoSystem.getPlayersHitPoints(entities);
+        for (int DUM: DUMMY2) {
+            DUMMY1.add(DUM);
+        }
+        return DUMMY1;
+        //return playerInfoSystem.getPlayersHitPoints(entities);
     }
 
     // Method used to fetch players energy values
-    public List<Integer> getEnergy(){
-        // TODO-ola: send only players (stream) and calc nrOfPlayers
-        return playerInfoSystem.getEnergyPoints(entities, 2);
+    // TODO: change return from List to int
+    public int getEnergy(){
+        //List<Integer> DUMMY = new ArrayList<>();
+        //DUMMY.add(playerInfoSystem.getMyEnergyPoints(entities, myUsername));
+        //DUMMY.add(playerInfoSystem.getMyEnergyPoints(entities, myUsername));
+        //return DUMMY;
+        return playerInfoSystem.getMyEnergyPoints(entities, myUsername);
     }
 
     // Method used to check if it's this player's turn
@@ -121,10 +126,6 @@ public class Model {
     // Method returns username
     public String getMyUsername() {
         return myUsername;
-    }
-
-    public int getPlayerNr(){
-        return playerInfoSystem.getPlayerNr(entities, myUsername);
     }
 
     // Method set username
@@ -154,4 +155,8 @@ public class Model {
 
     public void setSoundEnabled(boolean enabled) { SOUND_ENABLED = enabled; }
 
+    // TODO-ola: fix appropriate method in Systems.PlayerInfoSystem
+    public String getWinner() {
+        return "username";
+    }
 }
