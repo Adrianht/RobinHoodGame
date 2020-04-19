@@ -70,7 +70,7 @@ public class EntityFactory {
         Entity entity = new Entity();
         entity.addComponent("arrowType");
         entity.addComponent("box2dBody");
-        entity.component.box2dBody.body = world.createBody(arrowBodyDef);
+        entity.components.box2dBody.body = world.createBody(arrowBodyDef);
         ChainShape chainShape = new ChainShape();
         float[] arrowShapeCoordinatesX = {.3f, .4f, .08f, 1.3f,
                 1.3f, 1.5f, 1.3f, 1.3f, .08f, .4f, .3f, 0f, .1f, 0f};
@@ -89,7 +89,7 @@ public class EntityFactory {
         fixtureDef.density = 0.5f;
         fixtureDef.friction = 0.7f;
         fixtureDef.restitution = 0.3f;
-        entity.component.box2dBody.body.createFixture(fixtureDef);
+        entity.components.box2dBody.body.createFixture(fixtureDef);
         chainShape.dispose();
 
         return entity;
