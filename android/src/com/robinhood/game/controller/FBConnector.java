@@ -35,6 +35,7 @@ public class FBConnector {
 
     public void findPlayers(final String username, final int nrOfPlayers) {
 
+
         // TODO: replace following with commented after design finished
         List<String> usernames = new ArrayList<>();
         usernames.add("Username");
@@ -43,6 +44,7 @@ public class FBConnector {
         mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("rooms").child("UsernameRoom");
         createGameRoomListeners();
+
 
     /*
         nameIsValid = false;
