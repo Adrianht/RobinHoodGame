@@ -150,6 +150,7 @@ public class GameView extends View {
             energyText += "EnergyPoints P" + i + ": " + energyPoints.get(i) + "\n";
         }
 
+        //Getmyenergypoints now returns current players energypoints
         if (controller.getEnergy().get(controller.getPlayerNr()) >= 20) {
             if(!this.buyLv2){
                 System.out.println("add lv2");
@@ -159,7 +160,7 @@ public class GameView extends View {
         } else {
             if(this.buyLv2){
                 System.out.println("remove lv2");
-                removeStuff("buyLevel2");
+                removeButton("buyLevel2");
             }
             System.out.println("buy lvl 2 false");
             this.buyLv2 = false;
@@ -174,7 +175,7 @@ public class GameView extends View {
         } else {
             if(this.buyLv3){
                 System.out.println("remove lv3");
-                removeStuff("buyLevel3");
+                removeButton("buyLevel3");
             }
             System.out.println("buy lvl 3 false");
             this.buyLv3 = false;
@@ -189,7 +190,7 @@ public class GameView extends View {
         } else {
             if(this.buyLv4){
                 System.out.println("remove lv4");
-                removeStuff("buyLevel4");
+                removeButton("buyLevel4");
             }
             System.out.println("buy lvl 4 false");
             this.buyLv4 = false;
@@ -199,6 +200,7 @@ public class GameView extends View {
         font.draw(batch, (hpText + energyText), 750, 830);
         batch.end();
     }
+
     public void addBuys(){
         Button buyLevel2 = new Button("buyLevel2");
         Button buyLevel3 = new Button("buyLevel3");
@@ -283,9 +285,7 @@ public class GameView extends View {
         buyLevel4.setName("buyLevel4");
     }
 
-    public void removeStuff(String name){
-        System.out.println(name);
-        System.out.println(stage.getRoot().findActor(name));
+    public void removeButton(String name){
         stage.getRoot().findActor(name).remove();
     }
 }
