@@ -10,8 +10,13 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.math.Vector2;
 import com.robinhood.game.controller.Controller;
@@ -43,7 +48,6 @@ public class GameView extends View {
 
     public GameView(Controller cont, Model model) {
         super(cont);
-        table.remove();
 
         //this.controller = cont;
         this.world = model.world;
@@ -52,35 +56,36 @@ public class GameView extends View {
         //stage = new Stage(new ScreenViewport());
         //Gdx.input.setInputProcessor(stage);
 
-        // Initiate clickable objects within the interface
-        Button menuButton = new Button("menu");
-        Button leftButton = new Button("left");
-        Button rightButton = new Button("right");
+        Skin skinButton = new Skin(Gdx.files.internal(
+                "skin/dark-hdpi/Holo-dark-hdpi.json"));
 
-        // Add ClickListeners to call appropriate actions at clickable objects
-        menuButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float clickX, float clickY) {
-                getController().navigateTo("MENU");
-            }
-        });
-        leftButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float clickX, float clickY) {
-                getController().move(true);
-            }
-        });
-        rightButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float clickX, float clickY) {
-                getController().move(false);
-            }
-        });
+        TextButton buyLevel2 = new TextButton("Upgrade 2", skinButton);
+        TextButton buyLevel3 = new TextButton("Upgrade 3", skinButton);
+        TextButton buyLevel4 = new TextButton("Upgrade 4", skinButton);
 
-        // Add all the clickable objects to this interface
-        stage.addActor(menuButton);
-        stage.addActor(leftButton);
-        stage.addActor(rightButton);
+        TextButton menu = new TextButton("Menu", skinButton);
+        TextButton settings = new TextButton("Settings", skinButton);
+
+        TextButton left = new TextButton("Left", skinButton);
+        TextButton right = new TextButton("Right", skinButton);
+
+        table.bottom();
+        table.padBottom(100f);
+        table.add(left).left().width(300f).height(100f);
+        table.add(buyLevel2).padLeft(50f).width(150f).height(100f);
+        table.add(buyLevel3).width(150f).height(100f);
+        table.add(buyLevel4).width(150f).height(100f);
+        table.add(menu).uniform().width(200f).height(100f);
+        table.add(settings).uniform().width(200f).height(100f);
+        table.add(right).right().uniform().width(300f).height(100f);
+        table.add(right).uniform().width(300f).height(100f);
+
+
+        left.addListener(generateMoveListener(true));
+        right.addListener(generateMoveListener(false));
+
+        menu.addListener(generateNavigationListener("MENU"));
+        settings.addListener(generateNavigationListener("SETTINGS"));
 
         addBuys();
 
@@ -248,6 +253,26 @@ public class GameView extends View {
             public void clicked(InputEvent event, float clickX, float clickY) {
                 System.out.println("You want to buy a level " + type + " weapon");
                 getController().buyArrow(type);
+            }
+        };
+    }
+
+    protected ClickListener generateMoveListener(final Boolean way) {
+        return new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float clickX, float clickY) {
+                System.out.println("Move" + way);
+                getController().move(way);
+            }
+        };
+    }
+
+    protected ClickListener generateNavigationListener(final String destination) {
+        return new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float clickX, float clickY) {
+                System.out.println("navigate" + destination);
+                getController().navigateTo(destination);
             }
         };
     }
