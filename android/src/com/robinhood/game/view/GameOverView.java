@@ -22,7 +22,7 @@ public class GameOverView extends View {
         super(controller);
         controller.endGameInstance();
 
-        // Create and position text fields adn buttons of current UI
+        // Create and position text fields and buttons of current UI
         Skin skinButton = new Skin(Gdx.files.internal(
                 "skin/dark-hdpi/Holo-dark-hdpi.json"));
         Skin skinGameOver = new Skin(Gdx.files.internal(

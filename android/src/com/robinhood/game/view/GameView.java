@@ -1,175 +1,136 @@
 package com.robinhood.game.view;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Align;
+
 import com.robinhood.game.controller.Controller;
 import com.robinhood.game.model.Model;
+import com.robinhood.game.view.interfaceObjects.CustomDragListener;
 import com.robinhood.game.view.interfaceObjects.DragIndicator;
-import com.robinhood.game.view.interfaceObjects.Button;
 
-import java.util.List;
-
-
+/**
+ * Subclass in Template method pattern creating the UI when in-game.
+ *
+ * @author group 11
+ * @version 1.0
+ * @since 2020-04-25
+ */
 public class GameView extends View {
 
-    //private final Controller controller;
-    private final DragIndicator dragIndicator;
+    private final Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer(
+            true,
+            true,
+            true,
+            true,
+            true,
+            true);
+    private final OrthographicCamera cam = new OrthographicCamera(
+            32,
+            24);
+    private final World world;
 
-    private SpriteBatch batch = new SpriteBatch();
-    private BitmapFont font = new BitmapFont();
-
-    private final Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer(true, true, true, true, true, true);
-    private final OrthographicCamera cam = new OrthographicCamera(32, 24);
-
-    private World world;
+    private final Skin skinInfo = new Skin(Gdx.files.internal(
+            "skin/shade/uiskin.json"));
+    private Skin skinButton = new Skin(Gdx.files.internal(
+            "skin/dark-hdpi/Holo-dark-hdpi.json"));
+    private final Label gameInfo = new Label("", skinInfo);;
+    private final TextButton buyLevel2 =
+            new TextButton("Upgrade 2", skinButton);
+    private final TextButton buyLevel3 =
+            new TextButton("Upgrade 3", skinButton);
+    private final TextButton buyLevel4 =
+            new TextButton("Upgrade 4", skinButton);
 
     public GameView(Controller cont, Model model) {
         super(cont);
-        table.remove();
+        this.world = model.getWorld();
 
-        //this.controller = cont;
-        this.world = model.world;
+        // Create and position text fields and buttons of current UI
+        Skin skinButton = new Skin(Gdx.files.internal(
+                "skin/dark-hdpi/Holo-dark-hdpi.json"));
+        TextButton leftButton = new TextButton("Left", skinButton);
+        TextButton rightButton = new TextButton("Right", skinButton);
 
-        // Set the stage of the View superclass
-        //stage = new Stage(new ScreenViewport());
-        //Gdx.input.setInputProcessor(stage);
+        // FIXME: table needs revised positioning/padding
+        table.setBackground(new BaseDrawable()); // remove superclass background
+        table.row().pad(20f, 0, 700f, 0);
+        table.add(gameInfo).fillX().uniform().width(300f).height(100f);
+        table.row().pad(0, 0, 0, 0);
+        gameInfo.setAlignment(Align.left);
+        table.bottom();
+        table.padBottom(100f);
+        table.add(leftButton).left().width(300f).height(100f);
+        table.add(buyLevel2).padLeft(50f).width(150f).height(100f);
+        table.add(buyLevel3).width(150f).height(100f);
+        table.add(buyLevel4).width(150f).height(100f);
+        table.add(rightButton).right().uniform().width(300f).height(100f);
 
-        // Initiate clickable objects within the interface
-        Button menuButton = new Button("menu");
-        Button leftButton = new Button("left");
-        Button rightButton = new Button("right");
-        Button buyLevel2 = new Button("buyLevel2");
-        Button buyLevel3 = new Button("buyLevel3");
-        Button buyLevel4 = new Button("buyLevel4");
+        buyLevel2.addListener(generateBuyListener("Level2"));
+        buyLevel3.addListener(generateBuyListener("Level3"));
+        buyLevel4.addListener(generateBuyListener("Level4"));
+        leftButton.addListener(generateMoveListener(true));
+        rightButton.addListener(generateMoveListener(false));
 
-        // Add ClickListeners to call appropriate actions at clickable objects
-        menuButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float clickX, float clickY) {
-                getController().navigateTo("MENU");
-            }
-        });
-        leftButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float clickX, float clickY) {
-                getController().move(true);
-            }
-        });
-        rightButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float clickX, float clickY) {
-                getController().move(false);
-            }
-        });
-        buyLevel2.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float clickX, float clickY) {
-                System.out.println("You want to buy a Level 2 weapon!");
-                getController().buyArrow("Level2");
-            }
-        });
-        buyLevel3.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float clickX, float clickY) {
-                System.out.println("You want to buy a Level 3 weapon!");
-                getController().buyArrow("Level3");
-            }
-        });
-        buyLevel4.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float clickX, float clickY) {
-                System.out.println("You want to buy a Level 4 weapon!");
-                getController().buyArrow("Level4");
-            }
-        });
-
-        // Add all the clickable objects to this interface
-        stage.addActor(menuButton);
-        stage.addActor(leftButton);
-        stage.addActor(rightButton);
-        stage.addActor(buyLevel2);
-        stage.addActor(buyLevel3);
-        stage.addActor(buyLevel4);
-
-        // Add listener to detect drag on screen and trigger controller.drawBow()-method
-        dragIndicator = new DragIndicator();
+        DragIndicator dragIndicator = new DragIndicator();
         stage.addActor(dragIndicator);
-        stage.addListener(new DragListener() {
-            @Override
-            public void drag(InputEvent event, float clickX, float clickY, int pointer) {
-                float power = (float)Math.sqrt(Math.pow(clickX -
-                        getDragStartX(), 2) + Math.pow(clickY - getDragStartY(), 2));
-                dragIndicator.sprite.setSize(power, 40);
-
-                double angleRad = Math.atan(Math.abs(clickY-getDragStartY())
-                        / Math.abs(clickX-getDragStartX()));
-                float angleDeg = (float)Math.toDegrees(angleRad);
-                if(clickX < getDragStartX()) {
-                    if(clickY < getDragStartY()) {
-                        dragIndicator.sprite.setRotation(angleDeg);
-                    } else {
-                        dragIndicator.sprite.setRotation(360-angleDeg);
-                    }
-                } else {
-                    if(clickY < getDragStartY()) {
-                        dragIndicator.sprite.setRotation(180-angleDeg);
-                    } else {
-                        dragIndicator.sprite.setRotation(180+angleDeg);
-                    }
-                }
-            }
-            @Override
-            public void dragStop(InputEvent event,
-                                 float clickX,
-                                 float clickY,
-                                 int pointer) {
-                getController().drawBow(new Vector2(
-                        clickX-getDragStartX(),
-                        clickY-getDragStartY())
-                );
-                dragIndicator.sprite.setSize(0,0);
-            }
-        });
+        stage.addListener(
+                new CustomDragListener(dragIndicator, getController()));
     }
 
     @Override
     public void render() {
-        float[] values = hextoRGB("#5f8db0");
-        Gdx.gl.glClearColor(values[0], values[1], values[2], 1.0f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.draw();
-        handlePlayerInfo();
+        super.render();
+        updateGameInfo();
         debugRenderer.render(world, cam.combined);
     }
 
-    private void handlePlayerInfo(){
-        List<Integer> hitPoints = getController().getHP();
-        List<Integer> energyPoints = getController().getEnergy();
+    private void updateGameInfo() {
+        int[] hitPoints = getController().getHP();
+        int myEnergyPoints = getController().getMyEnergyPoints();
 
-        String hpText = "";
-        String energyText = "";
-        for (int i = 0; i < hitPoints.size(); i++) {
-            //FIXME: change check, now game over with only one player at hp=0
-            if(hitPoints.get(i) <= 0) {
-                getController().handleGameOver();
+        String gameInfoString = "Your Energy Points: "
+                + myEnergyPoints + "\n";
+        int survivorCount = 0;
+        for (int i = 0; i < hitPoints.length; i++) {
+            if(hitPoints[i] >= 0) {
+                survivorCount++;
             }
-            hpText += "HitPoints P" + i + ": " + hitPoints.get(i) + "\n";
-            energyText += "EnergyPoints P" + i + ": " + energyPoints.get(i) + "\n";
+            gameInfoString += "HitPoints P" + i + ": " + hitPoints[i] + "\n";
+        }
+        if (survivorCount < 2) {
+            getController().handleGameOver();
         }
 
-        batch.begin();
-        font.draw(batch, (hpText + energyText), 750, 830);
-        batch.end();
+        gameInfo.setText(gameInfoString);
+        buyLevel2.setVisible(myEnergyPoints >= 20);
+        buyLevel3.setVisible(myEnergyPoints >= 50);
+        buyLevel4.setVisible(myEnergyPoints >= 70);
+    }
+
+    private ClickListener generateBuyListener(final String type) {
+        return new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float clickX, float clickY) {
+                getController().buyArrow(type);
+            }
+        };
+    }
+
+    private ClickListener generateMoveListener(final Boolean way) {
+        return new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float clickX, float clickY) {
+                getController().move(way);
+            }
+        };
     }
 }

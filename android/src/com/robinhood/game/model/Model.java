@@ -37,8 +37,7 @@ public class Model {
     private Systems.UserInputSystem userInputSystem;
 
     // box2D
-    // TODO: make world private and make getter
-    public World world;
+    private World world;
     private EntityFactory entityFactory;
 
 
@@ -97,25 +96,13 @@ public class Model {
     }
 
     // Method used to fetch players hit point values
-    // TODO: change return from List to int[], overkill
-    public List<Integer> getHP(){
-        List<Integer> DUMMY1 = new ArrayList<>();
-        int[] DUMMY2 = playerInfoSystem.getPlayersHitPoints(entities);
-        for (int DUM: DUMMY2) {
-            DUMMY1.add(DUM);
-        }
-        return DUMMY1;
-        //return playerInfoSystem.getPlayersHitPoints(entities);
+    public int[] getHP(){
+        return playerInfoSystem.getPlayersHitPoints(entities);
     }
 
     // Method used to fetch players energy values
-    // TODO: change return from List to int
-    public List<Integer> getEnergy(){
-        List<Integer> DUMMY = new ArrayList<>();
-        DUMMY.add(playerInfoSystem.getMyEnergyPoints(entities, myUsername));
-        DUMMY.add(playerInfoSystem.getMyEnergyPoints(entities, myUsername));
-        return DUMMY;
-        //return playerInfoSystem.getMyEnergyPoints(entities, myUsername);
+    public int getMyEnergyPoints(){
+        return playerInfoSystem.getMyEnergyPoints(entities, myUsername);
     }
 
     // Method used to check if it's this player's turn
@@ -158,5 +145,9 @@ public class Model {
     // TODO-ola: fix appropriate method in Systems.PlayerInfoSystem
     public String getWinner() {
         return "username";
+    }
+
+    public World getWorld() {
+        return world;
     }
 }

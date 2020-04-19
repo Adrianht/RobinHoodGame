@@ -130,13 +130,13 @@ public class Controller {
     }
 
     // Method call model about players hit point values
-    public List<Integer> getHP(){
+    public int[] getHP(){
         return model.getHP();
     }
 
     // Method call model about players energy values
-    public List<Integer> getEnergy(){
-        return model.getEnergy();
+    public int getMyEnergyPoints(){
+        return model.getMyEnergyPoints();
     }
 
     // Method sets username in model
