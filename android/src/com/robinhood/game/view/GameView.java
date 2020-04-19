@@ -49,12 +49,8 @@ public class GameView extends View {
     public GameView(Controller cont, Model model) {
         super(cont);
 
-        //this.controller = cont;
         this.world = model.world;
 
-        // Set the stage of the View superclass
-        //stage = new Stage(new ScreenViewport());
-        //Gdx.input.setInputProcessor(stage);
 
         Skin skinButton = new Skin(Gdx.files.internal(
                 "skin/dark-hdpi/Holo-dark-hdpi.json"));
@@ -62,6 +58,10 @@ public class GameView extends View {
         TextButton buyLevel2 = new TextButton("Upgrade 2", skinButton);
         TextButton buyLevel3 = new TextButton("Upgrade 3", skinButton);
         TextButton buyLevel4 = new TextButton("Upgrade 4", skinButton);
+
+        buyLevel2.setName("buyLevel2");
+        buyLevel3.setName("buyLevel3");
+        buyLevel4.setName("buyLevel4");
 
         TextButton menu = new TextButton("Menu", skinButton);
         TextButton settings = new TextButton("Settings", skinButton);
@@ -87,7 +87,6 @@ public class GameView extends View {
         menu.addListener(generateNavigationListener("MENU"));
         settings.addListener(generateNavigationListener("SETTINGS"));
 
-        addBuys();
 
         // Add listener to detect drag on screen and trigger controller.drawBow()-method
         dragIndicator = new DragIndicator();
@@ -168,6 +167,8 @@ public class GameView extends View {
         if (energyPoints >= 20) {
             if(!this.buyLv2){
                 addLv2();
+                //TODO: finne en måte å disable touch på existing actor e.l, enklere enn å fjerne og adde actor hele tiden. Da vil man slippe å fjerne actor og.
+                table.findActor("buyLevel2");
             }
             this.buyLv2 = true;
         } else {
@@ -202,30 +203,15 @@ public class GameView extends View {
         }
     }
 
-    public void addBuys(){
-        Button buyLevel2 = new Button("buyLevel2");
-        Button buyLevel3 = new Button("buyLevel3");
-        Button buyLevel4 = new Button("buyLevel4");
-
-        buyLevel2.addListener(generateBuyArrowListener("buyLevel2"));
-        buyLevel3.addListener(generateBuyArrowListener("buyLevel3"));
-        buyLevel4.addListener(generateBuyArrowListener("buyLevel4"));
-
-        buyLevel2.setName("buyLevel2");
-        buyLevel3.setName("buyLevel3");
-        buyLevel4.setName("buyLevel4");
-
-        stage.addActor(buyLevel2);
-        stage.addActor(buyLevel3);
-        stage.addActor(buyLevel4);
-    }
 
     public void addLv2(){
-        Button buyLevel2 = new Button("buyLevel2");
+        Skin skinButton = new Skin(Gdx.files.internal(
+                "skin/dark-hdpi/Holo-dark-hdpi.json"));
+        TextButton buyLevel2 = new TextButton("Upgrade 2", skinButton);
+
+        table.add(buyLevel2).padLeft(50f).width(150f).height(100f);
 
         buyLevel2.addListener(generateBuyArrowListener("buyLevel2"));
-
-        stage.addActor(buyLevel2);
         buyLevel2.setName("buyLevel2");
     }
 
@@ -278,6 +264,6 @@ public class GameView extends View {
     }
 
     public void removeButton(String name){
-        stage.getRoot().findActor(name).remove();
+        table.findActor(name).remove();
     }
 }
