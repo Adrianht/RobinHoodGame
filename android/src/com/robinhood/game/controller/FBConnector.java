@@ -13,6 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Class responsible for communication with applications
+ * Firebase real-time database.
+ *
+ * @author group 11
+ * @version 1.0
+ * @since 2020-04-25
+ */
 public class FBConnector {
 
     private Controller controller;
