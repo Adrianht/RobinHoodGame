@@ -37,7 +37,7 @@ public class Controller {
                 game.setView(new GameView(this, model));
                 break;
             case "GAMEOVER":
-                game.setView(new GameOverView(this,model));
+                game.setView(new GameOverView(this, model));
                 break;
             default:
                 game.setView(new MenuView(this));
@@ -137,11 +137,6 @@ public class Controller {
     // Method call model about players energy values
     public List<Integer> getEnergy(){
         return model.getEnergy();
-    }
-
-    // Fetch winners username from model
-    public String getWinner() {
-        return model.getWinner();
     }
 
     // Method sets username in model
