@@ -140,14 +140,14 @@ public class GameView extends View {
 
 
         String hpText = "";
-        String energyText = "";
+        String energyText = "EnergyPoints" + ": " + energyPoints + "\n";
         for (int i = 0; i < hitPoints.size(); i++) {
             //FIXME: change check, now game over with only one player at hp=0
             if(hitPoints.get(i) <= 0) {
                 controller.handleGameOver();
             }
             hpText += "HitPoints P" + i + ": " + hitPoints.get(i) + "\n";
-            energyText += "EnergyPoints P" + i + ": " + energyPoints + "\n";
+
         }
 
         //Getmyenergypoints now returns current players energypoints
