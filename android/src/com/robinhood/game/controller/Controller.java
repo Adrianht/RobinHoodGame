@@ -135,7 +135,8 @@ public class Controller {
     }
 
     // Method call model about players energy values
-    public int getEnergy(){
+    //TODO: change to int
+    public List<Integer> getEnergy(){
         return model.getEnergy();
     }
 

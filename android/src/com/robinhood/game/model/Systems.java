@@ -106,7 +106,6 @@ public class Systems {
             return energyPoints;
         }
 
-
         // Checks if it is the local players turn
         public boolean isMyTurn(List<Entity> entities, String username) {
             Entity activePlayer = SystemsHelpers.findActivePlayer(entities);

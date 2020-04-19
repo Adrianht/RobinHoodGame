@@ -110,12 +110,13 @@ public class Model {
 
     // Method used to fetch players energy values
     // TODO: change return from List to int
-    public int getEnergy(){
-        //List<Integer> DUMMY = new ArrayList<>();
-        //DUMMY.add(playerInfoSystem.getMyEnergyPoints(entities, myUsername));
-        //DUMMY.add(playerInfoSystem.getMyEnergyPoints(entities, myUsername));
-        //return DUMMY;
-        return playerInfoSystem.getMyEnergyPoints(entities, myUsername);
+
+    public List<Integer> getEnergy(){
+        List<Integer> DUMMY = new ArrayList<>();
+        DUMMY.add(playerInfoSystem.getMyEnergyPoints(entities, myUsername));
+        DUMMY.add(playerInfoSystem.getMyEnergyPoints(entities, myUsername));
+        return DUMMY;
+        //return playerInfoSystem.getMyEnergyPoints(entities, myUsername);
     }
 
     // Method used to check if it's this player's turn

@@ -136,7 +136,9 @@ public class GameView extends View {
 
     private void handlePlayerInfo(){
         List<Integer> hitPoints = controller.getHP();
-        int energyPoints = controller.getEnergy();
+
+        //TODO: change to int
+        List<Integer> energyPoints = controller.getEnergy();
 
         String hpText = "";
         String energyText = "EnergyPoints" + ": " + energyPoints + "\n";
@@ -148,7 +150,8 @@ public class GameView extends View {
             hpText += "HitPoints P" + i + ": " + hitPoints.get(i) + "\n";
 
         }
-        checkBuys(energyPoints);
+        //TODO: change to only "energypoints" When changed to int
+        checkBuys(energyPoints.get(0));
 
         batch.begin();
         font.draw(batch, (hpText + energyText), 750, 830);
