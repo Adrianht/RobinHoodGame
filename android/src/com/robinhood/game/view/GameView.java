@@ -50,8 +50,7 @@ public class GameView extends View {
         super(cont);
 
         this.world = model.world;
-
-
+        
         Skin skinButton = new Skin(Gdx.files.internal(
                 "skin/dark-hdpi/Holo-dark-hdpi.json"));
 
@@ -64,7 +63,6 @@ public class GameView extends View {
         buyLevel4.setName("buyLevel4");
 
         TextButton menu = new TextButton("Menu", skinButton);
-        TextButton settings = new TextButton("Settings", skinButton);
 
         TextButton left = new TextButton("Left", skinButton);
         TextButton right = new TextButton("Right", skinButton);
@@ -76,17 +74,16 @@ public class GameView extends View {
         table.add(buyLevel3).width(150f).height(100f);
         table.add(buyLevel4).width(150f).height(100f);
         table.add(menu).uniform().width(200f).height(100f);
-        table.add(settings).uniform().width(200f).height(100f);
         table.add(right).right().uniform().width(300f).height(100f);
-        table.add(right).uniform().width(300f).height(100f);
 
+        buyLevel2.addListener(generateBuyArrowListener("buyLevel2"));
+        buyLevel3.addListener(generateBuyArrowListener("buyLevel3"));
+        buyLevel4.addListener(generateBuyArrowListener("buyLevel4"));
 
         left.addListener(generateMoveListener(true));
         right.addListener(generateMoveListener(false));
 
         menu.addListener(generateNavigationListener("MENU"));
-        settings.addListener(generateNavigationListener("SETTINGS"));
-
 
         // Add listener to detect drag on screen and trigger controller.drawBow()-method
         dragIndicator = new DragIndicator();
@@ -163,74 +160,46 @@ public class GameView extends View {
         batch.end();
     }
 
+    public void setVisible(Actor actor, Boolean bool){
+        actor.setVisible(bool);
+    }
+
     public void checkBuys(int energyPoints){
         if (energyPoints >= 20) {
             if(!this.buyLv2){
-                addLv2();
-                //TODO: finne en måte å disable touch på existing actor e.l, enklere enn å fjerne og adde actor hele tiden. Da vil man slippe å fjerne actor og.
-                table.findActor("buyLevel2");
+                setVisible(table.findActor("buyLevel2"), true);
             }
             this.buyLv2 = true;
         } else {
             if(this.buyLv2){
-                removeButton("buyLevel2");
+                setVisible(table.findActor("buyLevel2"), false);
             }
             this.buyLv2 = false;
         }
 
         if(energyPoints >= 50){
             if(!this.buyLv3){
-                addLv3();
+                setVisible(table.findActor("buyLevel3"), true);
             }
             this.buyLv3 = true;
         } else {
             if(this.buyLv3){
-                removeButton("buyLevel3");
+                setVisible(table.findActor("buyLevel3"), false);
             }
             this.buyLv3 = false;
         }
 
         if(energyPoints >= 70){
             if(!this.buyLv4){
-                addLv4();
+                setVisible(table.findActor("buyLevel4"), true);
             }
             this.buyLv4 = true;
         } else {
             if(this.buyLv4){
-                removeButton("buyLevel4");
+                setVisible(table.findActor("buyLevel4"), false);
             }
             this.buyLv4 = false;
         }
-    }
-
-
-    public void addLv2(){
-        Skin skinButton = new Skin(Gdx.files.internal(
-                "skin/dark-hdpi/Holo-dark-hdpi.json"));
-        TextButton buyLevel2 = new TextButton("Upgrade 2", skinButton);
-
-        table.add(buyLevel2).padLeft(50f).width(150f).height(100f);
-
-        buyLevel2.addListener(generateBuyArrowListener("buyLevel2"));
-        buyLevel2.setName("buyLevel2");
-    }
-
-    public void addLv3(){
-        Button buyLevel3 = new Button("buyLevel3");
-
-        buyLevel3.addListener(generateBuyArrowListener("buyLevel3"));
-
-        stage.addActor(buyLevel3);
-        buyLevel3.setName("buyLevel3");
-    }
-
-    public void addLv4(){
-        Button buyLevel4 = new Button("buyLevel4");
-
-        buyLevel4.addListener(generateBuyArrowListener("buyLevel4"));
-
-        stage.addActor(buyLevel4);
-        buyLevel4.setName("buyLevel4");
     }
 
     protected ClickListener generateBuyArrowListener(final String type) {
@@ -247,7 +216,7 @@ public class GameView extends View {
         return new ClickListener(){
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
-                System.out.println("Move" + way);
+                System.out.println("Move " + way);
                 getController().move(way);
             }
         };
@@ -257,13 +226,9 @@ public class GameView extends View {
         return new ClickListener(){
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
-                System.out.println("navigate" + destination);
+                System.out.println("navigate " + destination);
                 getController().navigateTo(destination);
             }
         };
-    }
-
-    public void removeButton(String name){
-        table.findActor(name).remove();
     }
 }
