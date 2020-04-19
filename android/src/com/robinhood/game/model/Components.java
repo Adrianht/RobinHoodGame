@@ -20,7 +20,6 @@ public class Components {
         public ArrowType() {
             Components.this.arrowType = this;
         }
-        public String type = "Normal";
         public int damage = 10;
     }
 

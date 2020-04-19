@@ -1,6 +1,5 @@
 package com.robinhood.game.controller;
 
-import com.badlogic.gdx.math.Vector2;
 import androidx.annotation.NonNull;
 
 import com.google.firebase.database.DataSnapshot;
@@ -25,7 +24,7 @@ public class FBConnector {
 
     private Controller controller;
     private DatabaseReference mDatabase;
-    private ValueEventListener moveListener, activeArrowListener, drawBowListener;
+    private ValueEventListener actionListener;
     private boolean nameIsValid, cancelFindPlayer;
     private String removeUsername;
 
@@ -35,7 +34,7 @@ public class FBConnector {
 
     public void findPlayers(final String username, final int nrOfPlayers) {
 
-
+/*
         // TODO: replace following with commented after design finished
         List<String> usernames = new ArrayList<>();
         usernames.add("Username");
@@ -43,10 +42,12 @@ public class FBConnector {
         controller.initiateGame(usernames);
         mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("rooms").child("UsernameRoom");
-        createGameRoomListeners();
+        createGameRoomListener();
 
 
-    /*
+ */
+
+
         nameIsValid = false;
         cancelFindPlayer = false;
 
@@ -104,7 +105,7 @@ public class FBConnector {
                     controller.initiateGame(playerNames.subList(0, nrOfPlayers));
                     mDatabase = FirebaseDatabase.getInstance().getReference()
                             .child("rooms").child(playerNames.get(playerNames.size()-1));
-                    createGameRoomListeners();
+                    createGameRoomListener();
                 }
             }
 
@@ -114,7 +115,6 @@ public class FBConnector {
             }
 
         });
-    */
     }
 
     // Cancels search for opponent(s)
@@ -124,40 +124,13 @@ public class FBConnector {
         mDatabase.push().setValue("cancelFindPlayer");
     }
 
-    // Creates listeners within the designated game room
-    public void createGameRoomListeners() {
-        moveListener = new ValueEventListener() {
+    // Creates listener within the designated game room
+    public void createGameRoomListener() {
+        actionListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.getValue() != null){
-                    controller.registerMove((boolean) dataSnapshot.getValue());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // empty method
-            }
-        };
-        activeArrowListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getValue() != null) {
-                    controller.registerBuy((String) dataSnapshot.getValue());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // empty method
-            }
-        };
-        drawBowListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getValue() != null) {
-                    String vectorStr = (String) dataSnapshot.getValue();
-                    controller.registerDraw(new Vector2().fromString(vectorStr));
+                    controller.notifyChangeInFirebase(dataSnapshot.getValue().toString());
                 }
             }
 
@@ -167,34 +140,19 @@ public class FBConnector {
             }
         };
 
-        mDatabase.child("move").addValueEventListener(moveListener);
-        mDatabase.child("activeArrow").addValueEventListener(activeArrowListener);
-        mDatabase.child("drawBow").addValueEventListener(drawBowListener);
+        mDatabase.child("action").addValueEventListener(actionListener);
     }
 
-    // Method to change last movement in players game room
-    public void setMove(boolean left) {
-        mDatabase.child("move").setValue(null);
-        mDatabase.child("move").setValue(left);
-    }
-
-    // Method to change active arrow type in players game room
-    public void setBuy(String type) {
-        mDatabase.child("activeArrow").setValue(null);
-        mDatabase.child("activeArrow").setValue(type);
-    }
-
-    // Method to change draw vector in players game room
-    public void setDraw(Vector2 vector2) {
-        mDatabase.child("drawBow").setValue(vector2.toString());
+    // Method to change last action in players game room
+    public void exportActionToFirebase(String action) {
+        mDatabase.child("action").setValue(null);
+        mDatabase.child("action").setValue(action);
     }
 
     // Method to clean database after game is finished
     public void removeRoom() {
         mDatabase.removeValue();
-        mDatabase.child("move").removeEventListener(moveListener);
-        mDatabase.child("activeArrow").removeEventListener(activeArrowListener);
-        mDatabase.child("drawBow").removeEventListener(drawBowListener);
+        mDatabase.child("action").removeEventListener(actionListener);
     }
 
     // Checks if last element is unique

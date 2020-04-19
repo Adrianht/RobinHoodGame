@@ -6,7 +6,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -32,13 +36,18 @@ public class Model {
 
     // ECS related fields - list index might be used as entity id
     private List<Entity> entities = new ArrayList<>();
-    private Systems.ArrowSystem arrowSystem;
-    private Systems.PlayerInfoSystem playerInfoSystem;
-    private Systems.UserInputSystem userInputSystem;
+    private Systems systems;
 
     // box2D
     private World world;
     private EntityFactory entityFactory;
+
+    // Data
+    private int[] hitPointValues;
+    private int myEnergyPoints;
+    private boolean isMyTurn;
+    private Body[] collidingBodies;
+    private String userInput;
 
 
     // Method to initiate a new game after two players are matched
@@ -46,6 +55,26 @@ public class Model {
 
         // initiate box2d
         world = new World(new Vector2(0,-10f), true);
+        world.setContactListener(new ContactListener() {
+            @Override
+            public void beginContact(Contact contact) {
+                collidingBodies = new Body[2];
+                collidingBodies[0] = contact.getFixtureA().getBody();
+                collidingBodies[1] = contact.getFixtureB().getBody();
+            }
+
+            @Override
+            public void endContact(Contact contact) {
+            }
+
+            @Override
+            public void preSolve(Contact contact, Manifold oldManifold) {
+            }
+
+            @Override
+            public void postSolve(Contact contact, ContactImpulse impulse) {
+            }
+        });
         entityFactory = new EntityFactory(world);
 
         // Initiate ground entity
@@ -53,6 +82,7 @@ public class Model {
 
         // Initiate player entities
         int playerSpace = 24 / (usernames.size()-1);
+        setIsMyTurn(myUsername.equals(usernames.get(0)));
         for (int i = 0; i < usernames.size(); i++) {
             Entity player = entityFactory.createPlayer(
                 usernames.get(i),
@@ -66,9 +96,9 @@ public class Model {
         entities.add(entityFactory.newArrow());
 
         // Initiate game system possibilities
-        arrowSystem = new Systems.ArrowSystem();
-        userInputSystem = new Systems.UserInputSystem();
-        playerInfoSystem = new Systems.PlayerInfoSystem();
+        systems = new Systems(this);
+        systems.GameInfoSystem(entities);
+
 
         this.gameInitialized = true;
 
@@ -77,37 +107,48 @@ public class Model {
         world.step(.001f, 1, 1);
     }
 
-    // Method called from Controller to move the active player
-    public void move(Boolean moveIsLeft) {
-        userInputSystem.moveActivePlayer(world, entities, moveIsLeft);
+    public void gameLoop() {
+        systems.UserInputSystem(entities);
+        systems.AnimationSystem(entities);
+        systems.GameInfoSystem(entities);
+        if (systems.action == "draw") {
+            entities.add(entityFactory.newArrow());
+        }
+        systems.action = "";
+        collidingBodies = null;
     }
 
-    // Method called from Controller to buy an arrow, the check and
-    //  update of weapon type is done in Systems.java
-    public void buyArrow(String type) {
-        userInputSystem.buyArrow(entities, type);
-    }
-
-    // Method runs animation and change players turn
-    public void drawBow(Vector2 vector2) {
-        arrowSystem.arrowAnimation(world, entities, vector2);
-        playerInfoSystem.changeActivePlayer(entities);
-        entities.add(entityFactory.newArrow());
+    // Method called on change in Firebase Real-time db
+    public void notifyChangeInFirebase(String userInput) {
+        this.userInput = userInput;
+        gameLoop();
     }
 
     // Method used to fetch players hit point values
     public int[] getHP(){
-        return playerInfoSystem.getPlayersHitPoints(entities);
+        return hitPointValues;
+    }
+
+    public void setHitPointValues(int[] hitPointValues) {
+        this.hitPointValues = hitPointValues;
     }
 
     // Method used to fetch players energy values
     public int getMyEnergyPoints(){
-        return playerInfoSystem.getMyEnergyPoints(entities, myUsername);
+        return myEnergyPoints;
+    }
+
+    public void setMyEnergyPoints(int myEnergyPoints) {
+        this.myEnergyPoints = myEnergyPoints;
     }
 
     // Method used to check if it's this player's turn
     public boolean isMyTurn(){
-        return playerInfoSystem.isMyTurn(entities, myUsername);
+        return isMyTurn;
+    }
+
+    public void setIsMyTurn(boolean isMyTurn) {
+        this.isMyTurn = isMyTurn;
     }
 
     // Method returns username
@@ -149,5 +190,13 @@ public class Model {
 
     public World getWorld() {
         return world;
+    }
+
+    public Body[] getCollidingBodies() {
+        return collidingBodies;
+    }
+
+    public String getUserInput() {
+        return userInput;
     }
 }

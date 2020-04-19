@@ -46,10 +46,10 @@ public class CustomDragListener extends DragListener {
                          float clickX,
                          float clickY,
                          int pointer) {
-        controller.drawBow(new Vector2(
+        controller.actionToFirebase(new Vector2(
                 clickX-getDragStartX(),
-                clickY-getDragStartY())
-        );
+                clickY-getDragStartY()
+        ).toString());
         dragIndicator.sprite.setSize(0,0);
     }
 }

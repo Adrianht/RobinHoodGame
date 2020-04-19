@@ -1,7 +1,6 @@
 package com.robinhood.game.controller;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Vector2;
 import com.robinhood.game.RobinHood;
 
 import com.robinhood.game.model.Model;
@@ -44,40 +43,16 @@ public class Controller {
         }
     }
 
-    // Method called from GameView to update fb
-    public void move(Boolean left) {
+    // Method called from GameView to update firebase
+    public void actionToFirebase(String action) {
         if(model.isMyTurn()) {
-            fbconnector.setMove(left);
+            fbconnector.exportActionToFirebase(action);
         }
     }
 
-    // Method called from FBConnector to update model
-    public void registerMove(Boolean left) {
-        model.move(left);
-    }
-
-    // Method called from views to update fb
-    public void buyArrow(String type) {
-        if(model.isMyTurn()) {
-            fbconnector.setBuy(type);
-        }
-    }
-
-    // Method called from FBConnector to update model
-    public void registerBuy(String type) {
-        model.buyArrow(type);
-    }
-
-    // Method called from views to update fb and model
-    public void drawBow(Vector2 vector2) {
-        if(model.isMyTurn()) {
-            fbconnector.setDraw(vector2);
-        }
-    }
-
-    // Method called from views to update fb and model
-    public void registerDraw(Vector2 vector2) {
-        model.drawBow(vector2);
+    // Method called from FBConnector to notify model of change
+    public void notifyChangeInFirebase(String userInput) {
+        model.notifyChangeInFirebase(userInput);
     }
 
     // Method called from GameView when only one player has hp

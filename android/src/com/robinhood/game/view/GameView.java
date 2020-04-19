@@ -74,11 +74,11 @@ public class GameView extends View {
         table.add(buyLevel4).width(150f).height(100f);
         table.add(rightButton).right().uniform().width(300f).height(100f);
 
-        buyLevel2.addListener(generateBuyListener("Level2"));
-        buyLevel3.addListener(generateBuyListener("Level3"));
-        buyLevel4.addListener(generateBuyListener("Level4"));
-        leftButton.addListener(generateMoveListener(true));
-        rightButton.addListener(generateMoveListener(false));
+        buyLevel2.addListener(generateActionListener("Level2"));
+        buyLevel3.addListener(generateActionListener("Level3"));
+        buyLevel4.addListener(generateActionListener("Level4"));
+        leftButton.addListener(generateActionListener("left"));
+        rightButton.addListener(generateActionListener("right"));
 
         DragIndicator dragIndicator = new DragIndicator();
         stage.addActor(dragIndicator);
@@ -101,7 +101,7 @@ public class GameView extends View {
                 + myEnergyPoints + "\n";
         int survivorCount = 0;
         for (int i = 0; i < hitPoints.length; i++) {
-            if(hitPoints[i] >= 0) {
+            if(hitPoints[i] > 0) {
                 survivorCount++;
             }
             gameInfoString += "HitPoints P" + i + ": " + hitPoints[i] + "\n";
@@ -116,21 +116,13 @@ public class GameView extends View {
         buyLevel4.setVisible(myEnergyPoints >= 70);
     }
 
-    private ClickListener generateBuyListener(final String type) {
+    private ClickListener generateActionListener(final String action) {
         return new ClickListener(){
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
-                getController().buyArrow(type);
+                getController().actionToFirebase(action);
             }
         };
     }
 
-    private ClickListener generateMoveListener(final Boolean way) {
-        return new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float clickX, float clickY) {
-                getController().move(way);
-            }
-        };
-    }
 }
