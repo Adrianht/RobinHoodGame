@@ -139,6 +139,11 @@ public class Controller {
         return model.getEnergy();
     }
 
+    // Fetch winners username from model
+    public String getWinner() {
+        return model.getWinner();
+    }
+
     // Method sets username in model
     public void setUsername(String username){
         model.setMyUsername(username);
