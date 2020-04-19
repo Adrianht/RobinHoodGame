@@ -138,7 +138,6 @@ public class GameView extends View {
         List<Integer> hitPoints = controller.getHP();
         int energyPoints = controller.getEnergy();
 
-
         String hpText = "";
         String energyText = "EnergyPoints" + ": " + energyPoints + "\n";
         for (int i = 0; i < hitPoints.size(); i++) {
@@ -149,56 +148,49 @@ public class GameView extends View {
             hpText += "HitPoints P" + i + ": " + hitPoints.get(i) + "\n";
 
         }
+        checkBuys(energyPoints);
 
-        //Getmyenergypoints now returns current players energypoints
+        batch.begin();
+        font.draw(batch, (hpText + energyText), 750, 830);
+        batch.end();
+    }
+
+    public void checkBuys(int energyPoints){
         if (energyPoints >= 20) {
             if(!this.buyLv2){
-                System.out.println("add lv2");
                 addLv2();
             }
             this.buyLv2 = true;
         } else {
             if(this.buyLv2){
-                System.out.println("remove lv2");
                 removeButton("buyLevel2");
             }
-            System.out.println("buy lvl 2 false");
             this.buyLv2 = false;
         }
 
         if(energyPoints >= 50){
             if(!this.buyLv3){
-                System.out.println("add lv3");
                 addLv3();
             }
             this.buyLv3 = true;
         } else {
             if(this.buyLv3){
-                System.out.println("remove lv3");
                 removeButton("buyLevel3");
             }
-            System.out.println("buy lvl 3 false");
             this.buyLv3 = false;
         }
 
         if(energyPoints >= 70){
             if(!this.buyLv4){
-                System.out.println("add lv4");
                 addLv4();
             }
             this.buyLv4 = true;
         } else {
             if(this.buyLv4){
-                System.out.println("remove lv4");
                 removeButton("buyLevel4");
             }
-            System.out.println("buy lvl 4 false");
             this.buyLv4 = false;
         }
-
-        batch.begin();
-        font.draw(batch, (hpText + energyText), 750, 830);
-        batch.end();
     }
 
     public void addBuys(){
