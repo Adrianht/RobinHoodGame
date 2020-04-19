@@ -25,7 +25,7 @@ import java.util.List;
 
 public class GameView extends View {
 
-    private final Controller controller;
+    //private final Controller controller;
     private final DragIndicator dragIndicator;
 
     private SpriteBatch batch = new SpriteBatch();
@@ -42,13 +42,15 @@ public class GameView extends View {
 
 
     public GameView(Controller cont, Model model) {
+        super(cont);
+        table.remove();
 
-        this.controller = cont;
+        //this.controller = cont;
         this.world = model.world;
 
         // Set the stage of the View superclass
-        stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
+        //stage = new Stage(new ScreenViewport());
+        //Gdx.input.setInputProcessor(stage);
 
         // Initiate clickable objects within the interface
         Button menuButton = new Button("menu");
@@ -59,21 +61,22 @@ public class GameView extends View {
         menuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
-                controller.navigateTo("MENU");
+                getController().navigateTo("MENU");
             }
         });
         leftButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
-                controller.move(true);
+                getController().move(true);
             }
         });
         rightButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
-                controller.move(false);
+                getController().move(false);
             }
         });
+
 
 
         // Add all the clickable objects to this interface
@@ -115,7 +118,7 @@ public class GameView extends View {
                                  float clickX,
                                  float clickY,
                                  int pointer) {
-                controller.drawBow(new Vector2(
+                getController().drawBow(new Vector2(
                         clickX-getDragStartX(),
                         clickY-getDragStartY())
                 );
@@ -135,17 +138,17 @@ public class GameView extends View {
     }
 
     private void handlePlayerInfo(){
-        List<Integer> hitPoints = controller.getHP();
 
         //TODO: change to int
-        List<Integer> energyPoints = controller.getEnergy();
+        List<Integer> hitPoints = getController().getHP();
+        List<Integer> energyPoints = getController().getEnergy();
 
         String hpText = "";
         String energyText = "EnergyPoints" + ": " + energyPoints + "\n";
         for (int i = 0; i < hitPoints.size(); i++) {
             //FIXME: change check, now game over with only one player at hp=0
             if(hitPoints.get(i) <= 0) {
-                controller.handleGameOver();
+                getController().handleGameOver();
             }
             hpText += "HitPoints P" + i + ": " + hitPoints.get(i) + "\n";
 
@@ -205,7 +208,7 @@ public class GameView extends View {
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
                 System.out.println("You want to buy a Level 2 weapon!");
-                controller.buyArrow("Level2");
+                getController().buyArrow("Level2");
             }
         });
 
@@ -213,7 +216,7 @@ public class GameView extends View {
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
                 System.out.println("You want to buy a Level 3 weapon!");
-                controller.buyArrow("Level3");
+                getController().buyArrow("Level3");
             }
         });
 
@@ -221,7 +224,7 @@ public class GameView extends View {
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
                 System.out.println("You want to buy a Level 4 weapon!");
-                controller.buyArrow("Level4");
+                getController().buyArrow("Level4");
             }
         });
 
@@ -242,7 +245,7 @@ public class GameView extends View {
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
                 System.out.println("You want to buy a Level 2 weapon!");
-                controller.buyArrow("Level2");
+                getController().buyArrow("Level2");
             }
         });
 
@@ -257,7 +260,7 @@ public class GameView extends View {
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
                 System.out.println("You want to buy a Level 3 weapon!");
-                controller.buyArrow("Level3");
+                getController().buyArrow("Level3");
             }
         });
 
@@ -272,7 +275,7 @@ public class GameView extends View {
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
                 System.out.println("You want to buy a Level 4 weapon!");
-                controller.buyArrow("Level4");
+                getController().buyArrow("Level4");
             }
         });
 
