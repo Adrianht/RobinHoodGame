@@ -50,7 +50,7 @@ public class GameView extends View {
         super(cont);
 
         this.world = model.world;
-        
+
         Skin skinButton = new Skin(Gdx.files.internal(
                 "skin/dark-hdpi/Holo-dark-hdpi.json"));
 
@@ -76,9 +76,9 @@ public class GameView extends View {
         table.add(menu).uniform().width(200f).height(100f);
         table.add(right).right().uniform().width(300f).height(100f);
 
-        buyLevel2.addListener(generateBuyArrowListener("buyLevel2"));
-        buyLevel3.addListener(generateBuyArrowListener("buyLevel3"));
-        buyLevel4.addListener(generateBuyArrowListener("buyLevel4"));
+        buyLevel2.addListener(generateBuyArrowListener("Level2"));
+        buyLevel3.addListener(generateBuyArrowListener("Level3"));
+        buyLevel4.addListener(generateBuyArrowListener("Level4"));
 
         left.addListener(generateMoveListener(true));
         right.addListener(generateMoveListener(false));
