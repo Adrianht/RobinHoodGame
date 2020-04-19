@@ -77,8 +77,6 @@ public class GameView extends View {
             }
         });
 
-
-
         // Add all the clickable objects to this interface
         stage.addActor(menuButton);
         stage.addActor(leftButton);
@@ -204,50 +202,23 @@ public class GameView extends View {
         Button buyLevel3 = new Button("buyLevel3");
         Button buyLevel4 = new Button("buyLevel4");
 
-        buyLevel2.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float clickX, float clickY) {
-                System.out.println("You want to buy a Level 2 weapon!");
-                getController().buyArrow("Level2");
-            }
-        });
-
-        buyLevel3.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float clickX, float clickY) {
-                System.out.println("You want to buy a Level 3 weapon!");
-                getController().buyArrow("Level3");
-            }
-        });
-
-        buyLevel4.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float clickX, float clickY) {
-                System.out.println("You want to buy a Level 4 weapon!");
-                getController().buyArrow("Level4");
-            }
-        });
-
-        stage.addActor(buyLevel2);
-        stage.addActor(buyLevel3);
-        stage.addActor(buyLevel4);
+        buyLevel2.addListener(generateBuyArrowListener("buyLevel2"));
+        buyLevel3.addListener(generateBuyArrowListener("buyLevel3"));
+        buyLevel4.addListener(generateBuyArrowListener("buyLevel4"));
 
         buyLevel2.setName("buyLevel2");
         buyLevel3.setName("buyLevel3");
         buyLevel4.setName("buyLevel4");
 
+        stage.addActor(buyLevel2);
+        stage.addActor(buyLevel3);
+        stage.addActor(buyLevel4);
     }
 
     public void addLv2(){
         Button buyLevel2 = new Button("buyLevel2");
 
-        buyLevel2.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float clickX, float clickY) {
-                System.out.println("You want to buy a Level 2 weapon!");
-                getController().buyArrow("Level2");
-            }
-        });
+        buyLevel2.addListener(generateBuyArrowListener("buyLevel2"));
 
         stage.addActor(buyLevel2);
         buyLevel2.setName("buyLevel2");
@@ -256,13 +227,7 @@ public class GameView extends View {
     public void addLv3(){
         Button buyLevel3 = new Button("buyLevel3");
 
-        buyLevel3.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float clickX, float clickY) {
-                System.out.println("You want to buy a Level 3 weapon!");
-                getController().buyArrow("Level3");
-            }
-        });
+        buyLevel3.addListener(generateBuyArrowListener("buyLevel3"));
 
         stage.addActor(buyLevel3);
         buyLevel3.setName("buyLevel3");
@@ -271,16 +236,20 @@ public class GameView extends View {
     public void addLv4(){
         Button buyLevel4 = new Button("buyLevel4");
 
-        buyLevel4.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float clickX, float clickY) {
-                System.out.println("You want to buy a Level 4 weapon!");
-                getController().buyArrow("Level4");
-            }
-        });
+        buyLevel4.addListener(generateBuyArrowListener("buyLevel4"));
 
         stage.addActor(buyLevel4);
         buyLevel4.setName("buyLevel4");
+    }
+
+    protected ClickListener generateBuyArrowListener(final String type) {
+        return new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float clickX, float clickY) {
+                System.out.println("You want to buy a level " + type + " weapon");
+                getController().buyArrow(type);
+            }
+        };
     }
 
     public void removeButton(String name){
