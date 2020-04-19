@@ -1,11 +1,14 @@
 package com.robinhood.game.model;
 
+import com.badlogic.gdx.math.Vector;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-// simplified BodyFactory from box2d repo
+
 public class EntityFactory {
 
     private final World world;
@@ -73,15 +76,48 @@ public class EntityFactory {
         entity.addComponent("box2d");
         entity.component.box2dBody.body = world.createBody(arrowBodyDef);
 
-        PolygonShape polygonShape = new PolygonShape();
-        polygonShape.setAsBox(.5f,.2f);
+        ChainShape chainShape = new ChainShape();
+        //polygonShape.setAsBox(.5f,.2f);
+        Vector2[] verticies = new Vector2[14];
+        verticies[0] = new Vector2(.3f,0f);
+
+        verticies[1] = new Vector2(.4f,.1f);
+
+        //dummy
+        verticies[2] = new Vector2(.08f,.1f);
+
+        verticies[3] = new Vector2(1.3f,.1f);
+
+        verticies[4] = new Vector2(1.3f,.05f);
+
+        verticies[5] = new Vector2(1.5f,.15f);
+
+        verticies[6] = new Vector2(1.3f,.25f);
+
+        verticies[7] = new Vector2(1.3f,.2f);
+
+        //dummy
+        verticies[8] = new Vector2(.08f,.2f);
+
+        verticies[9] = new Vector2(.4f,.2f);
+
+        verticies[10] = new Vector2(.3f,.3f);
+
+        verticies[11] = new Vector2(0f,.3f);
+        verticies[12] = new Vector2(.1f,.15f);
+        verticies[13] = new Vector2(0f,0f);
+
+
+        chainShape.createLoop(verticies);
         FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = polygonShape;
+        fixtureDef.shape = chainShape;
+
+
         fixtureDef.density = 0.5f;
         fixtureDef.friction = 0.7f;
         fixtureDef.restitution = 0.3f;
         entity.component.box2dBody.body.createFixture(fixtureDef);
-        polygonShape.dispose();
+        chainShape.dispose();
 
         return entity;
     }
