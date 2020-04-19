@@ -155,4 +155,8 @@ public class Model {
 
     public void setSoundEnabled(boolean enabled) { SOUND_ENABLED = enabled; }
 
+    // TODO-ola: fix appropriate method in Systems.PlayerInfoSystem
+    public String getWinner() {
+        return "username";
+    }
 }
