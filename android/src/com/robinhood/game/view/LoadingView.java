@@ -12,18 +12,18 @@ import com.robinhood.game.view.interfaceObjects.LoadingObject;
 
 public class LoadingView extends View {
 
-    private Controller controller;
+    //private Controller controller;
 
     private Button playButton;
     private Button menuButton;
 
     public LoadingView(Controller cont, Model model) {
-
-        this.controller = cont;
+        super(cont);
+        //this.controller = cont;
 
         // Set the stage of the View superclass - same in all subclasses
-        stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(super.stage);
+        //stage = new Stage(new ScreenViewport());
+        //Gdx.input.setInputProcessor(super.stage);
 
         // adds all the elements to this interface
         LoadingObject loadingObject = new LoadingObject();
@@ -31,13 +31,13 @@ public class LoadingView extends View {
 
         // This method initiates the creation of a FirebaseConnector
         // and search for opponent in the controller
-        this.controller.findPlayer();
+        this.getController().findPlayer();
 
         playButton = new Button("play");
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
-                controller.navigateTo("GAME");
+                getController().navigateTo("GAME");
             }
         });
 
@@ -45,15 +45,15 @@ public class LoadingView extends View {
         menuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
-                controller.cancelFindPlayer();
-                controller.navigateTo("MENU");
+                getController().cancelFindPlayer();
+                getController().navigateTo("MENU");
             }
         });
     }
 
     @Override
     public void render() {
-            if(controller.isGameInitialized()) {
+            if(getController().isGameInitialized()) {
                 menuButton.remove();
                 stage.addActor(playButton);
             } else {
