@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.robinhood.game.controller.Controller;
 import com.robinhood.game.model.Model;
 
@@ -41,6 +42,7 @@ public class LoadingView extends View {
         table.add(playButton).fillX().uniform().width(300f).height(100f);
         table.row().pad(10, 0, 10, 0);
         table.add(findingPlayerLabel).fillX().uniform().width(300f).height(100f);
+        findingPlayerLabel.setAlignment(Align.center); // Align center
         table.row().pad(10, 0, 10, 0);
         table.add(menuButton).fillX().uniform().width(300f).height(100f);
 
