@@ -79,12 +79,15 @@ public class GameView extends View {
         table.row().pad(0, 0, 0, 0);
         gameInfo.setAlignment(Align.left);
         table.bottom();
-        table.padBottom(110f);
-        table.add(leftButton).left().width(300f).height(100f);
+        table.padBottom(135f);
+
+        table.add(leftButton).left().padRight(550f).width(150f).height(150f);
+
         table.add(buyLevel2).padLeft(50f).width(150f).height(100f);
         table.add(buyLevel3).width(150f).height(100f);
         table.add(buyLevel4).width(150f).height(100f);
-        table.add(rightButton).right().uniform().width(300f).height(100f);
+
+        table.add(rightButton).right().padLeft(550f).uniform().width(150f).height(150f);
 
         buyLevel2.addListener(generateActionListener("Level2"));
         buyLevel3.addListener(generateActionListener("Level3"));
