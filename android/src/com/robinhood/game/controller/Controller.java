@@ -32,9 +32,6 @@ public class Controller {
     // Method called from views to navigate through the application
     public void navigateTo(String destination) {
         switch(destination) {
-            case "MENU":
-                game.setView(new MenuView(this));
-                break;
             case "SETTINGS":
                 game.setView(new SettingsView(this, model));
                 break;
@@ -98,18 +95,13 @@ public class Controller {
         model.initiateGame(usernames);
     }
 
-    // Method returns if game is initialized
-    public boolean isGameInitialized() {
-        return model.isGameInitialized();
-    }
-
     // Method to exit application, called from MenuView
     public void exitApplication() {
         Gdx.app.exit();
     }
 
     // Method sets username in model
-    public void setUsername(String username){
+    public void setMyUsername(String username){
         model.setMyUsername(username);
     }
 

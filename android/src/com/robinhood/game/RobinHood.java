@@ -2,7 +2,6 @@ package com.robinhood.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.robinhood.game.controller.Controller;
-import com.robinhood.game.view.MenuView;
 import com.robinhood.game.view.View;
 
 public class RobinHood extends ApplicationAdapter {
@@ -12,7 +11,7 @@ public class RobinHood extends ApplicationAdapter {
     @Override
     public void create () {
         Controller controller = new Controller(this);
-        view = new MenuView(controller);
+        controller.navigateTo("LOADING"); //TODO: MENU
     }
 
     @Override
@@ -25,7 +24,6 @@ public class RobinHood extends ApplicationAdapter {
         view.dispose();
     }
 
-    // TODO: add description
     public void setView(View view) {
         this.view = view;
     }

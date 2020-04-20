@@ -6,11 +6,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.robinhood.game.controller.Controller;
+import com.robinhood.game.model.Model;
 
 /**
  * Superclass in Template method pattern - base of all application UIs.
@@ -23,12 +25,26 @@ import com.robinhood.game.controller.Controller;
 // TODO: consider adding model to super constructor, like controller
 public abstract class View {
 
-    private final Controller controller;
-    protected Stage stage;
-    protected Table table;
+    protected Controller controller;
+    protected Model model;
+    protected final Stage stage;
+    protected final Table table;
+
+    protected final Skin buttonSkin = new Skin(Gdx.files.internal(
+            "skin/dark-hdpi/Holo-dark-hdpi.json"));
+    protected final Skin textSkin = new Skin(Gdx.files.internal(
+            "skin/shade/uiskin.json"));
+    protected final Skin headerSkin = new Skin(Gdx.files.internal(
+            "skin/craftacular/craftacular-ui.json"));
+
+    View(Controller controller, Model model) {
+        this(controller);
+        this.model = model;
+    }
 
     View(Controller controller) {
         this.controller = controller;
+
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
@@ -47,19 +63,6 @@ public abstract class View {
         stage.addActor(table);
     }
 
-    protected Controller getController() {
-        return controller;
-    }
-
-    protected ClickListener generateNavigateListener(final String destination) {
-        return new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float clickX, float clickY) {
-                controller.navigateTo(destination);
-            }
-        };
-    }
-
     public void render() {
         float[] values = hextoRGB("#5f8db0");
         Gdx.gl.glClearColor(values[0], values[1], values[2], 1.0f);
@@ -71,6 +74,16 @@ public abstract class View {
         stage.dispose();
     }
 
+    protected ClickListener generateNavigateListener(final String destination) {
+        return new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float clickX, float clickY) {
+                controller.navigateTo(destination);
+            }
+        };
+    }
+
+    // FIXME: refac later
     //Hjelpemetoder - hex til glcolors
     /* re-map RGB colors so they can be used in OpenGL */
     private float[] map(float[]rgb) {
