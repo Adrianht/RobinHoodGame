@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -53,12 +54,12 @@ public class GameView extends View {
     private Skin skinRightButton = new Skin(Gdx.files.internal(
             "skin/shade/uiskin.json"));
     private final Label gameInfo = new Label("", skinInfo);;
-    private final TextButton buyLevel2 =
-            new TextButton("Upgrade 2", skinButton);
-    private final TextButton buyLevel3 =
-            new TextButton("Upgrade 3", skinButton);
-    private final TextButton buyLevel4 =
-            new TextButton("Upgrade 4", skinButton);
+    private final ImageTextButton buyLevel2 =
+            new ImageTextButton("20", skinButton);
+    private final ImageTextButton buyLevel3 =
+            new ImageTextButton("40", skinButton);
+    private final ImageTextButton buyLevel4 =
+            new ImageTextButton("60", skinButton);
 
     public GameView(Controller cont, Model model) {
         super(cont);
@@ -69,8 +70,18 @@ public class GameView extends View {
                 "skin/dark-hdpi/Holo-dark-hdpi.json"));
         ImageButton leftButton = new ImageButton(skinLeftButton);
         ImageButton rightButton = new ImageButton(skinRightButton);
-        leftButton.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("skin/left.png"))));
-        rightButton.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("skin/right.png"))));
+        leftButton.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("left.png"))));
+        rightButton.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("right.png"))));
+
+
+        buyLevel2.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion
+                (new Texture(Gdx.files.internal("buyLevel2.png"))));
+        buyLevel3.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion
+                (new Texture(Gdx.files.internal("buyLevel3.png"))));
+        buyLevel4.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion
+                (new Texture(Gdx.files.internal("buyLevel4.png"))));
+
+
 
         // FIXME: table needs revised positioning/padding
         table.setBackground(new BaseDrawable()); // remove superclass background
