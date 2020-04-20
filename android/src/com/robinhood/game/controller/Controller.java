@@ -41,6 +41,9 @@ public class Controller {
             case "LOADING":
                 game.setView(new LoadingView(this, model));
                 break;
+            case "INSTRUCTIONS":
+                game.setView(new InstructionsView(this));
+                break;
             case "GAME":
                 game.setView(new GameView(this, model));
                 break;

@@ -25,15 +25,19 @@ public class MenuView extends View  {
                 "skin/dark-hdpi/Holo-dark-hdpi.json"));
         TextButton newGame = new TextButton("New Game", skin);
         TextButton settings = new TextButton("Settings", skin);
+        TextButton instructions = new TextButton("Game instructions", skin);
         TextButton exit = new TextButton("Exit", skin);
         table.row().pad(400, 0, 10, 0);
         table.add(newGame).fillX().uniform().width(300f).height(100f);
         table.row().pad(10, 0, 10, 0);
         table.add(settings).fillX().uniform().width(300f).height(100f);
         table.row().pad(10, 0, 10, 0);
+        table.add(instructions).fillX().uniform().width(300f).height(100f);
+        table.row().pad(10, 0, 10, 0);
         table.add(exit).fillX().uniform().width(300f).height(100f);
 
         settings.addListener(generateNavigateListener("SETTINGS"));
+        instructions.addListener(generateNavigateListener("INSTRUCTIONS"));
         newGame.addListener(generateNavigateListener("LOADING"));
         exit.addListener(new ClickListener(){
             @Override
