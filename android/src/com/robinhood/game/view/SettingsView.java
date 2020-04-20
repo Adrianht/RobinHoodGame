@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import com.robinhood.game.controller.Controller;
+import com.robinhood.game.model.Model;
 
 /**
  * Subclass in Template method pattern creating the UI of game settings menu.
@@ -19,7 +20,7 @@ import com.robinhood.game.controller.Controller;
  */
 public class SettingsView extends View {
 
-    public SettingsView(Controller cont) {
+    public SettingsView(Controller cont, Model model) {
         super(cont);
 
         // TODO: add possibility to change username and do it by calling:
@@ -34,8 +35,8 @@ public class SettingsView extends View {
         final CheckBox musicCheckbox = new CheckBox(null, skin);
         final CheckBox soundCheckbox = new CheckBox(null, skin);
 
-        musicCheckbox.setChecked(getController().getMusicEnabled());
-        soundCheckbox.setChecked(getController().getSoundEnabled());
+        musicCheckbox.setChecked(model.getMusicEnabled());
+        soundCheckbox.setChecked(model.getSoundEnabled());
 
         table.row().pad(350,0,0,0);
         table.add(musicOnOffLabel).left().width(300f).height(100f);

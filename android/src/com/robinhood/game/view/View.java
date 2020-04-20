@@ -20,6 +20,7 @@ import com.robinhood.game.controller.Controller;
  * @since 2020-04-25
  */
 // TODO: check if table actions in subclasses can be generalized and moved here
+// TODO: consider adding model to super constructor, like controller
 public abstract class View {
 
     private final Controller controller;

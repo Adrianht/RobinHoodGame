@@ -7,6 +7,15 @@ import com.robinhood.game.model.Model;
 import com.robinhood.game.view.*;
 import java.util.List;
 
+/**
+ * Class representing Controller in Model-View-Controller.
+ * Handles actions from View component and head of
+ * the Firebase Connector.
+ *
+ * @author group 11
+ * @version 1.0
+ * @since 2020-04-25
+ */
 public class Controller {
 
     private RobinHood game;
@@ -27,7 +36,7 @@ public class Controller {
                 game.setView(new MenuView(this));
                 break;
             case "SETTINGS":
-                game.setView(new SettingsView(this));
+                game.setView(new SettingsView(this, model));
                 break;
             case "LOADING":
                 game.setView(new LoadingView(this, model));
@@ -67,15 +76,7 @@ public class Controller {
     }
 
     // NEW Music/Sound methods
-    public boolean getMusicEnabled() {
-        return model.getMusicEnabled();
-    }
-
     public void setMusicEnabled(boolean enabled) { model.setMusicEnabled(enabled); }
-
-    public boolean getSoundEnabled() {
-        return model.getSoundEnabled();
-    }
 
     public void setSoundEnabled(boolean enabled) { model.setSoundEnabled(enabled); }
 
@@ -102,16 +103,6 @@ public class Controller {
     // Method to exit application, called from MenuView
     public void exitApplication() {
         Gdx.app.exit();
-    }
-
-    // Method call model about players hit point values
-    public int[] getHP(){
-        return model.getHP();
-    }
-
-    // Method call model about players energy values
-    public int getMyEnergyPoints(){
-        return model.getMyEnergyPoints();
     }
 
     // Method sets username in model

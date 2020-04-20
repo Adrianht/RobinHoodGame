@@ -1,59 +1,51 @@
 package com.robinhood.game.model;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/*
-    Model of the MVC pattern
-    Access point for View and the class triggering appropriate
-        system functions related to ECS
+/**
+ * Class representing Model in Model-View-Controller.
+ * Holds all data and runs the game loop.
+ *
+ * @author group 11
+ * @version 1.0
+ * @since 2020-04-25
  */
-
 public class Model {
 
-    // Sound Settings
     private Boolean MUSIC_ENABLED = true;
     private Boolean SOUND_ENABLED = true;
 
-    private String myUsername = "Username";
-
-    private boolean gameInitialized = false;
-
-    // ECS related fields - list index might be used as entity id
+    // ECS fields
     private List<Entity> entities = new ArrayList<>();
     private Systems systems;
 
-    // box2D
+    // Box2D fields
     private World world;
     private EntityFactory entityFactory;
 
-    // Data
+    private boolean gameInitialized = false;
+
+    // Data fields
+    private String myUsername = "Username";
     private int[] hitPointValues;
     private int myEnergyPoints;
     private boolean isMyTurn;
     private Body[] collidingBodies;
-    private String userInput;
-
+    private String userInput, gameWinner;
 
     // Method to initiate a new game after two players are matched
     public void initiateGame(List<String> usernames) {
 
-        // initiate box2d
+        // Initiate Box2D
         world = new World(new Vector2(0,-10f), true);
         world.setContactListener(new ContactListener() {
             @Override
@@ -77,10 +69,9 @@ public class Model {
         });
         entityFactory = new EntityFactory(world);
 
-        // Initiate ground entity
+        // Initiate entities
         entities.add(entityFactory.createGround());
-
-        // Initiate player entities
+        entities.add(entityFactory.newArrow());
         int playerSpace = 24 / (usernames.size()-1);
         setIsMyTurn(myUsername.equals(usernames.get(0)));
         for (int i = 0; i < usernames.size(); i++) {
@@ -92,13 +83,9 @@ public class Model {
             entities.add(player);
         }
 
-        // Initiate arrow
-        entities.add(entityFactory.newArrow());
-
-        // Initiate game system possibilities
+        // Initiate game systems
         systems = new Systems(this);
         systems.GameInfoSystem(entities);
-
 
         this.gameInitialized = true;
 
@@ -107,6 +94,7 @@ public class Model {
         world.step(.001f, 1, 1);
     }
 
+    // Method called after every game action
     public void gameLoop() {
         systems.UserInputSystem(entities);
         systems.AnimationSystem(entities);
@@ -124,8 +112,13 @@ public class Model {
         gameLoop();
     }
 
+    // Method returns if game is initialized
+    public boolean isGameInitialized() {
+        return gameInitialized;
+    }
+
     // Method used to fetch players hit point values
-    public int[] getHP(){
+    public int[] getHitPointValues(){
         return hitPointValues;
     }
 
@@ -162,11 +155,6 @@ public class Model {
     }
 
     // Method returns if game is initialized
-    public boolean isGameInitialized() {
-        return gameInitialized;
-    }
-
-    // Method returns if game is initialized
     public void resetModelData() {
         entities.clear();
         gameInitialized = false;
@@ -183,9 +171,12 @@ public class Model {
 
     public void setSoundEnabled(boolean enabled) { SOUND_ENABLED = enabled; }
 
-    // TODO-ola: fix appropriate method in Systems.PlayerInfoSystem
-    public String getWinner() {
-        return "username";
+    public String getGameWinner() {
+        return gameWinner;
+    }
+
+    public void setGameWinner(String gameWinner) {
+        this.gameWinner = gameWinner;
     }
 
     public World getWorld() {
