@@ -2,64 +2,62 @@ package com.robinhood.game.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.Align;
 import com.robinhood.game.controller.Controller;
 import com.robinhood.game.model.Model;
-import com.robinhood.game.view.interfaceObjects.Button;
-import com.robinhood.game.view.interfaceObjects.LoadingObject;
 
 public class LoadingView extends View {
 
-    //private Controller controller;
+    private Skin skinButton = new Skin(Gdx.files.internal(
+            "skin/dark-hdpi/Holo-dark-hdpi.json"));
+    private final Skin skinInfo = new Skin(Gdx.files.internal(
+            "skin/shade/uiskin.json"));
 
-    private Button playButton;
-    private Button menuButton;
+    private final TextButton playButton =
+            new TextButton("Play!", skinButton);
+    private final TextButton menuButton =
+            new TextButton("Cancel", skinButton);
+    private final Label findingPlayerLabel =
+            new Label("Finding player...", skinInfo);
+
+
 
     public LoadingView(Controller cont, Model model) {
         super(cont);
-        //this.controller = cont;
 
-        // Set the stage of the View superclass - same in all subclasses
-        //stage = new Stage(new ScreenViewport());
-        //Gdx.input.setInputProcessor(super.stage);
-
-        // adds all the elements to this interface
-        LoadingObject loadingObject = new LoadingObject();
-        stage.addActor(loadingObject);
-
-        // This method initiates the creation of a FirebaseConnector
-        // and search for opponent in the controller
-        this.getController().findPlayer();
-
-        playButton = new Button("play");
-        playButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float clickX, float clickY) {
-                getController().navigateTo("GAME");
-            }
-        });
-
-        menuButton = new Button("menu");
-        menuButton.addListener(new ClickListener() {
+        playButton.addListener(generateNavigateListener("GAME"));
+        menuButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
                 getController().cancelFindPlayer();
                 getController().navigateTo("MENU");
             }
         });
+
+        table.row().pad(400, 0, 10, 0);
+        table.add(playButton).fillX().uniform().width(300f).height(100f);
+        table.row().pad(10, 0, 10, 0);
+        table.add(findingPlayerLabel).fillX().uniform().width(300f).height(100f);
+        findingPlayerLabel.setAlignment(Align.center); // Align center
+        table.row().pad(10, 0, 10, 0);
+        table.add(menuButton).fillX().uniform().width(300f).height(100f);
+
+        findingPlayerLabel.setFontScale(2.0f );
+
+        this.getController().findPlayer();
+
     }
+
 
     @Override
     public void render() {
-            if(getController().isGameInitialized()) {
-                menuButton.remove();
-                stage.addActor(playButton);
-            } else {
-                playButton.remove();
-                stage.addActor(menuButton);
-            }
+        menuButton.setVisible(!getController().isGameInitialized());
+        findingPlayerLabel.setVisible(!getController().isGameInitialized());
+        playButton.setVisible(getController().isGameInitialized());
         super.render();
     }
 
