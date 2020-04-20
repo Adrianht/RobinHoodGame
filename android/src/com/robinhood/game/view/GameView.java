@@ -54,12 +54,14 @@ public class GameView extends View {
     private Skin skinRightButton = new Skin(Gdx.files.internal(
             "skin/shade/uiskin.json"));
     private final Label gameInfo = new Label("", skinInfo);;
-    private final ImageTextButton buyLevel2 =
-            new ImageTextButton("20", skinButton);
-    private final ImageTextButton buyLevel3 =
-            new ImageTextButton("40", skinButton);
-    private final ImageTextButton buyLevel4 =
-            new ImageTextButton("60", skinButton);
+    private final ImageButton buyLevel2 =
+            new ImageButton(skinButton);
+    private final ImageButton buyLevel3 =
+            new ImageButton(skinButton);
+    private final ImageButton buyLevel4 =
+            new ImageButton(skinButton);
+
+
 
     public GameView(Controller cont, Model model) {
         super(cont);
@@ -94,7 +96,7 @@ public class GameView extends View {
 
         table.add(leftButton).left().padRight(550f).width(150f).height(150f);
 
-        table.add(buyLevel2).padLeft(50f).width(150f).height(100f);
+        table.add(buyLevel2).padLeft(50f).width(150f).height(150f);
         table.add(buyLevel3).width(150f).height(100f);
         table.add(buyLevel4).width(150f).height(100f);
 
