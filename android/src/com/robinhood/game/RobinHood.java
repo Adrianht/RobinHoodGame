@@ -11,7 +11,7 @@ public class RobinHood extends ApplicationAdapter {
     @Override
     public void create () {
         Controller controller = new Controller(this);
-        controller.navigateTo("LOADING"); //TODO: MENU
+        controller.navigateTo("MENU");
     }
 
     @Override

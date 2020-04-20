@@ -18,11 +18,12 @@ public class GameOverView extends View {
 
     public GameOverView(Controller controller, Model model) {
         super(controller, model);
+        String winner = model.getGameWinner();
         controller.endGameInstance();
 
         Label headerText = new Label("GAME OVER", headerSkin);
         Label resultText = new Label(
-                model.getGameWinner() + " won the game!", textSkin);
+                winner + " won the game!", textSkin);
         TextButton menu = new TextButton("Menu", buttonSkin);
 
         headerText.setFontScale(4.0f);
