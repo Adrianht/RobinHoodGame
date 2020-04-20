@@ -1,14 +1,18 @@
 package com.robinhood.game.view;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
 import com.robinhood.game.controller.Controller;
@@ -37,7 +41,7 @@ public class GameView extends View {
             24);
 
     private Label gameInfo;
-    private TextButton
+    private ImageButton
             upgrade2Button,
             upgrade3Button,
             upgrade4Button;
@@ -47,18 +51,27 @@ public class GameView extends View {
     public GameView(final Controller controller, Model model) {
         super(controller, model);
 
-        TextButton leftButton = new TextButton("Left", buttonSkin);
-        TextButton rightButton = new TextButton("Right", buttonSkin);
-        upgrade2Button = new TextButton("Upgrade 2", buttonSkin);
-        upgrade3Button = new TextButton("Upgrade 3", buttonSkin);
-        upgrade4Button = new TextButton("Upgrade 4", buttonSkin);
+        ImageButton leftButton = new ImageButton(textSkin);
+        ImageButton rightButton = new ImageButton(textSkin);
+        upgrade2Button = new ImageButton(buttonSkin);
+        upgrade3Button = new ImageButton(buttonSkin);
+        upgrade4Button = new ImageButton(buttonSkin);
         gameInfo = new Label("", textSkin);
 
-        gameInfo.setFontScale(2.5f);
+        leftButton.getStyle().imageUp =
+                createTexture("left.png");
+        rightButton.getStyle().imageUp =
+                createTexture("right.png");
+        upgrade2Button.getStyle().imageUp =
+                createTexture("buyLevel2.png");
+        upgrade3Button.getStyle().imageUp =
+                createTexture("buyLevel3.png");
+        upgrade4Button.getStyle().imageUp =
+                createTexture("buyLevel4.png");
+        gameInfo.setFontScale(2f);
 
-        // FIXME-charlotte: table needs revised positioning/padding
-        // remove superclass background
-        table.setBackground(new BaseDrawable());
+        table.setBackground(
+                new BaseDrawable()); // remove superclass background
         table.row().pad(20f, 0, 700f, 0);
         table.add(gameInfo)
                 .fillX().uniform().width(300f).height(100f);
@@ -67,15 +80,14 @@ public class GameView extends View {
         table.bottom();
         table.padBottom(100f);
         table.add(leftButton)
-                .left().width(300f).height(100f);
+                .left().padRight(300f).width(200f).height(150f);
         table.add(upgrade2Button)
-                .padLeft(50f).width(150f).height(100f);
+                .padRight(50f).width(150f).height(150f);
         table.add(upgrade3Button)
-                .width(150f).height(100f);
+                .padRight(50f).width(150f).height(150f);
         table.add(upgrade4Button)
-                .width(150f).height(100f);
-        table.add(rightButton)
-                .right().uniform().width(300f).height(100f);
+                .width(150f).height(150f);
+        table.add(rightButton).right().padLeft(300f).width(200f).height(150f);
 
         upgrade2Button.addListener(
                 generateActionListener("Level2"));
@@ -171,4 +183,10 @@ public class GameView extends View {
         };
     }
 
+    private TextureRegionDrawable createTexture(String internalPath) {
+        return new TextureRegionDrawable(
+                new TextureRegion(
+                        new Texture(
+                                Gdx.files.internal(internalPath))));
+    }
 }
