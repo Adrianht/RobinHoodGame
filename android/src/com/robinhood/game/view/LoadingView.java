@@ -2,6 +2,7 @@ package com.robinhood.game.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -12,11 +13,17 @@ public class LoadingView extends View {
 
     private Skin skinButton = new Skin(Gdx.files.internal(
             "skin/dark-hdpi/Holo-dark-hdpi.json"));
+    private final Skin skinInfo = new Skin(Gdx.files.internal(
+            "skin/shade/uiskin.json"));
 
     private final TextButton playButton =
             new TextButton("Play!", skinButton);
     private final TextButton menuButton =
-            new TextButton("To menu", skinButton);
+            new TextButton("Cancel", skinButton);
+    private final Label findingPlayerLabel =
+            new Label("Finding player...", skinInfo);
+
+
 
     public LoadingView(Controller cont, Model model) {
         super(cont);
@@ -33,7 +40,12 @@ public class LoadingView extends View {
         table.row().pad(400, 0, 10, 0);
         table.add(playButton).fillX().uniform().width(300f).height(100f);
         table.row().pad(10, 0, 10, 0);
+        table.add(findingPlayerLabel).fillX().uniform().width(300f).height(100f);
+        table.row().pad(10, 0, 10, 0);
         table.add(menuButton).fillX().uniform().width(300f).height(100f);
+
+        findingPlayerLabel.setFontScale(2.0f );
+
         this.getController().findPlayer();
 
     }
@@ -42,6 +54,7 @@ public class LoadingView extends View {
     @Override
     public void render() {
         menuButton.setVisible(!getController().isGameInitialized());
+        findingPlayerLabel.setVisible(!getController().isGameInitialized());
         playButton.setVisible(getController().isGameInitialized());
         super.render();
     }
