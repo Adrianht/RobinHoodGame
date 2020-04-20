@@ -2,15 +2,19 @@ package com.robinhood.game.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
 import com.robinhood.game.controller.Controller;
@@ -44,6 +48,10 @@ public class GameView extends View {
             "skin/shade/uiskin.json"));
     private Skin skinButton = new Skin(Gdx.files.internal(
             "skin/dark-hdpi/Holo-dark-hdpi.json"));
+    private Skin skinLeftButton = new Skin(Gdx.files.internal(
+            "skin/shade/uiskin.json"));
+    private Skin skinRightButton = new Skin(Gdx.files.internal(
+            "skin/shade/uiskin.json"));
     private final Label gameInfo = new Label("", skinInfo);;
     private final TextButton buyLevel2 =
             new TextButton("Upgrade 2", skinButton);
@@ -59,8 +67,10 @@ public class GameView extends View {
         // Create and position text fields and buttons of current UI
         Skin skinButton = new Skin(Gdx.files.internal(
                 "skin/dark-hdpi/Holo-dark-hdpi.json"));
-        TextButton leftButton = new TextButton("Left", skinButton);
-        TextButton rightButton = new TextButton("Right", skinButton);
+        ImageButton leftButton = new ImageButton(skinLeftButton);
+        ImageButton rightButton = new ImageButton(skinRightButton);
+        leftButton.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("skin/left.png"))));
+        rightButton.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("skin/right.png"))));
 
         // FIXME: table needs revised positioning/padding
         table.setBackground(new BaseDrawable()); // remove superclass background
@@ -69,7 +79,7 @@ public class GameView extends View {
         table.row().pad(0, 0, 0, 0);
         gameInfo.setAlignment(Align.left);
         table.bottom();
-        table.padBottom(100f);
+        table.padBottom(110f);
         table.add(leftButton).left().width(300f).height(100f);
         table.add(buyLevel2).padLeft(50f).width(150f).height(100f);
         table.add(buyLevel3).width(150f).height(100f);
