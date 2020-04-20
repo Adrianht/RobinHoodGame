@@ -38,6 +38,6 @@ public class Components {
         public int index;
         public int hitPoints = 100;
         public int energy = 20;
-        public boolean isMyTurn = false;
+        public boolean isPlayersTurn = false;
     }
 }

@@ -99,7 +99,7 @@ public class Model {
         systems.UserInputSystem(entities);
         systems.AnimationSystem(entities);
         systems.GameInfoSystem(entities);
-        if (systems.action == "draw") {
+        if (systems.action.equals("draw")) {
             entities.add(entityFactory.newArrow());
         }
         systems.action = "";
@@ -157,6 +157,7 @@ public class Model {
     // Method returns if game is initialized
     public void resetModelData() {
         entities.clear();
+        gameWinner = null;
         gameInitialized = false;
     }
 

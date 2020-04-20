@@ -3,7 +3,6 @@ package com.robinhood.game.model;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
-import java.nio.file.ClosedFileSystemException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,32 +28,28 @@ public class Systems {
         Entity[] activePlayerAndArrow =
                 findActivePlayerAndArrow(entities);
 
-        System.out.println("LEVEL?: " + model.getUserInput().substring(0,5));
-
-        if((userInput.equals("left")
-                || userInput.equals("right"))
-                && activePlayerAndArrow[0].components.playerInfo.energy > 1) {
-            System.out.println("MOVE");
-            activePlayerAndArrow[0]
-                    .components.box2dBody.body
-                    .setLinearVelocity(-1, 0);
-            if (userInput.equals("right")) {
+        if (userInput.equals("left") || userInput.equals("right")) {
+            if(activePlayerAndArrow[0].components.playerInfo.energy > 1) {
                 activePlayerAndArrow[0]
                         .components.box2dBody.body
-                        .setLinearVelocity(1, 0);
+                        .setLinearVelocity(-1, 0);
+                if (userInput.equals("right")) {
+                    activePlayerAndArrow[0]
+                            .components.box2dBody.body
+                            .setLinearVelocity(1, 0);
+                }
+                activePlayerAndArrow[0]
+                        .components.playerInfo.energy -= 2;
+                action = "move";
             }
-            activePlayerAndArrow[0]
-                    .components.playerInfo.energy -= 2;
-            action = "move";
         } else if (userInput.substring(0,3).equals("Lev")) {
-            System.out.println("BUY");
             // Level 2 arrow - cost: 20, damage: 20
             // Level 3 arrow - cost: 40, damage: 40
             // Level 4 arrow - cost: 60, damage: 60
             int purchaseLevel = Integer.parseInt(
                     userInput.substring(userInput.length() - 1));
             int purchaseCostNDam = (purchaseLevel-1) * 20;
-            if(activePlayerAndArrow[0].components.playerInfo.energy
+            if (activePlayerAndArrow[0].components.playerInfo.energy
                     >= purchaseCostNDam) {
                 activePlayerAndArrow[0]
                         .components.playerInfo.energy -= purchaseCostNDam;
@@ -62,7 +57,6 @@ public class Systems {
                         .components.arrowType.damage = purchaseCostNDam;
             }
         } else {
-            System.out.println("DRAW");
             action = "draw";
         }
     }
@@ -149,6 +143,9 @@ public class Systems {
         int survivorCount = 0;
         String possibleWinner = "";
         for(Entity player: players){
+            player.components.playerInfo.isPlayersTurn =
+                    activePlayerUsername.equals(
+                            player.components.playerInfo.username);
             model.setIsMyTurn(myUsername.equals(activePlayerUsername));
             if (myUsername.equals(player.components.playerInfo.username)){
                 model.setMyEnergyPoints(player.components.playerInfo.energy);
@@ -180,7 +177,7 @@ public class Systems {
         Entity[] activePlayerAndArrow = new Entity[2];
         for(Entity entity: entities) {
             if (entity.components.playerInfo != null &&
-                    entity.components.playerInfo.isMyTurn) {
+                    entity.components.playerInfo.isPlayersTurn) {
                 activePlayerAndArrow[0] = entity;
             } else if (entity.components.arrowType != null) {
                 activePlayerAndArrow[1] = entity;
