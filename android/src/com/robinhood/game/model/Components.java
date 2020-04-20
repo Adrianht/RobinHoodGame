@@ -20,7 +20,6 @@ public class Components {
         public ArrowType() {
             Components.this.arrowType = this;
         }
-        public String type = "Normal";
         public int damage = 10;
     }
 
@@ -39,6 +38,6 @@ public class Components {
         public int index;
         public int hitPoints = 100;
         public int energy = 20;
-        public boolean isMyTurn = false;
+        public boolean isPlayersTurn = false;
     }
 }

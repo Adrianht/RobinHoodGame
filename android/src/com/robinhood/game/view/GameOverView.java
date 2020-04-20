@@ -31,7 +31,7 @@ public class GameOverView extends View {
                 "skin/shade/uiskin.json"));
         Label gameOver = new Label("GAME OVER", skinGameOver);
         Label gameResult = new Label(
-                model.getWinner() + " won the game!", skinResult);
+                model.getGameWinner() + " won the game!", skinResult);
         TextButton menu = new TextButton("Menu", skinButton);
         table.row().pad(500, 0, 10, 0);
         table.add(gameOver).fillX().uniform().width(300f).height(100f);
