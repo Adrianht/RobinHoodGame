@@ -24,32 +24,35 @@ public class Arrow extends Actor {
     }
 
     @Override
-    // FIXME-ola: logic..
     public void draw(Batch batch, float parentAlpha) {
         Body activeArrow = model.getActiveArrowBody();
         if (activeArrow != null) {
             if (newShot) {
-                if(activeArrow.getLinearVelocity().x < 0 && prevWasLeft) {
+                startPosX = 750;
+                startPosY = 540;
+                if(activeArrow.getLinearVelocity().x > 0) {
                     startPosX = 750 + sprite.getWidth();
-                    startPosY = 540 + sprite.getHeight();
-                    sprite.rotate90(true);
-                    sprite.rotate90(true);
+                    startPosY = 560;
+                    if (prevWasLeft) {
+                        sprite.rotate90(true);
+                        sprite.rotate90(true);
+                    }
+                    prevWasLeft = false;
                 } else {
-                    startPosX = 750;
-                    startPosY = 540;
+                    if (!prevWasLeft) {
+                        sprite.rotate90(true);
+                        sprite.rotate90(true);
+                    }
+                    prevWasLeft = true;
                 }
+                newShot = false;
             }
             sprite.setPosition(
                     startPosX + activeArrow.getPosition().x * 56,
-                    startPosY + + activeArrow.getPosition().y * 46);
+                    startPosY + activeArrow.getPosition().y * 46);
             sprite.draw(batch);
-            newShot = false;
         } else {
-            if(!newShot) {
-                newShot = true;
-                sprite.rotate90(false);
-                sprite.rotate90(false);
-            }
+            newShot = true;
         }
     }
 }
