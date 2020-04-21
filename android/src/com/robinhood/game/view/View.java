@@ -1,7 +1,6 @@
 package com.robinhood.game.view;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -33,7 +32,7 @@ public abstract class View {
     protected final Table table;
 
     public GameAssetManager assetMan = new GameAssetManager();
-    private Music themeSong;
+    //private Music themeSong;
 
     protected final Skin buttonSkin = new Skin(Gdx.files.internal(
             "skin/dark-hdpi/Holo-dark-hdpi.json"));
@@ -53,6 +52,7 @@ public abstract class View {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
+        /*
         // Initiates music at program start
         assetMan.loadMusic();
         assetMan.manager.finishLoading();
@@ -60,6 +60,7 @@ public abstract class View {
         themeSong.setLooping(true);
         themeSong.setVolume(0.5f);
         themeSong.play();
+         */
 
         // Create new table that fills the screen -> Table added to stage
         table = new Table();
