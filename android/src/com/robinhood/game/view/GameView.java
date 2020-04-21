@@ -168,7 +168,7 @@ public class GameView extends View {
 
     private void updateGameInfo() {
         if(model.getGameWinner() != null) {
-            controller.handleGameOver();
+            controller.navigateTo("GAMEOVER");
         }
 
         int myEnergyPoints = model.getMyEnergyPoints();

@@ -5,15 +5,15 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-/***
+/**
+ * Class with interface object showing a players
+ * hit point value.
  *
  * @author group 11
+ * @version 1.0
  * @since 2020-04-25
- *
  */
 public class HealthBar extends Actor {
-
-    // TODO: Dispose / Singleton?
 
     private TextureAtlas atlas;
     private Sprite sprite;
@@ -21,9 +21,7 @@ public class HealthBar extends Actor {
     private final int posX;
 
     public HealthBar(int posX) {
-        atlas = new TextureAtlas("healthbarSheet.pack");
-        sprite = atlas.createSprite("health100");
-        lastSpriteName = "health100";
+        createNewAtlas("health100");
         this.posX = posX;
     }
 
@@ -35,15 +33,16 @@ public class HealthBar extends Actor {
     }
 
     public void updateSprite(int health) {
-        int spriteNameNumber = health/10;
-        spriteNameNumber *= 10;
-        String name = "health" + spriteNameNumber;
-
-        if (!lastSpriteName.equals(name)) {
+        String newSpriteName = "health" + (health/10)*10;
+        if (!lastSpriteName.equals(newSpriteName)) {
             atlas.dispose();
-            atlas = new TextureAtlas("healthbarSheet.pack");
-            sprite = atlas.createSprite(name);
-            lastSpriteName = name;
+            createNewAtlas(newSpriteName);
         }
+    }
+
+    private void createNewAtlas(String spriteName) {
+        atlas = new TextureAtlas("healthbarSheet.pack");
+        sprite = atlas.createSprite(spriteName);
+        lastSpriteName = spriteName;
     }
 }
