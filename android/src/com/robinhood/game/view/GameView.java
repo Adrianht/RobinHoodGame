@@ -12,10 +12,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
+import com.badlogic.gdx.utils.Array;
 import com.robinhood.game.controller.Controller;
 import com.robinhood.game.model.Model;
 import com.robinhood.game.view.interfaceObjects.CustomDragListener;
 import com.robinhood.game.view.interfaceObjects.DragIndicator;
+import com.robinhood.game.view.interfaceObjects.HealthBar;
 
 /**
  * Subclass in Template method pattern creating the UI when in-game.
@@ -42,7 +44,10 @@ public class GameView extends View {
             "skin/shade/uiskin.json"));
     private Skin skinButton = new Skin(Gdx.files.internal(
             "skin/dark-hdpi/Holo-dark-hdpi.json"));
-    private final Label gameInfo = new Label("", skinInfo);;
+    private final Label gameInfo = new Label("", skinInfo);
+
+    // TODO: Lars / Include texture atlas in asset manager please
+
     private final TextButton buyLevel2 =
             new TextButton("Upgrade 2", skinButton);
     private final TextButton buyLevel3 =
@@ -61,8 +66,9 @@ public class GameView extends View {
         TextButton rightButton = new TextButton("Right", skinButton);
 
         // FIXME: table needs revised positioning/padding
+
         table.setBackground(new BaseDrawable()); // remove superclass background
-        table.row().pad(20f, 0, 700f, 0);
+        table.row().pad(20f, 200f, 500f, 0);
         table.add(gameInfo).fillX().uniform().width(300f).height(100f);
         table.row().pad(0, 0, 0, 0);
         gameInfo.setAlignment(Align.left);
@@ -73,6 +79,8 @@ public class GameView extends View {
         table.add(buyLevel3).width(150f).height(100f);
         table.add(buyLevel4).width(150f).height(100f);
         table.add(rightButton).right().uniform().width(300f).height(100f);
+
+        // Health - TODO: Sjekk ifht updateGameInfo
 
         buyLevel2.addListener(generateBuyListener("Level2"));
         buyLevel3.addListener(generateBuyListener("Level3"));
@@ -90,13 +98,24 @@ public class GameView extends View {
     public void render() {
         super.render();
         updateGameInfo();
+        healthBar();
         debugRenderer.render(world, cam.combined);
+    }
+
+    // FIXME: Burde kun oppdateres når pil er skutt / noen mister liv - WIP løsning, DISPOSE
+    public void healthBar() {
+        int[] health = getController().getHP();
+        int space = 1200 / (health.length - 1);
+        for (int i = 0; i < health.length; i++) {
+            System.out.println("Generating healthbar for player " + i);
+            HealthBar healthBar = new HealthBar(health[i], space * i + 48);
+            stage.addActor(healthBar);
+        }
     }
 
     private void updateGameInfo() {
         int[] hitPoints = getController().getHP();
         int myEnergyPoints = getController().getMyEnergyPoints();
-
         String gameInfoString = "Your Energy Points: "
                 + myEnergyPoints + "\n";
         int survivorCount = 0;
