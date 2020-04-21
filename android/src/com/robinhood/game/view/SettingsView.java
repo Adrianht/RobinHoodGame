@@ -1,14 +1,14 @@
 package com.robinhood.game.view;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import com.robinhood.game.controller.Controller;
+import com.robinhood.game.model.Model;
 
 /**
  * Subclass in Template method pattern creating the UI of game settings menu.
@@ -19,46 +19,60 @@ import com.robinhood.game.controller.Controller;
  */
 public class SettingsView extends View {
 
-    public SettingsView(Controller cont) {
-        super(cont);
+    public SettingsView(final Controller controller, Model model) {
+        super(controller, model);
 
-        // TODO: add possibility to change username and do it by calling:
-        //  controller.setUsername(username)
+        TextButton menuButton =
+                new TextButton("Menu", buttonSkin);
+        Label musicOnOffLabel =
+                new Label("Music", buttonSkin);
+        Label soundOnOffLabel =
+                new Label("Effects", buttonSkin);
+        final CheckBox musicCheckbox =
+                new CheckBox(null, buttonSkin);
+        final CheckBox soundCheckbox =
+                new CheckBox(null, buttonSkin);
+        final TextField usernameField =
+                new TextField(model.getMyUsername(), buttonSkin);
 
-        // Create and position buttons of current UI
-        Skin skin = new Skin(Gdx.files.internal(
-                "skin/dark-hdpi/Holo-dark-hdpi.json"));
-        TextButton backButton = new TextButton("Back", skin);
-        Label musicOnOffLabel = new Label("Music", skin);
-        Label soundOnOffLabel = new Label("Effects", skin);
-        final CheckBox musicCheckbox = new CheckBox(null, skin);
-        final CheckBox soundCheckbox = new CheckBox(null, skin);
-
-        musicCheckbox.setChecked(getController().getMusicEnabled());
-        soundCheckbox.setChecked(getController().getSoundEnabled());
+        musicCheckbox.setChecked(model.getMusicEnabled());
+        soundCheckbox.setChecked(model.getSoundEnabled());
+        usernameField.setMaxLength(12);
 
         table.row().pad(350,0,0,0);
-        table.add(musicOnOffLabel).left().width(300f).height(100f);
+        table.add(musicOnOffLabel)
+                .left().width(300f).height(100f);
         table.add(musicCheckbox);
         table.row().pad(10,0,0,0);
-        table.add(soundOnOffLabel).left().width(300f).height(100f);
+        table.add(soundOnOffLabel)
+                .left().width(300f).height(100f);
         table.add(soundCheckbox);
         table.row().pad(50, 0, 0, 0);
-        table.add(backButton).colspan(3).center().width(300f).height(100f);
+        table.add(usernameField)
+                .colspan(3).center().width(300f).height(100f);
+        table.row().pad(30, 0, 0, 0);
+        table.add(menuButton)
+                .colspan(3).center().width(300f).height(100f);
 
-        backButton.addListener(generateNavigateListener("MENU"));
+        menuButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float clickX, float clickY) {
+                controller.setMyUsername(usernameField.getText());
+                controller.navigateTo("MENU");
+            }
+        });
         musicCheckbox.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
                 boolean enabled = musicCheckbox.isChecked();
-                getController().setMusicEnabled( enabled );
+                controller.setMusicEnabled( enabled );
             }
         });
         soundCheckbox.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
                 boolean enabled = soundCheckbox.isChecked();
-                getController().setSoundEnabled( enabled );
+                controller.setSoundEnabled( enabled );
             }
         });
     }

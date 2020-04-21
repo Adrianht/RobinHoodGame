@@ -1,13 +1,21 @@
 package com.robinhood.game.controller;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Vector2;
 import com.robinhood.game.RobinHood;
 
 import com.robinhood.game.model.Model;
 import com.robinhood.game.view.*;
 import java.util.List;
 
+/**
+ * Class representing Controller in Model-View-Controller.
+ * Handles actions from View component and head of
+ * the Firebase Connector.
+ *
+ * @author group 11
+ * @version 1.0
+ * @since 2020-04-25
+ */
 public class Controller {
 
     private RobinHood game;
@@ -24,14 +32,14 @@ public class Controller {
     // Method called from views to navigate through the application
     public void navigateTo(String destination) {
         switch(destination) {
-            case "MENU":
-                game.setView(new MenuView(this));
-                break;
             case "SETTINGS":
-                game.setView(new SettingsView(this));
+                game.setView(new SettingsView(this, model));
                 break;
             case "LOADING":
                 game.setView(new LoadingView(this, model));
+                break;
+            case "INSTRUCTIONS":
+                game.setView(new InstructionsView(this));
                 break;
             case "GAME":
                 game.setView(new GameView(this, model));
@@ -44,40 +52,16 @@ public class Controller {
         }
     }
 
-    // Method called from GameView to update fb
-    public void move(Boolean left) {
+    // Method called from GameView to update firebase
+    public void actionToFirebase(String action) {
         if(model.isMyTurn()) {
-            fbconnector.setMove(left);
+            fbconnector.exportActionToFirebase(action);
         }
     }
 
-    // Method called from FBConnector to update model
-    public void registerMove(Boolean left) {
-        model.move(left);
-    }
-
-    // Method called from views to update fb
-    public void buyArrow(String type) {
-        if(model.isMyTurn()) {
-            fbconnector.setBuy(type);
-        }
-    }
-
-    // Method called from FBConnector to update model
-    public void registerBuy(String type) {
-        model.buyArrow(type);
-    }
-
-    // Method called from views to update fb and model
-    public void drawBow(Vector2 vector2) {
-        if(model.isMyTurn()) {
-            fbconnector.setDraw(vector2);
-        }
-    }
-
-    // Method called from views to update fb and model
-    public void registerDraw(Vector2 vector2) {
-        model.drawBow(vector2);
+    // Method called from FBConnector to notify model of change
+    public void notifyChangeInFirebase(String userInput) {
+        model.notifyChangeInFirebase(userInput);
     }
 
     // Method called from GameView when only one player has hp
@@ -92,15 +76,7 @@ public class Controller {
     }
 
     // NEW Music/Sound methods
-    public boolean getMusicEnabled() {
-        return model.getMusicEnabled();
-    }
-
     public void setMusicEnabled(boolean enabled) { model.setMusicEnabled(enabled); }
-
-    public boolean getSoundEnabled() {
-        return model.getSoundEnabled();
-    }
 
     public void setSoundEnabled(boolean enabled) { model.setSoundEnabled(enabled); }
 
@@ -119,28 +95,13 @@ public class Controller {
         model.initiateGame(usernames);
     }
 
-    // Method returns if game is initialized
-    public boolean isGameInitialized() {
-        return model.isGameInitialized();
-    }
-
     // Method to exit application, called from MenuView
     public void exitApplication() {
         Gdx.app.exit();
     }
 
-    // Method call model about players hit point values
-    public int[] getHP(){
-        return model.getHP();
-    }
-
-    // Method call model about players energy values
-    public int getMyEnergyPoints(){
-        return model.getMyEnergyPoints();
-    }
-
     // Method sets username in model
-    public void setUsername(String username){
+    public void setMyUsername(String username){
         model.setMyUsername(username);
     }
 

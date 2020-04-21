@@ -44,7 +44,7 @@ public class EntityFactory {
         entity.components.playerInfo.username = username;
         entity.components.playerInfo.index = index;
         if(index == 0) {
-            entity.components.playerInfo.isMyTurn = true;
+            entity.components.playerInfo.isPlayersTurn = true;
         }
 
         entity.addComponent("box2dBody");
