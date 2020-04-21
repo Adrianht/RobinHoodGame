@@ -111,7 +111,6 @@ public class FBConnector {
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 // empty method
             }
-
         });
 */
     }

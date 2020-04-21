@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.Align;
 import com.robinhood.game.controller.Controller;
 import com.robinhood.game.model.Model;
 import com.robinhood.game.view.interfaceObjects.DragIndicator;
+import com.robinhood.game.view.interfaceObjects.HealthBar;
 
 /**
  * Subclass in Template method pattern creating the UI when in-game.
@@ -41,12 +42,14 @@ public class GameView extends View {
             24);
 
     private Label gameInfo;
-    private ImageButton
+    private final ImageButton
             upgrade2Button,
             upgrade3Button,
             upgrade4Button;
 
-    private final DragIndicator dragIndicator;
+    private final HealthBar[] healthBars;
+
+    // TODO: Lars / Include texture atlas in asset manager please
 
     public GameView(final Controller controller, Model model) {
         super(controller, model);
@@ -101,7 +104,15 @@ public class GameView extends View {
         rightButton.addListener(
                 generateActionListener("right"));
 
-        dragIndicator = new DragIndicator();
+        int[] hitPointValues = model.getHitPointValues();
+        healthBars = new HealthBar[hitPointValues.length];
+        int space = 1200 / (hitPointValues.length - 1);
+        for (int i = 0; i < hitPointValues.length; i++) {
+            healthBars[i] = new HealthBar(space * i + 48);
+            stage.addActor(healthBars[i]);
+        }
+
+        final DragIndicator dragIndicator = new DragIndicator();
         stage.addActor(dragIndicator);
         stage.addListener(new DragListener() {
             @Override
@@ -160,13 +171,13 @@ public class GameView extends View {
             controller.handleGameOver();
         }
 
-        int[] hitPoints = model.getHitPointValues();
         int myEnergyPoints = model.getMyEnergyPoints();
-
         String gameInfoString = "Your Energy Points: "
                 + myEnergyPoints + "\n";
-        for (int i = 0; i < hitPoints.length; i++) {
-            gameInfoString += "HitPoints P" + i + ": " + hitPoints[i] + "\n";
+
+        int[] hitPointValues = model.getHitPointValues();
+        for (int i = 0; i < healthBars.length; i++) {
+            healthBars[i].updateSprite(hitPointValues[i]);
         }
 
         gameInfo.setText(gameInfoString);
