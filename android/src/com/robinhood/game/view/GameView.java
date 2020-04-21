@@ -15,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
-import com.badlogic.gdx.utils.Array;
 import com.robinhood.game.controller.Controller;
 import com.robinhood.game.model.Model;
 import com.robinhood.game.view.interfaceObjects.DragIndicator;
@@ -48,8 +47,8 @@ public class GameView extends View {
             upgrade3Button,
             upgrade4Button;
 
-    private final DragIndicator dragIndicator;
-      
+    HealthBar[] healthBars;
+
     // TODO: Lars / Include texture atlas in asset manager please
 
     public GameView(final Controller controller, Model model) {
@@ -105,7 +104,15 @@ public class GameView extends View {
         rightButton.addListener(
                 generateActionListener("right"));
 
-        dragIndicator = new DragIndicator();
+        int[] hitPointValues = model.getHitPointValues();
+        healthBars = new HealthBar[hitPointValues.length];
+        int space = 1200 / (hitPointValues.length - 1);
+        for (int i = 0; i < hitPointValues.length; i++) {
+            healthBars[i] = new HealthBar(space * i + 48);
+            stage.addActor(healthBars[i]);
+        }
+
+        final DragIndicator dragIndicator = new DragIndicator();
         stage.addActor(dragIndicator);
         stage.addListener(new DragListener() {
             @Override
@@ -156,20 +163,7 @@ public class GameView extends View {
     public void render() {
         super.render();
         updateGameInfo();
-        healthBar();
-        debugRenderer.render(world, cam.combined);
-    }
-
-    // Health - TODO: Sjekk ifht updateGameInfo
-    // FIXME: Burde kun oppdateres når pil er skutt / noen mister liv - WIP løsning, DISPOSE
-    public void healthBar() {
-        int[] health = getController().getHP();
-        int space = 1200 / (health.length - 1);
-        for (int i = 0; i < health.length; i++) {
-            System.out.println("Generating healthbar for player " + i);
-            HealthBar healthBar = new HealthBar(health[i], space * i + 48);
-            stage.addActor(healthBar);
-        }
+        debugRenderer.render(model.getWorld(), cam.combined);
     }
 
     private void updateGameInfo() {
@@ -177,13 +171,13 @@ public class GameView extends View {
             controller.handleGameOver();
         }
 
-        int[] hitPoints = model.getHitPointValues();
         int myEnergyPoints = model.getMyEnergyPoints();
-
         String gameInfoString = "Your Energy Points: "
                 + myEnergyPoints + "\n";
-        for (int i = 0; i < hitPoints.length; i++) {
-            gameInfoString += "HitPoints P" + i + ": " + hitPoints[i] + "\n";
+
+        int[] hitPointValues = model.getHitPointValues();
+        for (int i = 0; i < healthBars.length; i++) {
+            healthBars[i].updateSprite(hitPointValues[i]);
         }
 
         gameInfo.setText(gameInfoString);
