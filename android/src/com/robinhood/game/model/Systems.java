@@ -92,8 +92,12 @@ public class Systems {
                         .001f,
                         1,
                         1);
+                model.setActiveArrowBody(
+                        activePlayerAndArrow[1]
+                                .components.box2dBody.body);
                 collidingBodies = model.getCollidingBodies();
             }
+            model.setActiveArrowBody(null);
             Body hitBody = collidingBodies[0];
             if(collidingBodies[0] == activePlayerAndArrow[1]
                     .components.box2dBody.body) {

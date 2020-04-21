@@ -3,8 +3,6 @@ package com.robinhood.game.view;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -19,8 +17,7 @@ import com.badlogic.gdx.utils.Align;
 
 import com.robinhood.game.controller.Controller;
 import com.robinhood.game.model.Model;
-import com.robinhood.game.view.interfaceObjects.DragIndicator;
-import com.robinhood.game.view.interfaceObjects.HealthBar;
+import com.robinhood.game.view.interfaceObjects.*;
 
 /**
  * Subclass in Template method pattern creating the UI when in-game.
@@ -50,11 +47,6 @@ public class GameView extends View {
             upgrade4Button;
 
     private final HealthBar[] healthBars;
-
-
-    SpriteBatch batch = new SpriteBatch();
-    Texture arrowTex = new Texture("buyLevel2.png");
-    Sprite arrowSprite = new Sprite(arrowTex);
 
     // TODO: Lars / Include texture atlas in asset manager please
 
@@ -119,6 +111,8 @@ public class GameView extends View {
             stage.addActor(healthBars[i]);
         }
 
+        stage.addActor(new Arrow(model));
+
         final DragIndicator dragIndicator = new DragIndicator();
         stage.addActor(dragIndicator);
         stage.addListener(new DragListener() {
@@ -170,20 +164,6 @@ public class GameView extends View {
     public void render() {
         super.render();
         updateGameInfo();
-        if(model.activeArrow.components.box2dBody != null) {
-            /*arrowSprite.setPosition(
-                    model.activeArrow.components.box2dBody.body.getPosition().x,
-                    model.activeArrow.components.box2dBody.body.getPosition().y
-            );
-
-             */
-            System.out.println(model.activeArrow.components.box2dBody.body.getPosition().x);
-            batch.begin();
-            batch.draw(arrowSprite,
-                    Gdx.graphics.getWidth()/2 + model.activeArrow.components.box2dBody.body.getPosition().x*200,
-                    model.activeArrow.components.box2dBody.body.getPosition().y*100);
-            batch.end();
-        }
         debugRenderer.render(model.getWorld(), cam.combined);
     }
 

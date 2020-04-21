@@ -60,7 +60,7 @@ public class EntityFactory {
 
         return entity;
     }
-
+/*
     public Entity newArrow() {
         BodyDef arrowBodyDef = new BodyDef();
         arrowBodyDef.position.set(0, 0);
@@ -94,6 +94,8 @@ public class EntityFactory {
 
         return entity;
     }
+
+ */
 
     public void newArrowBody(Entity arrowEntity, float startPosX, String shot) {
         BodyDef arrowBodyDef = new BodyDef();

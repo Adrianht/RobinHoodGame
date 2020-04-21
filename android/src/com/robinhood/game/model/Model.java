@@ -41,7 +41,7 @@ public class Model {
     private boolean isMyTurn;
     private Body[] collidingBodies;
     private String userInput, gameWinner;
-    public Entity activeArrow;
+    private Body activeArrowBody;
 
     // Method to initiate a new game after two players are matched
     public void initiateGame(List<String> usernames) {
@@ -73,7 +73,6 @@ public class Model {
         // Initiate entities
         entities.add(entityFactory.createGround());
 
-        //entities.add(entityFactory.newArrow());
         createNewArrowEntity();
 
         int playerSpace = 24 / (usernames.size()-1);
@@ -111,7 +110,6 @@ public class Model {
         Entity arrowEntity = new Entity();
         arrowEntity.addComponent("arrowType");
         entities.add(arrowEntity);
-        activeArrow = arrowEntity;
     }
 
     public void createArrowBody(Entity arrowEntity, float startPosX) {
@@ -202,5 +200,13 @@ public class Model {
 
     public String getUserInput() {
         return userInput;
+    }
+
+    public void setActiveArrowBody(Body activeArrowBody) {
+        this.activeArrowBody = activeArrowBody;
+    }
+
+    public Body getActiveArrowBody() {
+        return activeArrowBody;
     }
 }
