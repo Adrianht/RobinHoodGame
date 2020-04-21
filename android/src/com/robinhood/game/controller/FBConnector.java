@@ -84,7 +84,7 @@ public class FBConnector {
                         );
                     }
                     if (usernameChanged) {
-                        controller.setUsername(playerNames.get(playerNames.size()-1));
+                        controller.setMyUsername(playerNames.get(playerNames.size()-1));
                         mDatabase.removeValue();
                         for (String name: playerNames) {
                             mDatabase.push().setValue(name);
@@ -113,8 +113,7 @@ public class FBConnector {
             }
 
         });
-
- */
+*/
     }
 
     // Cancels search for opponent(s)
