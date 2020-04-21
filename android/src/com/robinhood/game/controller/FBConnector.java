@@ -46,7 +46,7 @@ public class FBConnector {
         createGameRoomListeners();
 
 
-        /*
+    /*
         nameIsValid = false;
         cancelFindPlayer = false;
 
@@ -114,9 +114,7 @@ public class FBConnector {
             }
 
         });
-
-         */
-
+     */
     }
 
     // Cancels search for opponent(s)

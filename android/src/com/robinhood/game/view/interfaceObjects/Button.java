@@ -15,8 +15,6 @@ public class Button extends Actor {
     */
     private Sprite sprite;
 
-    // TODO: Ryddings her etter at vi bruker textknapper med skins?
-
     public Button(String type) {
         switch(type) {
             case "settings":
