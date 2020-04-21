@@ -1,6 +1,7 @@
 package com.robinhood.game.view;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.robinhood.game.controller.Controller;
 import com.robinhood.game.model.Model;
+import com.robinhood.game.view.loader.GameAssetManager;
 
 /**
  * Superclass in Template method pattern - base of all application UIs.
@@ -29,6 +31,9 @@ public abstract class View {
     protected Model model;
     protected final Stage stage;
     protected final Table table;
+
+    public GameAssetManager assetMan = new GameAssetManager();
+    private Music themeSong;
 
     protected final Skin buttonSkin = new Skin(Gdx.files.internal(
             "skin/dark-hdpi/Holo-dark-hdpi.json"));
@@ -47,6 +52,14 @@ public abstract class View {
 
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
+
+        // Initiates music at program start
+        assetMan.loadMusic();
+        assetMan.manager.finishLoading();
+        themeSong = assetMan.manager.get(assetMan.music);
+        themeSong.setLooping(true);
+        themeSong.setVolume(0.5f);
+        themeSong.play();
 
         // Create new table that fills the screen -> Table added to stage
         table = new Table();
@@ -67,10 +80,12 @@ public abstract class View {
         float[] values = hextoRGB("#5f8db0");
         Gdx.gl.glClearColor(values[0], values[1], values[2], 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        assetMan.manager.update();
         stage.draw();
     }
 
     public void dispose () {
+        assetMan.manager.dispose();
         stage.dispose();
     }
 

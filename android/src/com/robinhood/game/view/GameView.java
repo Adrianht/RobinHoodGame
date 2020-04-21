@@ -1,6 +1,7 @@
 package com.robinhood.game.view;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -47,12 +48,24 @@ public class GameView extends View {
             upgrade3Button,
             upgrade4Button;
 
+    private Sound shoot;
+    private Sound draw;
+
+    private boolean dragStart;
+
     private final HealthBar[] healthBars;
 
     // TODO: Lars / Include texture atlas in asset manager please
 
     public GameView(final Controller controller, Model model) {
         super(controller, model);
+
+        // Loading sounds
+        assetMan.loadSounds();
+        assetMan.manager.finishLoading();
+
+        shoot = assetMan.manager.get(assetMan.shootSound);
+        draw = assetMan.manager.get(assetMan.drawSound);
 
         ImageButton leftButton = new ImageButton(textSkin);
         ImageButton rightButton = new ImageButton(textSkin);
@@ -121,6 +134,10 @@ public class GameView extends View {
                     float clickX,
                     float clickY,
                     int pointer) {
+                if(!dragStart){
+                    dragStart = true;
+                    draw.play();
+                }
                 float power = (float)Math.sqrt(
                         Math.pow(clickX - getDragStartX(), 2)
                                 + Math.pow(clickY - getDragStartY(), 2));
@@ -150,6 +167,8 @@ public class GameView extends View {
                     float clickX,
                     float clickY,
                     int pointer) {
+                dragStart = false;
+                shoot.play();
                 controller.actionToFirebase(new Vector2(
                         clickX-getDragStartX(),
                         clickY-getDragStartY()
