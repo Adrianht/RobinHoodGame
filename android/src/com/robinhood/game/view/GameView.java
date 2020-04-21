@@ -45,7 +45,9 @@ public class GameView extends View {
     private final ImageButton
             upgrade2Button,
             upgrade3Button,
-            upgrade4Button;
+            upgrade4Button,
+            leftButton,
+            rightButton;
 
     private final HealthBar[] healthBars;
 
@@ -54,8 +56,8 @@ public class GameView extends View {
     public GameView(final Controller controller, Model model) {
         super(controller, model);
 
-        ImageButton leftButton = new ImageButton(textSkin, "left");
-        ImageButton rightButton = new ImageButton(textSkin, "right");
+        leftButton = new ImageButton(buttonSkin, "left");
+        rightButton = new ImageButton(buttonSkin, "right");
         upgrade2Button = new ImageButton(buttonSkin, "level2");
         upgrade3Button = new ImageButton(buttonSkin, "level3");
         upgrade4Button = new ImageButton(buttonSkin, "level4");
