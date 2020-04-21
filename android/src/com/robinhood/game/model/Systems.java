@@ -57,6 +57,10 @@ public class Systems {
                         .components.arrowType.damage = purchaseCostNDam;
             }
         } else {
+            model.createArrowBody(
+                    activePlayerAndArrow[1],
+                    activePlayerAndArrow[0]
+                            .components.box2dBody.body.getPosition().x);
             action = "draw";
         }
     }
@@ -107,10 +111,13 @@ public class Systems {
                 }
             }
 
-            activePlayerAndArrow[1]
-                    .removeComponent("arrowType");
             model.getWorld().destroyBody(
                     activePlayerAndArrow[1].components.box2dBody.body);
+            activePlayerAndArrow[1]
+                    .removeComponent("arrowType");
+            activePlayerAndArrow[1]
+                    .removeComponent("box2dBody");
+            model.createNewArrowEntity();
         }
     }
 

@@ -41,6 +41,7 @@ public class Model {
     private boolean isMyTurn;
     private Body[] collidingBodies;
     private String userInput, gameWinner;
+    public Entity activeArrow;
 
     // Method to initiate a new game after two players are matched
     public void initiateGame(List<String> usernames) {
@@ -71,7 +72,10 @@ public class Model {
 
         // Initiate entities
         entities.add(entityFactory.createGround());
-        entities.add(entityFactory.newArrow());
+
+        //entities.add(entityFactory.newArrow());
+        createNewArrowEntity();
+
         int playerSpace = 24 / (usernames.size()-1);
         setIsMyTurn(myUsername.equals(usernames.get(0)));
         for (int i = 0; i < usernames.size(); i++) {
@@ -99,11 +103,19 @@ public class Model {
         systems.UserInputSystem(entities);
         systems.AnimationSystem(entities);
         systems.GameInfoSystem(entities);
-        if (systems.action.equals("draw")) {
-            entities.add(entityFactory.newArrow());
-        }
         systems.action = "";
         collidingBodies = null;
+    }
+
+    public void createNewArrowEntity() {
+        Entity arrowEntity = new Entity();
+        arrowEntity.addComponent("arrowType");
+        entities.add(arrowEntity);
+        activeArrow = arrowEntity;
+    }
+
+    public void createArrowBody(Entity arrowEntity, float startPosX) {
+        entityFactory.newArrowBody(arrowEntity, startPosX, userInput);
     }
 
     // Method called on change in Firebase Real-time db
