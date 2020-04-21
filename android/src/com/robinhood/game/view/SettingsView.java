@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import com.robinhood.game.AudioManager;
 import com.robinhood.game.controller.Controller;
 import com.robinhood.game.model.Model;
 
@@ -35,8 +36,8 @@ public class SettingsView extends View {
         final TextField usernameField =
                 new TextField(model.getMyUsername(), buttonSkin);
 
-        musicCheckbox.setChecked(model.getMusicEnabled());
-        soundCheckbox.setChecked(model.getSoundEnabled());
+        musicCheckbox.setChecked(AudioManager.getInstance().getMusicEnabled());
+        soundCheckbox.setChecked(AudioManager.getInstance().getSoundEnabled());
         usernameField.setMaxLength(12);
 
         table.row().pad(350,0,0,0);
@@ -65,14 +66,14 @@ public class SettingsView extends View {
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
                 boolean enabled = musicCheckbox.isChecked();
-                controller.setMusicEnabled( enabled );
+                AudioManager.getInstance().setMusicEnabled( enabled );
             }
         });
         soundCheckbox.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
                 boolean enabled = soundCheckbox.isChecked();
-                controller.setSoundEnabled( enabled );
+                AudioManager.getInstance().setSoundEnabled( enabled );
             }
         });
     }

@@ -75,11 +75,6 @@ public class Controller {
         model.resetModelData();
     }
 
-    // NEW Music/Sound methods
-    public void setMusicEnabled(boolean enabled) { model.setMusicEnabled(enabled); }
-
-    public void setSoundEnabled(boolean enabled) { model.setSoundEnabled(enabled); }
-
     // Method to initiate Firebase-connector and find another player
     public void findPlayer() {
         fbconnector.findPlayers(model.getMyUsername(), nrOfPlayers);

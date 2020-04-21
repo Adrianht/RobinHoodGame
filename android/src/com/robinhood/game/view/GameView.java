@@ -1,5 +1,6 @@
 package com.robinhood.game.view;
 
+import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -16,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
+import com.robinhood.game.AudioManager;
 import com.robinhood.game.controller.Controller;
 import com.robinhood.game.model.Model;
 import com.robinhood.game.view.interfaceObjects.DragIndicator;
@@ -48,9 +50,6 @@ public class GameView extends View {
             upgrade3Button,
             upgrade4Button;
 
-    private Sound shoot;
-    private Sound draw;
-
     private boolean dragStart;
 
     private final HealthBar[] healthBars;
@@ -59,13 +58,6 @@ public class GameView extends View {
 
     public GameView(final Controller controller, Model model) {
         super(controller, model);
-
-        // Loading sounds
-        assetMan.loadSounds();
-        assetMan.manager.finishLoading();
-
-        shoot = assetMan.manager.get(assetMan.shootSound);
-        draw = assetMan.manager.get(assetMan.drawSound);
 
         ImageButton leftButton = new ImageButton(textSkin);
         ImageButton rightButton = new ImageButton(textSkin);
@@ -136,7 +128,7 @@ public class GameView extends View {
                     int pointer) {
                 if(!dragStart){
                     dragStart = true;
-                    draw.play();
+                    AudioManager.getInstance().playSound("draw");
                 }
                 float power = (float)Math.sqrt(
                         Math.pow(clickX - getDragStartX(), 2)
@@ -168,7 +160,7 @@ public class GameView extends View {
                     float clickY,
                     int pointer) {
                 dragStart = false;
-                shoot.play();
+                AudioManager.getInstance().playSound("shoot");
                 controller.actionToFirebase(new Vector2(
                         clickX-getDragStartX(),
                         clickY-getDragStartY()

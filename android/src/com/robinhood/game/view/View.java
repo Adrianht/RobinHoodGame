@@ -32,14 +32,12 @@ public abstract class View {
     protected final Table table;
 
     public GameAssetManager assetMan = new GameAssetManager();
-    //private Music themeSong;
 
-    protected final Skin buttonSkin = new Skin(Gdx.files.internal(
-            "skin/dark-hdpi/Holo-dark-hdpi.json"));
-    protected final Skin textSkin = new Skin(Gdx.files.internal(
-            "skin/shade/uiskin.json"));
-    protected final Skin headerSkin = new Skin(Gdx.files.internal(
-            "skin/craftacular/craftacular-ui.json"));
+    protected final Skin buttonSkin;
+    protected final Skin textSkin;
+    protected final Skin headerSkin;
+
+    protected final Texture menuBackground;
 
     View(Controller controller, Model model) {
         this(controller);
@@ -52,28 +50,21 @@ public abstract class View {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
-        /*
-        // Initiates music at program start
-        assetMan.loadMusic();
+        assetMan.loadSkins();
+        assetMan.loadBackgrounds();
         assetMan.manager.finishLoading();
-        themeSong = assetMan.manager.get(assetMan.music);
-        themeSong.setLooping(true);
-        themeSong.setVolume(0.5f);
-        themeSong.play();
-         */
+
+        buttonSkin = assetMan.manager.get(assetMan.buttonSkin);
+        textSkin = assetMan.manager.get(assetMan.buttonSkin);
+        headerSkin = assetMan.manager.get(assetMan.buttonSkin);
+
+        menuBackground = assetMan.manager.get(assetMan.menuBackground);
 
         // Create new table that fills the screen -> Table added to stage
         table = new Table();
         table.setFillParent(true);
         table.setDebug(false);
-        // FIXME: Cheap way to add background, fix later using asset manager
-        table.setBackground(
-                new TextureRegionDrawable(
-                        new TextureRegion(
-                                new Texture("background-smaller.png")
-                        )
-                )
-        );
+        table.setBackground(new TextureRegionDrawable(new TextureRegion(menuBackground)));
         stage.addActor(table);
     }
 
