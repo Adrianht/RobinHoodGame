@@ -21,9 +21,6 @@ import java.util.List;
  */
 public class Model {
 
-    private Boolean MUSIC_ENABLED = true;
-    private Boolean SOUND_ENABLED = true;
-
     // ECS fields
     private List<Entity> entities = new ArrayList<>();
     private Systems systems;
@@ -160,17 +157,6 @@ public class Model {
         gameWinner = null;
         gameInitialized = false;
     }
-
-    // NEW Music/Sound methods
-    public boolean getMusicEnabled() { return MUSIC_ENABLED; }
-
-    public void setMusicEnabled(boolean enabled) { MUSIC_ENABLED = enabled; }
-
-    public boolean getSoundEnabled() {
-        return SOUND_ENABLED;
-    }
-
-    public void setSoundEnabled(boolean enabled) { SOUND_ENABLED = enabled; }
 
     public String getGameWinner() {
         return gameWinner;
