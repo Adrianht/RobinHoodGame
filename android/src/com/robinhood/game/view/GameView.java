@@ -54,8 +54,8 @@ public class GameView extends View {
     public GameView(final Controller controller, Model model) {
         super(controller, model);
 
-        ImageButton leftButton = new ImageButton(textSkin);
-        ImageButton rightButton = new ImageButton(textSkin);
+        ImageButton leftButton = new ImageButton(textSkin, "left");
+        ImageButton rightButton = new ImageButton(textSkin, "right");
         upgrade2Button = new ImageButton(buttonSkin, "level2");
         upgrade3Button = new ImageButton(buttonSkin, "level3");
         upgrade4Button = new ImageButton(buttonSkin, "level4");
