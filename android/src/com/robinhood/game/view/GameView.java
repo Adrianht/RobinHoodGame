@@ -42,12 +42,12 @@ public class GameView extends View {
             24);
 
     private Label gameInfo;
-    private ImageButton
+    private final ImageButton
             upgrade2Button,
             upgrade3Button,
             upgrade4Button;
 
-    HealthBar[] healthBars;
+    private final HealthBar[] healthBars;
 
     // TODO: Lars / Include texture atlas in asset manager please
 
