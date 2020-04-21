@@ -56,9 +56,9 @@ public class GameView extends View {
 
         ImageButton leftButton = new ImageButton(textSkin);
         ImageButton rightButton = new ImageButton(textSkin);
-        upgrade2Button = new ImageButton(buttonSkin);
-        upgrade3Button = new ImageButton(buttonSkin);
-        upgrade4Button = new ImageButton(buttonSkin);
+        upgrade2Button = new ImageButton(buttonSkin, "level2");
+        upgrade3Button = new ImageButton(buttonSkin, "level3");
+        upgrade4Button = new ImageButton(buttonSkin, "level4");
         gameInfo = new Label("", textSkin);
 
         leftButton.getStyle().imageUp =
@@ -181,9 +181,9 @@ public class GameView extends View {
         }
 
         gameInfo.setText(gameInfoString);
-        upgrade2Button.setVisible(myEnergyPoints >= 20);
-        upgrade3Button.setVisible(myEnergyPoints >= 40);
-        upgrade4Button.setVisible(myEnergyPoints >= 60);
+        upgrade2Button.setVisible(myEnergyPoints >= 0);
+        upgrade3Button.setVisible(myEnergyPoints >= 0);
+        upgrade4Button.setVisible(myEnergyPoints >= 0);
     }
 
     private ClickListener generateActionListener(final String action) {
