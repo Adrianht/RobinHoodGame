@@ -23,7 +23,7 @@ public class LoadingView extends View {
 
     public LoadingView(final Controller controller, Model model) {
         super(controller, model);
-        controller.findPlayer();
+        controller.findPlayers();
 
         playButton = new TextButton("Play!", buttonSkin);
         cancelButton = new TextButton("Cancel", buttonSkin);

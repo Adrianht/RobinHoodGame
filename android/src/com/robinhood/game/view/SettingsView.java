@@ -35,8 +35,8 @@ public class SettingsView extends View {
         final TextField usernameField =
                 new TextField(model.getMyUsername(), buttonSkin);
 
-        musicCheckbox.setChecked(model.getMusicEnabled());
-        soundCheckbox.setChecked(model.getSoundEnabled());
+        musicCheckbox.setChecked(model.isMusicEnabled());
+        soundCheckbox.setChecked(model.isSoundEnabled());
         usernameField.setMaxLength(12);
 
         table.row().pad(350,0,0,0);
