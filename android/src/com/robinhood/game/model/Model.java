@@ -69,7 +69,7 @@ public class Model {
         entities = new ArrayList<>();
         entities.add(entityFactory.createGround());
 
-        createNewArrowEntity();
+        entities.add(ArrowEntityPool.getInstance().getObject());
 
         int playerSpace = 24 / (usernames.size()-1);
         setIsMyTurn(myUsername.equals(usernames.get(0)));
@@ -98,12 +98,6 @@ public class Model {
         collidingBodies = null;
     }
 
-    public void createNewArrowEntity() {
-        Entity arrowEntity = new Entity();
-        arrowEntity.addComponent("arrowType");
-        entities.add(arrowEntity);
-    }
-
     public void createArrowBody(Entity arrowEntity, float startPosX) {
         entityFactory.newArrowBody(arrowEntity, startPosX, userInput);
     }
@@ -127,6 +121,9 @@ public class Model {
     }
     public Body[] getCollidingBodies() {
         return collidingBodies;
+    }
+    public Entity getActiveArrowEntity() {
+        return activeArrowEntity;
     }
     public String getMyUsername() {
         return myUsername;
@@ -166,12 +163,7 @@ public class Model {
     public void setIsMyTurn(boolean isMyTurn) {
         this.isMyTurn = isMyTurn;
     }
-
     public void setActiveArrowEntity(Entity activeArrowEntity) {
         this.activeArrowEntity = activeArrowEntity;
-    }
-
-    public Entity getActiveArrowEntity() {
-        return activeArrowEntity;
     }
 }

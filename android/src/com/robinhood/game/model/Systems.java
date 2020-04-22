@@ -114,11 +114,9 @@ public class Systems {
 
             model.getWorld().destroyBody(
                     activePlayerAndArrow[1].components.box2dBody.body);
-            activePlayerAndArrow[1]
-                    .removeComponent("arrowType");
-            activePlayerAndArrow[1]
-                    .removeComponent("box2dBody");
-            model.createNewArrowEntity();
+            ArrowEntityPool.getInstance().releaseObject(
+                    activePlayerAndArrow[1]);
+            entities.add(ArrowEntityPool.getInstance().getObject());
         }
     }
 
