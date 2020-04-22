@@ -13,8 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  */
 public class HealthBar extends Actor {
 
-    // TODO: Dispose / Singleton?
-
     private TextureAtlas atlas;
     private Sprite sprite;
     private String lastSpriteName;

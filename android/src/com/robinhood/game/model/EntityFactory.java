@@ -3,6 +3,7 @@ package com.robinhood.game.model;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.ChainShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -61,11 +62,31 @@ public class EntityFactory {
         return entity;
     }
 
+    public Entity createBow(int posX, int i) {
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.position.set(posX+1, -3);
+
+        Entity entity = new Entity();
+        entity.addComponent("bow");
+        entity.components.box2dBody.body = world.createBody(bodyDef);
+
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(1,2);
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = shape;
+        fixtureDef.density = 1f;
+        entity.components.box2dBody.body = world.createBody(bodyDef);
+        shape.dispose();
+
+        return entity;
+    }
+
     public Entity newArrow() {
         BodyDef arrowBodyDef = new BodyDef();
         arrowBodyDef.position.set(0, 0);
         arrowBodyDef.type = BodyDef.BodyType.DynamicBody;
-        arrowBodyDef.fixedRotation = false;
+        arrowBodyDef.fixedRotation = true;
 
         Entity entity = new Entity();
         entity.addComponent("arrowType");
@@ -91,6 +112,8 @@ public class EntityFactory {
         fixtureDef.restitution = 0.3f;
         entity.components.box2dBody.body.createFixture(fixtureDef);
         chainShape.dispose();
+
+        // Orient arrow in direction
 
         return entity;
     }

@@ -49,8 +49,6 @@ public class GameView extends View {
 
     private final HealthBar[] healthBars;
 
-    // TODO: Lars / Include texture atlas in asset manager please
-
     public GameView(final Controller controller, Model model) {
         super(controller, model);
 

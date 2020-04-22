@@ -80,7 +80,12 @@ public class Model {
                 (playerSpace*i - 12),
                 i
             );
+            Entity bow = entityFactory.createBow(
+                    (playerSpace*i - 12),
+                    i
+            );
             entities.add(player);
+            entities.add(bow);
         }
 
         // Initiate game systems

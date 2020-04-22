@@ -30,6 +30,11 @@ public class Components {
         public Body body;
     }
 
+    // TODO: Check this
+    public class Bow extends PlayerInfo {
+        public Bow() { Components.this.playerInfo = this;}
+    }
+
     public class PlayerInfo {
         public PlayerInfo() {
             Components.this.playerInfo = this;
