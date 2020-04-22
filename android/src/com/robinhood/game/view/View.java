@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.robinhood.game.controller.Controller;
 import com.robinhood.game.model.Model;
+import com.robinhood.game.view.loader.GameAssetManager;
 
 /**
  * Superclass in Template method pattern - base of all application UIs.
@@ -30,12 +31,13 @@ public abstract class View {
     protected final Stage stage;
     protected final Table table;
 
-    protected final Skin buttonSkin = new Skin(Gdx.files.internal(
-            "skin/dark-hdpi/Holo-dark-hdpi.json"));
-    protected final Skin textSkin = new Skin(Gdx.files.internal(
-            "skin/shade/uiskin.json"));
-    protected final Skin headerSkin = new Skin(Gdx.files.internal(
-            "skin/craftacular/craftacular-ui.json"));
+    public GameAssetManager assetMan = new GameAssetManager();
+
+    protected final Skin buttonSkin;
+    protected final Skin textSkin;
+    protected final Skin headerSkin;
+
+    protected final Texture menuBackground;
 
     View(Controller controller, Model model) {
         this(controller);
@@ -48,18 +50,21 @@ public abstract class View {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
+        assetMan.loadSkins();
+        assetMan.loadBackgrounds();
+        assetMan.manager.finishLoading();
+
+        buttonSkin = assetMan.manager.get(assetMan.buttonSkin);
+        textSkin = assetMan.manager.get(assetMan.buttonSkin);
+        headerSkin = assetMan.manager.get(assetMan.buttonSkin);
+
+        menuBackground = assetMan.manager.get(assetMan.menuBackground);
+
         // Create new table that fills the screen -> Table added to stage
         table = new Table();
         table.setFillParent(true);
         table.setDebug(false);
-        // FIXME: Cheap way to add background, fix later using asset manager
-        table.setBackground(
-                new TextureRegionDrawable(
-                        new TextureRegion(
-                                new Texture("background-smaller.png")
-                        )
-                )
-        );
+        table.setBackground(new TextureRegionDrawable(new TextureRegion(menuBackground)));
         stage.addActor(table);
     }
 
@@ -67,10 +72,12 @@ public abstract class View {
         float[] values = hextoRGB("#5f8db0");
         Gdx.gl.glClearColor(values[0], values[1], values[2], 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        assetMan.manager.update();
         stage.draw();
     }
 
     public void dispose () {
+        assetMan.manager.dispose();
         stage.dispose();
     }
 

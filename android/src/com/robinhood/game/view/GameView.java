@@ -1,6 +1,8 @@
 package com.robinhood.game.view;
 
+import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -15,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
+import com.robinhood.game.AudioManager;
 import com.robinhood.game.controller.Controller;
 import com.robinhood.game.model.Model;
 import com.robinhood.game.view.interfaceObjects.DragIndicator;
@@ -48,6 +51,8 @@ public class GameView extends View {
             upgrade4Button,
             leftButton,
             rightButton;
+
+    private boolean dragStart;
 
     private final HealthBar[] healthBars;
 
@@ -123,6 +128,10 @@ public class GameView extends View {
                     float clickX,
                     float clickY,
                     int pointer) {
+                if(!dragStart){
+                    dragStart = true;
+                    AudioManager.getInstance().playSound("draw");
+                }
                 float power = (float)Math.sqrt(
                         Math.pow(clickX - getDragStartX(), 2)
                                 + Math.pow(clickY - getDragStartY(), 2));
@@ -152,6 +161,8 @@ public class GameView extends View {
                     float clickX,
                     float clickY,
                     int pointer) {
+                dragStart = false;
+                AudioManager.getInstance().playSound("shoot");
                 controller.actionToFirebase(new Vector2(
                         clickX-getDragStartX(),
                         clickY-getDragStartY()

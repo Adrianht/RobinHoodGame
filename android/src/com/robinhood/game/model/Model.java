@@ -30,8 +30,6 @@ public class Model {
     private EntityFactory entityFactory;
 
     // Other data fields
-    private boolean MUSIC_ENABLED = true;
-    private boolean SOUND_ENABLED = true;
     private String myUsername = "Username";
     private boolean gameInitialized = false;
     private int[] hitPointValues;
@@ -74,9 +72,9 @@ public class Model {
         setIsMyTurn(myUsername.equals(usernames.get(0)));
         for (int i = 0; i < usernames.size(); i++) {
             Entity player = entityFactory.createPlayer(
-                usernames.get(i),
-                (playerSpace*i - 12),
-                i
+                    usernames.get(i),
+                    (playerSpace*i - 12),
+                    i
             );
             entities.add(player);
         }
@@ -135,10 +133,6 @@ public class Model {
     public int getMyEnergyPoints(){
         return myEnergyPoints;
     }
-    public boolean isMusicEnabled() { return MUSIC_ENABLED; }
-    public boolean isSoundEnabled() {
-        return SOUND_ENABLED;
-    }
     public boolean isMyTurn(){
         return isMyTurn;
     }
@@ -159,8 +153,6 @@ public class Model {
     public void setMyEnergyPoints(int myEnergyPoints) {
         this.myEnergyPoints = myEnergyPoints;
     }
-    public void setMusicEnabled(boolean enabled) { MUSIC_ENABLED = enabled; }
-    public void setSoundEnabled(boolean enabled) { SOUND_ENABLED = enabled; }
     public void setIsMyTurn(boolean isMyTurn) {
         this.isMyTurn = isMyTurn;
     }

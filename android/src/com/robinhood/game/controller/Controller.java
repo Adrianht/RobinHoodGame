@@ -69,16 +69,6 @@ public class Controller {
         model.resetModelData();
     }
 
-    // Method called to enable/disable game music
-    public void setMusicEnabled(boolean enabled) {
-        model.setMusicEnabled(enabled);
-    }
-
-    // Method called to enable/disable game sounds
-    public void setSoundEnabled(boolean enabled) {
-        model.setSoundEnabled(enabled);
-    }
-
     // Notify firebase of an available player
     public void findPlayers() {
         fbconnector.findPlayers(

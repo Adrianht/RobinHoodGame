@@ -12,6 +12,7 @@ public class RobinHood extends ApplicationAdapter {
     public void create () {
         Controller controller = new Controller(this);
         controller.navigateTo("MENU");
+        AudioManager.getInstance();
     }
 
     @Override
