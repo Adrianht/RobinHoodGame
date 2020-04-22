@@ -1,5 +1,6 @@
 package com.robinhood.game.view.interfaceObjects;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -39,8 +40,10 @@ public class Arrow extends Actor {
                 isNewShot = false;
             }
             sprite.setPosition(
-                    startPosX + arrowBody.getPosition().x * 56,
-                    startPosY + arrowBody.getPosition().y * 46);
+                    startPosX + arrowBody.getPosition().x *
+                            Gdx.graphics.getWidth()/32,
+                    startPosY + arrowBody.getPosition().y *
+                            Gdx.graphics.getHeight()/24);
             sprite.draw(batch);
         } else {
             isNewShot = true;
@@ -70,13 +73,12 @@ public class Arrow extends Actor {
                 sprite.rotate(40);
         }
         if(arrowBody.getLinearVelocity().x < 0) {
-            startPosX = 750;
-            startPosY = 540;
+            startPosX = Gdx.graphics.getWidth()/2.4f;
         } else {
-            startPosX = 750 + sprite.getWidth();
-            startPosY = 560;
+            startPosX = Gdx.graphics.getWidth()/2.4f + sprite.getWidth();
             sprite.rotate90(true);
             sprite.rotate90(true);
         }
+        startPosY = Gdx.graphics.getHeight()/2f;
     }
 }
