@@ -48,7 +48,9 @@ public class GameView extends View {
     private final ImageButton
             upgrade2Button,
             upgrade3Button,
-            upgrade4Button;
+            upgrade4Button,
+            leftButton,
+            rightButton;
 
     private boolean dragStart;
 
@@ -59,11 +61,11 @@ public class GameView extends View {
     public GameView(final Controller controller, Model model) {
         super(controller, model);
 
-        ImageButton leftButton = new ImageButton(textSkin);
-        ImageButton rightButton = new ImageButton(textSkin);
-        upgrade2Button = new ImageButton(buttonSkin);
-        upgrade3Button = new ImageButton(buttonSkin);
-        upgrade4Button = new ImageButton(buttonSkin);
+        leftButton = new ImageButton(buttonSkin, "left");
+        rightButton = new ImageButton(buttonSkin, "right");
+        upgrade2Button = new ImageButton(buttonSkin, "level2");
+        upgrade3Button = new ImageButton(buttonSkin, "level3");
+        upgrade4Button = new ImageButton(buttonSkin, "level4");
         gameInfo = new Label("", textSkin);
 
         leftButton.getStyle().imageUp =
@@ -179,7 +181,7 @@ public class GameView extends View {
 
     private void updateGameInfo() {
         if(model.getGameWinner() != null) {
-            controller.handleGameOver();
+            controller.navigateTo("GAMEOVER");
         }
 
         int myEnergyPoints = model.getMyEnergyPoints();

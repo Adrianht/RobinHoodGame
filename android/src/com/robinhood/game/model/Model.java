@@ -21,28 +21,26 @@ import java.util.List;
  */
 public class Model {
 
-    // ECS fields
-    private List<Entity> entities = new ArrayList<>();
+    // ECS-related fields
+    private List<Entity> entities;
     private Systems systems;
 
-    // Box2D fields
+    // Box2D-related fields
     private World world;
     private EntityFactory entityFactory;
 
-    private boolean gameInitialized = false;
-
-    // Data fields
+    // Other data fields
     private String myUsername = "Username";
+    private boolean gameInitialized = false;
     private int[] hitPointValues;
     private int myEnergyPoints;
     private boolean isMyTurn;
     private Body[] collidingBodies;
     private String userInput, gameWinner;
 
-    // Method to initiate a new game after two players are matched
+    // Initiates a game
     public void initiateGame(List<String> usernames) {
-
-        // Initiate Box2D
+        // Initiate Box2D-related objects
         world = new World(new Vector2(0,-10f), true);
         world.setContactListener(new ContactListener() {
             @Override
@@ -66,16 +64,17 @@ public class Model {
         });
         entityFactory = new EntityFactory(world);
 
-        // Initiate entities
+        // Initiate game entities
+        entities = new ArrayList<>();
         entities.add(entityFactory.createGround());
         entities.add(entityFactory.newArrow());
         int playerSpace = 24 / (usernames.size()-1);
         setIsMyTurn(myUsername.equals(usernames.get(0)));
         for (int i = 0; i < usernames.size(); i++) {
             Entity player = entityFactory.createPlayer(
-                usernames.get(i),
-                (playerSpace*i - 12),
-                i
+                    usernames.get(i),
+                    (playerSpace*i - 12),
+                    i
             );
             entities.add(player);
         }
@@ -85,13 +84,9 @@ public class Model {
         systems.GameInfoSystem(entities);
 
         this.gameInitialized = true;
-
-        // FIXME: this run on iteration to land players on ground
-        //    attempt to find workaround
-        world.step(.001f, 1, 1);
     }
 
-    // Method called after every game action
+    // Method called on every game action
     public void gameLoop() {
         systems.UserInputSystem(entities);
         systems.AnimationSystem(entities);
@@ -110,71 +105,57 @@ public class Model {
     }
 
     // Method returns if game is initialized
-    public boolean isGameInitialized() {
-        return gameInitialized;
-    }
-
-    // Method used to fetch players hit point values
-    public int[] getHitPointValues(){
-        return hitPointValues;
-    }
-
-    public void setHitPointValues(int[] hitPointValues) {
-        this.hitPointValues = hitPointValues;
-    }
-
-    // Method used to fetch players energy values
-    public int getMyEnergyPoints(){
-        return myEnergyPoints;
-    }
-
-    public void setMyEnergyPoints(int myEnergyPoints) {
-        this.myEnergyPoints = myEnergyPoints;
-    }
-
-    // Method used to check if it's this player's turn
-    public boolean isMyTurn(){
-        return isMyTurn;
-    }
-
-    public void setIsMyTurn(boolean isMyTurn) {
-        this.isMyTurn = isMyTurn;
-    }
-
-    // Method returns username
-    public String getMyUsername() {
-        return myUsername;
-    }
-
-    // Method set username
-    public void setMyUsername(String username) {
-         this.myUsername = username;
-    }
-
-    // Method returns if game is initialized
     public void resetModelData() {
         entities.clear();
         gameWinner = null;
         gameInitialized = false;
     }
 
-    public String getGameWinner() {
-        return gameWinner;
-    }
-
-    public void setGameWinner(String gameWinner) {
-        this.gameWinner = gameWinner;
-    }
-
+    // Field getters
     public World getWorld() {
         return world;
     }
-
     public Body[] getCollidingBodies() {
         return collidingBodies;
     }
-
+    public String getMyUsername() {
+        return myUsername;
+    }
+    public String getGameWinner() {
+        return gameWinner;
+    }
     public String getUserInput() {
         return userInput;
+    }
+    public int[] getHitPointValues(){
+        return hitPointValues;
+    }
+    public int getMyEnergyPoints(){
+        return myEnergyPoints;
+    }
+
+    public boolean isMyTurn(){
+        return isMyTurn;
+    }
+    public boolean isGameInitialized() {
+        return gameInitialized;
+    }
+
+    // Field setters
+    public void setMyUsername(String username) {
+        this.myUsername = username;
+    }
+    public void setGameWinner(String gameWinner) {
+        this.gameWinner = gameWinner;
+    }
+    public void setHitPointValues(int[] hitPointValues) {
+        this.hitPointValues = hitPointValues;
+    }
+    public void setMyEnergyPoints(int myEnergyPoints) {
+        this.myEnergyPoints = myEnergyPoints;
+    }
+
+    public void setIsMyTurn(boolean isMyTurn) {
+        this.isMyTurn = isMyTurn;
     }
 }

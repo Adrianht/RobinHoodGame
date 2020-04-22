@@ -1,10 +1,11 @@
+
 package com.robinhood.game.controller;
 
 import com.badlogic.gdx.Gdx;
 import com.robinhood.game.RobinHood;
-
 import com.robinhood.game.model.Model;
 import com.robinhood.game.view.*;
+
 import java.util.List;
 
 /**
@@ -18,18 +19,17 @@ import java.util.List;
  */
 public class Controller {
 
-    private RobinHood game;
-    private FBConnector fbconnector;
-    private Model model;
+    private final RobinHood game;
+    private final FBConnector fbconnector;
+    private final Model model = new Model();
     private final int nrOfPlayers = 2;
 
     public Controller(RobinHood game) {
         this.game = game;
         this.fbconnector = new FBConnector(this);
-        this.model = new Model();
     }
 
-    // Method called from views to navigate through the application
+    // Navigation method called from views
     public void navigateTo(String destination) {
         switch(destination) {
             case "SETTINGS":
@@ -59,25 +59,22 @@ public class Controller {
         }
     }
 
-    // Method called from FBConnector to notify model of change
+    // Called from FBConnector to notify model of change
     public void notifyChangeInFirebase(String userInput) {
         model.notifyChangeInFirebase(userInput);
     }
 
-    // Method called from GameView when only one player has hp
-    public void handleGameOver() {
-        this.navigateTo("GAMEOVER");
-    }
-
-    // Method called to delete game data from firebase and model
+    // Reset model and firebase game room
     public void endGameInstance() {
         fbconnector.removeRoom();
         model.resetModelData();
     }
 
-    // Method to initiate Firebase-connector and find another player
-    public void findPlayer() {
-        fbconnector.findPlayers(model.getMyUsername(), nrOfPlayers);
+    // Notify firebase of an available player
+    public void findPlayers() {
+        fbconnector.findPlayers(
+                model.getMyUsername(),
+                nrOfPlayers);
     }
 
     // Method to cancel a players search for opponent
@@ -85,7 +82,7 @@ public class Controller {
         fbconnector.cancelFindPlayer(model.getMyUsername());
     }
 
-    // Method called to initiate game after Firebase has found opponent
+    // Initate game when opponent(s) are found
     public void initiateGame(List<String> usernames) {
         model.initiateGame(usernames);
     }
@@ -99,5 +96,4 @@ public class Controller {
     public void setMyUsername(String username){
         model.setMyUsername(username);
     }
-
 }
