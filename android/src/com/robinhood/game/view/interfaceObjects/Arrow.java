@@ -6,8 +6,16 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
+import com.robinhood.game.model.Entity;
 import com.robinhood.game.model.Model;
 
+/**
+ * TODO: add description.
+ *
+ * @author group 11
+ * @version 1.0
+ * @since 2020-04-25
+ */
 public class Arrow extends Actor {
 
     private final Model model;
@@ -25,12 +33,16 @@ public class Arrow extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        Body activeArrow = model.getActiveArrowBody();
+        Entity activeArrow = model.getActiveArrowEntity();
         if (activeArrow != null) {
+            Body activeArrowBody =
+                    activeArrow.components.box2dBody.body;
             if (newShot) {
+                updateSprite(
+                        activeArrow.components.arrowType.type);
                 startPosX = 750;
                 startPosY = 540;
-                if(activeArrow.getLinearVelocity().x > 0) {
+                if(activeArrowBody.getLinearVelocity().x > 0) {
                     startPosX = 750 + sprite.getWidth();
                     startPosY = 560;
                     if (prevWasLeft) {
@@ -48,11 +60,17 @@ public class Arrow extends Actor {
                 newShot = false;
             }
             sprite.setPosition(
-                    startPosX + activeArrow.getPosition().x * 56,
-                    startPosY + activeArrow.getPosition().y * 46);
+                    startPosX + activeArrowBody.getPosition().x * 56,
+                    startPosY + activeArrowBody.getPosition().y * 46);
             sprite.draw(batch);
         } else {
             newShot = true;
         }
+    }
+
+    private void updateSprite(String arrowType) {
+        // TODO: after asset manager, change sprite on @param arrowType
+        // arrowTypes are Level1,Level2,Level3,Level4
+        // Level1 is default
     }
 }

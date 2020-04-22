@@ -41,7 +41,7 @@ public class Model {
     private boolean isMyTurn;
     private Body[] collidingBodies;
     private String userInput, gameWinner;
-    private Body activeArrowBody;
+    private Entity activeArrowEntity;
 
     // Method to initiate a new game after two players are matched
     public void initiateGame(List<String> usernames) {
@@ -202,11 +202,11 @@ public class Model {
         return userInput;
     }
 
-    public void setActiveArrowBody(Body activeArrowBody) {
-        this.activeArrowBody = activeArrowBody;
+    public void setActiveArrowEntity(Entity activeArrowEntity) {
+        this.activeArrowEntity = activeArrowEntity;
     }
 
-    public Body getActiveArrowBody() {
-        return activeArrowBody;
+    public Entity getActiveArrowEntity() {
+        return activeArrowEntity;
     }
 }

@@ -54,6 +54,9 @@ public class Systems {
                 activePlayerAndArrow[0]
                         .components.playerInfo.energy -= purchaseCostNDam;
                 activePlayerAndArrow[1]
+                        .components.arrowType.type =
+                        "Level" + purchaseLevel;
+                activePlayerAndArrow[1]
                         .components.arrowType.damage = purchaseCostNDam;
             }
         } else {
@@ -69,8 +72,6 @@ public class Systems {
         Entity[] activePlayerAndArrow = findActivePlayerAndArrow(entities);
 
         if (action.equals("move")) {
-            activePlayerAndArrow[1]
-                    .components.box2dBody.body.setActive(false);
             while (activePlayerAndArrow[0].components.box2dBody.body
                     .getLinearVelocity().x != 0) {
                 model.getWorld().step(
@@ -78,8 +79,6 @@ public class Systems {
                         1,
                         1);
             }
-            activePlayerAndArrow[1]
-                    .components.box2dBody.body.setActive(true);
         } else if (action.equals("draw")) {
             Vector2 vector2 = new Vector2().fromString(model.getUserInput());
             activePlayerAndArrow[1]
@@ -92,12 +91,10 @@ public class Systems {
                         .001f,
                         1,
                         1);
-                model.setActiveArrowBody(
-                        activePlayerAndArrow[1]
-                                .components.box2dBody.body);
+                model.setActiveArrowEntity(activePlayerAndArrow[1]);
                 collidingBodies = model.getCollidingBodies();
             }
-            model.setActiveArrowBody(null);
+            model.setActiveArrowEntity(null);
             Body hitBody = collidingBodies[0];
             if(collidingBodies[0] == activePlayerAndArrow[1]
                     .components.box2dBody.body) {
