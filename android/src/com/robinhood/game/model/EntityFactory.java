@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-
+// FIXME: probably needs a lot of refactoring after work with game interface objects are done
 public class EntityFactory {
 
     private final World world;
@@ -60,7 +60,7 @@ public class EntityFactory {
 
         return entity;
     }
-
+/*
     public Entity newArrow() {
         BodyDef arrowBodyDef = new BodyDef();
         arrowBodyDef.position.set(0, 0);
@@ -95,4 +95,40 @@ public class EntityFactory {
         return entity;
     }
 
+ */
+
+    public void newArrowBody(Entity arrowEntity, float startPosX, String shot) {
+        BodyDef arrowBodyDef = new BodyDef();
+        arrowBodyDef.type = BodyDef.BodyType.DynamicBody;
+        if (new Vector2().fromString(shot).x > 0) {
+            arrowBodyDef.position.set(startPosX - 2, -2);
+            arrowBodyDef.angle = (float) Math.PI;
+        } else {
+            arrowBodyDef.position.set(startPosX + 2, -2);
+        }
+
+        arrowEntity.addComponent("box2dBody");
+        arrowEntity.components.box2dBody.body = world.createBody(arrowBodyDef);
+        ChainShape chainShape = new ChainShape();
+        float[] arrowShapeCoordinatesX = {.3f, .4f, .08f, 1.3f,
+                1.3f, 1.5f, 1.3f, 1.3f, .08f, .4f, .3f, 0f, .1f, 0f};
+        float[] arrowShapeCoordinatesY = {0f, .1f, .1f, .1f,
+                .05f, .15f, .25f, .2f, .2f, .2f, .3f, .3f, .15f, 0f};
+        Vector2[] vertices = new Vector2[arrowShapeCoordinatesX.length];
+        for (int i=0; i<arrowShapeCoordinatesX.length; i++) {
+            vertices[i] = new Vector2(
+                    arrowShapeCoordinatesX[i],
+                    arrowShapeCoordinatesY[i]
+            );
+        }
+        chainShape.createLoop(vertices);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = chainShape;
+        fixtureDef.density = 0.5f;
+        fixtureDef.friction = 0.7f;
+        fixtureDef.restitution = 0.3f;
+        arrowEntity.components.box2dBody.body.createFixture(fixtureDef);
+        chainShape.dispose();
+    }
 }

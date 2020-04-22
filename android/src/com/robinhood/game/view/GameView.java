@@ -20,8 +20,7 @@ import com.badlogic.gdx.utils.Align;
 import com.robinhood.game.AudioManager;
 import com.robinhood.game.controller.Controller;
 import com.robinhood.game.model.Model;
-import com.robinhood.game.view.interfaceObjects.DragIndicator;
-import com.robinhood.game.view.interfaceObjects.HealthBar;
+import com.robinhood.game.view.interfaceObjects.*;
 
 /**
  * Subclass in Template method pattern creating the UI when in-game.
@@ -118,6 +117,8 @@ public class GameView extends View {
             healthBars[i] = new HealthBar(space * i + 48);
             stage.addActor(healthBars[i]);
         }
+
+        stage.addActor(new Arrow(model));
 
         final DragIndicator dragIndicator = new DragIndicator();
         stage.addActor(dragIndicator);
