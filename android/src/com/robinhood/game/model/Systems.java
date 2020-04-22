@@ -60,10 +60,14 @@ public class Systems {
                         .components.arrowType.damage = purchaseCostNDam;
             }
         } else {
-            model.createArrowBody(
-                    activePlayerAndArrow[1],
-                    activePlayerAndArrow[0]
-                            .components.box2dBody.body.getPosition().x);
+            activePlayerAndArrow[1].components.box2dBody.body =
+                    BodyFactory.getInstance().getBody(
+                            "arrow",
+                            model.getWorld(),
+                            activePlayerAndArrow[0]
+                                    .components.box2dBody.body
+                                    .getPosition().x,
+                            userInput);
             action = "draw";
         }
     }
@@ -118,7 +122,7 @@ public class Systems {
                     .removeComponent("arrowType");
             activePlayerAndArrow[1]
                     .removeComponent("box2dBody");
-            model.createNewArrowEntity();
+            model.createEntity("arrow");
         }
     }
 
