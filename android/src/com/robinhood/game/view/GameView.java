@@ -183,9 +183,9 @@ public class GameView extends View {
         }
 
         gameInfo.setText(gameInfoString);
-        upgrade2Button.setVisible(myEnergyPoints >= 20);
-        upgrade3Button.setVisible(myEnergyPoints >= 40);
-        upgrade4Button.setVisible(myEnergyPoints >= 60);
+        upgrade2Button.setVisible(myEnergyPoints >= 0);
+        upgrade3Button.setVisible(myEnergyPoints >= 0);
+        upgrade4Button.setVisible(myEnergyPoints >= 0);
     }
 
     private ClickListener generateActionListener(final String action) {
