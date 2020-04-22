@@ -1,8 +1,6 @@
 package com.robinhood.game.view;
 
-import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -47,36 +45,21 @@ public class GameView extends View {
     private final ImageButton
             upgrade2Button,
             upgrade3Button,
-            upgrade4Button,
-            leftButton,
-            rightButton;
+            upgrade4Button;
 
     private boolean dragStart;
 
     private final HealthBar[] healthBars;
 
-    // TODO: Lars / Include texture atlas in asset manager please
-
     public GameView(final Controller controller, Model model) {
         super(controller, model);
 
-        leftButton = new ImageButton(buttonSkin, "left");
-        rightButton = new ImageButton(buttonSkin, "right");
-        upgrade2Button = new ImageButton(buttonSkin, "level2");
-        upgrade3Button = new ImageButton(buttonSkin, "level3");
-        upgrade4Button = new ImageButton(buttonSkin, "level4");
+        ImageButton leftButton = createImgButton("left");
+        ImageButton rightButton = createImgButton("right");
+        upgrade2Button = createImgButton("Level2");
+        upgrade3Button = createImgButton("Level3");
+        upgrade4Button = createImgButton("Level4");
         gameInfo = new Label("", textSkin);
-
-        leftButton.getStyle().imageUp =
-                createTexture("left.png");
-        rightButton.getStyle().imageUp =
-                createTexture("right.png");
-        upgrade2Button.getStyle().imageUp =
-                createTexture("buyLevel2.png");
-        upgrade3Button.getStyle().imageUp =
-                createTexture("buyLevel3.png");
-        upgrade4Button.getStyle().imageUp =
-                createTexture("buyLevel4.png");
         gameInfo.setFontScale(2f);
 
         table.setBackground(
@@ -98,17 +81,6 @@ public class GameView extends View {
                 .width(150f).height(150f);
         table.add(rightButton)
                 .right().padLeft(300f).width(200f).height(150f);
-
-        upgrade2Button.addListener(
-                generateActionListener("Level2"));
-        upgrade3Button.addListener(
-                generateActionListener("Level3"));
-        upgrade4Button.addListener(
-                generateActionListener("Level4"));
-        leftButton.addListener(
-                generateActionListener("left"));
-        rightButton.addListener(
-                generateActionListener("right"));
 
         int[] hitPointValues = model.getHitPointValues();
         healthBars = new HealthBar[hitPointValues.length];
@@ -198,6 +170,14 @@ public class GameView extends View {
         upgrade2Button.setVisible(myEnergyPoints >= 20);
         upgrade3Button.setVisible(myEnergyPoints >= 40);
         upgrade4Button.setVisible(myEnergyPoints >= 60);
+    }
+
+    private ImageButton createImgButton(String name) {
+        ImageButton imgButton = new ImageButton(buttonSkin, name);
+        imgButton.getStyle().imageUp =
+                createTexture(name + ".png");
+        imgButton.addListener(generateActionListener(name));
+        return imgButton;
     }
 
     private ClickListener generateActionListener(final String action) {

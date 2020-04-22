@@ -54,8 +54,7 @@ public class Arrow extends Actor {
     private void createSprite(Entity arrowEntity) {
         String arrowType = arrowEntity.components.arrowType.type;
         Body arrowBody = arrowEntity.components.box2dBody.body;
-        String assetPath = "buy" + arrowType + ".png";
-        sprite = new Sprite(new Texture(assetPath));
+        sprite = new Sprite(new Texture(arrowType + ".png"));
         sprite.setSize(80, 80);
         sprite.setRotation(0);
         switch (arrowType) {
