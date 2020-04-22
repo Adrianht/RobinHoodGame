@@ -2,17 +2,16 @@ package com.robinhood.game;
 
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+
 import com.robinhood.game.view.loader.GameAssetManager;
 
 public class AudioManager {
 
     private static final AudioManager INSTANCE = new AudioManager();
-    private Boolean MUSIC_ENABLED = true;
-    private Boolean SOUND_ENABLED = true;
+    private boolean MUSIC_ENABLED = true;
+    private boolean SOUND_ENABLED = true;
     private Music themeSong;
-    public Sound hit;
-    public Sound shoot;
-    public Sound draw;
+    public Sound draw, hit, shoot;
 
     private AudioManager() {
         GameAssetManager assetManager = new GameAssetManager();
@@ -31,29 +30,25 @@ public class AudioManager {
         draw = assetManager.manager.get(assetManager.drawSound);
     }
 
-    public void playSound(String sound){
-        if(SOUND_ENABLED){
-            switch(sound){
-                case("hit"):
-                    hit.play();
-                    break;
-                case("shoot"):
-                    shoot.play();
-                    break;
-                case("draw"):
-                    draw.play();
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-
     public static AudioManager getInstance() {
         return INSTANCE;
     }
 
-    public boolean getMusicEnabled() { return MUSIC_ENABLED; }
+    public void playSound(String sound) {
+        if(SOUND_ENABLED) {
+            if(sound.equals("draw")) {
+                draw.play();
+            } else if(sound.equals("hit")) {
+                hit.play();
+            } else if(sound.equals("shoot")) {
+                shoot.play();
+            }
+        }
+    }
+
+    public boolean getMusicEnabled() {
+        return MUSIC_ENABLED;
+    }
 
     public void setMusicEnabled(boolean enabled) {
         MUSIC_ENABLED = enabled;
@@ -68,5 +63,7 @@ public class AudioManager {
         return SOUND_ENABLED;
     }
 
-    public void setSoundEnabled(boolean enabled) { SOUND_ENABLED = enabled; }
+    public void setSoundEnabled(boolean enabled) {
+        SOUND_ENABLED = enabled;
+    }
 }

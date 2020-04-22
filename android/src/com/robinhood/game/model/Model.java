@@ -133,7 +133,6 @@ public class Model {
     public int getMyEnergyPoints(){
         return myEnergyPoints;
     }
-
     public boolean isMyTurn(){
         return isMyTurn;
     }
@@ -154,7 +153,6 @@ public class Model {
     public void setMyEnergyPoints(int myEnergyPoints) {
         this.myEnergyPoints = myEnergyPoints;
     }
-
     public void setIsMyTurn(boolean isMyTurn) {
         this.isMyTurn = isMyTurn;
     }

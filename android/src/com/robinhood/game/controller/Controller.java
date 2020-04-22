@@ -1,4 +1,3 @@
-
 package com.robinhood.game.controller;
 
 import com.badlogic.gdx.Gdx;
