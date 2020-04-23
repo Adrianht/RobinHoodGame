@@ -93,7 +93,7 @@ public class Systems {
             Body[] collidingBodies = null;
             while(collidingBodies == null) {
                 model.getWorld().step(
-                        .001f,
+                        0.0005f,
                         1,
                         1);
                 model.setActiveArrowEntity(activePlayerAndArrow[1]);
