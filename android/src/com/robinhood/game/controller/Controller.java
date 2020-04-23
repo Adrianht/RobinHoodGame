@@ -53,9 +53,7 @@ public class Controller {
 
     // Method called from GameView to update firebase
     public void actionToFirebase(String action) {
-        if(model.isMyTurn()) {
-            fbconnector.exportActionToFirebase(action);
-        }
+        fbconnector.exportActionToFirebase(action);
     }
 
     // Called from FBConnector to notify model of change

@@ -1,6 +1,5 @@
 package com.robinhood.game.view;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -37,8 +36,9 @@ public class SettingsView extends View {
         final TextField usernameField =
                 new TextField(model.getMyUsername(), headerSkin);
 
-        musicCheckbox.setChecked(AudioManager.getInstance().getMusicEnabled());
-        soundCheckbox.setChecked(AudioManager.getInstance().getSoundEnabled());
+        final AudioManager audioManager = AudioManager.getInstance();
+        musicCheckbox.setChecked(audioManager.getMusicEnabled());
+        soundCheckbox.setChecked(audioManager.getSoundEnabled());
         usernameField.setMaxLength(12);
 
         table.row().pad(350,0,0,0);
@@ -59,7 +59,9 @@ public class SettingsView extends View {
         menuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
-                controller.setMyUsername(usernameField.getText());
+                if(usernameField.getText() != "") {
+                    controller.setMyUsername(usernameField.getText());
+                }
                 controller.navigateTo("MENU");
             }
         });
@@ -67,14 +69,14 @@ public class SettingsView extends View {
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
                 boolean enabled = musicCheckbox.isChecked();
-                AudioManager.getInstance().setMusicEnabled( enabled );
+                audioManager.setMusicEnabled( enabled );
             }
         });
         soundCheckbox.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
                 boolean enabled = soundCheckbox.isChecked();
-                AudioManager.getInstance().setSoundEnabled( enabled );
+                audioManager.setSoundEnabled( enabled );
             }
         });
     }

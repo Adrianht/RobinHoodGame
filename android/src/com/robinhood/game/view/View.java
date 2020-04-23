@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+
 import com.robinhood.game.controller.Controller;
 import com.robinhood.game.model.Model;
 import com.robinhood.game.assetManagers.GameAssetManager;
@@ -28,9 +29,7 @@ public abstract class View {
     protected final Table table;
 
     protected final GameAssetManager assetManager;
-    protected final Skin buttonSkin;
-    protected final Skin textSkin;
-    protected final Skin headerSkin;
+    protected final Skin buttonSkin, textSkin, headerSkin;
 
     View(Controller controller, Model model) {
         this(controller);
@@ -48,14 +47,13 @@ public abstract class View {
         assetManager.loadBackgrounds();
         assetManager.finishLoading();
         buttonSkin = assetManager.get(assetManager.buttonSkin);
-        textSkin = assetManager.get(assetManager.buttonSkin);
-        headerSkin = assetManager.get(assetManager.buttonSkin);
+        textSkin = assetManager.get(assetManager.textSkin);
+        headerSkin = assetManager.get(assetManager.headerSkin);
 
-        // Create new table that fills the screen -> Table added to stage
         table = new Table();
         table.setFillParent(true);
         Texture backgroundTexture =
-                assetManager.get(assetManager.menuBackgroundString);
+                assetManager.get(assetManager.menuBackground);
         table.setBackground(new TextureRegionDrawable(backgroundTexture));
         stage.addActor(table);
     }

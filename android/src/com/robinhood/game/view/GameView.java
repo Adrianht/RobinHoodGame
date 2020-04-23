@@ -1,12 +1,10 @@
 package com.robinhood.game.view;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
@@ -29,34 +27,35 @@ public class GameView extends View {
     private final ImageButton
             upgrade2Button,
             upgrade3Button,
-            upgrade4Button;
+            upgrade4Button,
+            leftButton,
+            rightButton;
 
-    private boolean dragStart;
-
-    private final HealthBar[] healthBars;
+    private final Entity[] playerEntities;
+    private HealthBar[] healthBars;
 
     public GameView(final Controller controller, Model model) {
         super(controller, model);
         AudioManager.getInstance().initSound();
+
         assetManager.loadImageButtonTextures();
         assetManager.loadInterfaceObjectsTextures();
         assetManager.loadTextureAtlas();
         assetManager.finishLoading();
 
-        ImageButton leftButton = createImgButton("left");
-        ImageButton rightButton = createImgButton("right");
+        leftButton = createImgButton("left");
+        rightButton = createImgButton("right");
         upgrade2Button = createImgButton("Level2");
         upgrade3Button = createImgButton("Level3");
         upgrade4Button = createImgButton("Level4");
         gameInfo = new Label("", textSkin);
-        gameInfo.setFontScale(2f);
 
         Texture backgroundTexture =
-                assetManager.get(assetManager.gameBackgroundString);
+                assetManager.get(assetManager.gameBackground);
         table.setBackground(new TextureRegionDrawable(backgroundTexture));
-        table.row().pad(20f, 0, 700f, 0);
+        table.row().pad(0, 0, 600f, 0);
         table.add(gameInfo)
-                .fillX().uniform().width(300f).height(100f);
+                .fillX().uniform().height(100f);
         gameInfo.setAlignment(Align.left);
         table.row().pad(0, 0, 0, 0);
         table.bottom();
@@ -72,97 +71,17 @@ public class GameView extends View {
         table.add(rightButton)
                 .right().padLeft(300f).width(200f).height(150f);
 
-        int[] hitPointValues = model.getHitPointValues();
-        healthBars = new HealthBar[hitPointValues.length];
-        int space = 1200 / (hitPointValues.length - 1);
-        for (int i = 0; i < hitPointValues.length; i++) {
-            healthBars[i] = new HealthBar(space * i + 48, assetManager);
-            stage.addActor(healthBars[i]);
-        }
-
-        Texture playerTexture = assetManager.get(assetManager.archer);
-        Entity[] playerEntities = model.getPlayerEntities();
-        for (int i = 0; i < playerEntities.length; i++) {
-            Archer archer = new Archer(
-                    playerEntities[i],
-                    playerTexture);
-            stage.addActor(archer);
-        }
-
+        playerEntities = model.getPlayerEntities();
+        initiateHealthBars();
+        initiateArchers();
         stage.addActor(new Arrow(model, assetManager));
-
-        Texture dragIndicatorTexture =
-                assetManager.get(assetManager.dragIndicator);
-        final DragIndicator dragIndicator =
-                new DragIndicator(dragIndicatorTexture);
-        stage.addActor(dragIndicator);
-        stage.addListener(new DragListener() {
-            @Override
-            public void drag(
-                    InputEvent event,
-                    float clickX,
-                    float clickY,
-                    int pointer) {
-                if(!dragStart){
-                    dragStart = true;
-                    AudioManager.getInstance().playSound("draw");
-                }
-                float power = (float)Math.sqrt(
-                        Math.pow(clickX - getDragStartX(), 2)
-                                + Math.pow(clickY - getDragStartY(), 2));
-                dragIndicator.sprite.setSize(power, 40);
-
-                double angleRad = Math.atan(Math.abs(clickY-getDragStartY())
-                        / Math.abs(clickX-getDragStartX()));
-                float angleDeg = (float)Math.toDegrees(angleRad);
-                if(clickX < getDragStartX()) {
-                    if(clickY < getDragStartY()) {
-                        dragIndicator.sprite.setRotation(angleDeg);
-                    } else {
-                        dragIndicator.sprite.setRotation(360-angleDeg);
-                    }
-                } else {
-                    if(clickY < getDragStartY()) {
-                        dragIndicator.sprite.setRotation(180-angleDeg);
-                    } else {
-                        dragIndicator.sprite.setRotation(180+angleDeg);
-                    }
-                }
-            }
-
-            @Override
-            public void dragStop(
-                    InputEvent event,
-                    float clickX,
-                    float clickY,
-                    int pointer) {
-                dragStart = false;
-                AudioManager.getInstance().playSound("shoot");
-                controller.actionToFirebase(new Vector2(
-                        clickX-getDragStartX(),
-                        clickY-getDragStartY()
-                ).toString());
-                dragIndicator.sprite.setSize(0,0);
-            }
-        });
+        new DragIndicator(controller, stage, assetManager);
     }
 
     @Override
     public void render() {
         super.render();
         updateGameInfo();
-        /*
-        new Box2DDebugRenderer(
-                    true,
-                    true,
-                    true,
-                    true,
-                    true,
-                    true).render(model.getWorld(), new OrthographicCamera(
-            32,
-            24).combined);
-
-         */
     }
 
     private void updateGameInfo() {
@@ -170,25 +89,46 @@ public class GameView extends View {
             controller.navigateTo("GAMEOVER");
         }
 
-        int myEnergyPoints = model.getMyEnergyPoints();
-        String gameInfoString = "Your Energy Points: "
-                + myEnergyPoints + "\n";
-
-        int[] hitPointValues = model.getHitPointValues();
         for (int i = 0; i < healthBars.length; i++) {
-            healthBars[i].updateSprite(hitPointValues[i]);
+            int hp = playerEntities[i]
+                    .components.playerInfo.hitPoints;
+            healthBars[i].updateSprite(hp);
         }
 
+        int myEnergyPoints = model.getMyEnergyPoints();
+        String gameInfoString = "Your Energy Points: "
+                + myEnergyPoints;
         gameInfo.setText(gameInfoString);
+        gameInfo.setFontScale(3f);
         upgrade2Button.setVisible(myEnergyPoints >= 20);
         upgrade3Button.setVisible(myEnergyPoints >= 40);
         upgrade4Button.setVisible(myEnergyPoints >= 60);
     }
 
+    private void initiateHealthBars() {
+        healthBars = new HealthBar[playerEntities.length];
+        int space = 1200 / (playerEntities.length - 1);
+        for (int i = 0; i < playerEntities.length; i++) {
+            healthBars[i] =
+                    new HealthBar(space * i + 48, assetManager);
+            stage.addActor(healthBars[i]);
+        }
+    }
+
+    private void initiateArchers() {
+        Texture archerTexture = assetManager.get(assetManager.archer);
+        for (Entity player: playerEntities) {
+            stage.addActor(new Archer(
+                    player,
+                    archerTexture
+            ));
+        }
+    }
+
     private ImageButton createImgButton(String name) {
         ImageButton imgButton = new ImageButton(buttonSkin, name);
         Texture texture =
-                assetManager.get(name + ".png");
+                assetManager.get("img/" + name + ".png");
         imgButton.getStyle().imageUp = new TextureRegionDrawable(texture);
         imgButton.addListener(generateActionListener(name));
         return imgButton;
@@ -198,7 +138,9 @@ public class GameView extends View {
         return new ClickListener(){
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
-                controller.actionToFirebase(action);
+                if(model.isMyTurn()) {
+                    controller.actionToFirebase(action);
+                }
             }
         };
     }
