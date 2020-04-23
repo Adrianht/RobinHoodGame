@@ -3,7 +3,6 @@ package com.robinhood.game.model;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
@@ -68,39 +67,27 @@ public final class BodyFactory {
             bodyDef.type = BodyDef.BodyType.DynamicBody;
             if (type.equals("arrow")) {
                 if (new Vector2().fromString(shot).x > 0) {
-                    bodyDef.position.set(posX - 2, -2);
-                    bodyDef.angle = (float) Math.PI;
+                    bodyDef.position.set(posX - 1, -4.65f);
                 } else {
-                    bodyDef.position.set(posX + 2, -2);
+                    bodyDef.position.set(posX + 1, -4.65f);
                 }
             } else {
-                bodyDef.position.set(posX, -3);
+                bodyDef.position.set(posX, -5);
             }
         }
         return bodyDef;
     }
 
     private static Shape createArrowShape() {
-        ChainShape shape = new ChainShape();
-        float[] arrowShapeCoordinatesX = {.3f, .4f, .08f, 1.3f,
-                1.3f, 1.5f, 1.3f, 1.3f, .08f, .4f, .3f, 0f, .1f, 0f};
-        float[] arrowShapeCoordinatesY = {0f, .1f, .1f, .1f,
-                .05f, .15f, .25f, .2f, .2f, .2f, .3f, .3f, .15f, 0f};
-        Vector2[] vertices = new Vector2[arrowShapeCoordinatesX.length];
-        for (int i=0; i<arrowShapeCoordinatesX.length; i++) {
-            vertices[i] = new Vector2(
-                    arrowShapeCoordinatesX[i],
-                    arrowShapeCoordinatesY[i]
-            );
-        }
-        shape.createLoop(vertices);
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(.1f, .01f);
         return shape;
     }
 
     private static Shape createPolygonShape(String type) {
         PolygonShape shape = new PolygonShape();
         if(type.equals("player")) {
-            shape.setAsBox(1, 3);
+            shape.setAsBox(.25f, .7f);
         } else {
             shape.setAsBox(500, 3);
         }

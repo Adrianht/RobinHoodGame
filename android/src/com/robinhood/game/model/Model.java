@@ -36,12 +36,13 @@ public class Model {
     private boolean isMyTurn;
     private Body[] collidingBodies;
     private String userInput, gameWinner;
+    private Entity[] playerEntities;
     private Entity activeArrowEntity;
 
     // Initiates a game
     public void initiateGame(List<String> usernames) {
         // Initiate Box2D-related objects
-        world = new World(new Vector2(0,-10f), true);
+        world = new World(new Vector2(0,-98f), true);
         world.setContactListener(new ContactListener() {
             @Override
             public void beginContact(Contact contact) {
@@ -69,6 +70,7 @@ public class Model {
         createEntity("ground");
         int playerSpace = 24 / (usernames.size()-1);
         setIsMyTurn(myUsername.equals(usernames.get(0)));
+        this.playerEntities = new Entity[usernames.size()];
         for (int i = 0; i < usernames.size(); i++) {
             Entity playerEntity = createEntity(
                     "player",
@@ -78,6 +80,7 @@ public class Model {
                     usernames.get(i);
             playerEntity.components.playerInfo.isPlayersTurn =
                     i == 0;
+            this.playerEntities[i] = playerEntity;
         }
 
         // Initiate game systems
@@ -136,6 +139,9 @@ public class Model {
     }
     public Body[] getCollidingBodies() {
         return collidingBodies;
+    }
+    public Entity[] getPlayerEntities() {
+        return playerEntities;
     }
     public Entity getActiveArrowEntity() {
         return activeArrowEntity;
