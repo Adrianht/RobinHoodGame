@@ -1,8 +1,6 @@
 package com.robinhood.game.view;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -13,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
 import com.robinhood.game.assetManagers.AudioManager;
-import com.robinhood.game.assetManagers.GameAssetManager;
 import com.robinhood.game.controller.Controller;
 import com.robinhood.game.model.Entity;
 import com.robinhood.game.model.Model;
@@ -41,6 +38,8 @@ public class GameView extends View {
     public GameView(final Controller controller, Model model) {
         super(controller, model);
         AudioManager.getInstance().initSound();
+        assetManager.loadImageButtonTextures();
+        assetManager.finishLoading();
 
         ImageButton leftButton = createImgButton("left");
         ImageButton rightButton = createImgButton("right");
@@ -50,9 +49,8 @@ public class GameView extends View {
         gameInfo = new Label("", textSkin);
         gameInfo.setFontScale(2f);
 
-        GameAssetManager assetManager = GameAssetManager.getInstance();
         Texture backgroundTexture =
-                assetManager.get(assetManager.menuBackgroundString);
+                assetManager.get(assetManager.gameBackgroundString);
         table.setBackground(new TextureRegionDrawable(backgroundTexture));
         table.row().pad(20f, 0, 700f, 0);
         table.add(gameInfo)
@@ -182,8 +180,9 @@ public class GameView extends View {
 
     private ImageButton createImgButton(String name) {
         ImageButton imgButton = new ImageButton(buttonSkin, name);
-        imgButton.getStyle().imageUp =
-                createTexture(name + ".png");
+        Texture texture =
+                assetManager.get(name + ".png");
+        imgButton.getStyle().imageUp = new TextureRegionDrawable(texture);
         imgButton.addListener(generateActionListener(name));
         return imgButton;
     }
@@ -195,12 +194,5 @@ public class GameView extends View {
                 controller.actionToFirebase(action);
             }
         };
-    }
-
-    private TextureRegionDrawable createTexture(String internalPath) {
-        return new TextureRegionDrawable(
-                new TextureRegion(
-                        new Texture(
-                                Gdx.files.internal(internalPath))));
     }
 }

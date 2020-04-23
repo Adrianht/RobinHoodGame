@@ -2,10 +2,8 @@ package com.robinhood.game.assetManagers;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.assets.loaders.SkinLoader.SkinParameter;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public final class GameAssetManager extends AssetManager {
 
@@ -19,6 +17,13 @@ public final class GameAssetManager extends AssetManager {
     // Background Textures
     public final String menuBackgroundString = "background-smaller.png";
     public final String gameBackgroundString = "game-back.png";
+
+    // Button Textures
+    public final String leftImageButton = "left.png";
+    public final String rightImageButton = "right.png";
+    public final String Level2ImageButton = "Level2.png";
+    public final String Level3ImageButton = "Level3.png";
+    public final String Level4ImageButton = "Level4.png";
 
     // Skins Parameters
     public final String buttonSkinParams = "skin/dark-hdpi/Holo-dark-hdpi.atlas";
@@ -39,7 +44,6 @@ public final class GameAssetManager extends AssetManager {
     public void loadBackgrounds() {
         load(menuBackgroundString, Texture.class);
         load(gameBackgroundString, Texture.class);
-        finishLoading();
     }
 
     public void loadSkins() {
@@ -49,5 +53,13 @@ public final class GameAssetManager extends AssetManager {
         load(buttonSkin, Skin.class, buttonParams);
         load(textSkin, Skin.class, textParams);
         load(headerSkin, Skin.class, headerParams);
+    }
+
+    public void loadImageButtonTextures() {
+        load(leftImageButton, Texture.class);
+        load(rightImageButton, Texture.class);
+        load(Level2ImageButton, Texture.class);
+        load(Level3ImageButton, Texture.class);
+        load(Level4ImageButton, Texture.class);
     }
 }
