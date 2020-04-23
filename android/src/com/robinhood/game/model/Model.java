@@ -42,7 +42,7 @@ public class Model {
     // Initiates a game
     public void initiateGame(List<String> usernames) {
         // Initiate Box2D-related objects
-        world = new World(new Vector2(0,-10f), true);
+        world = new World(new Vector2(0,-98f), true);
         world.setContactListener(new ContactListener() {
             @Override
             public void beginContact(Contact contact) {
@@ -80,7 +80,7 @@ public class Model {
                     usernames.get(i);
             playerEntity.components.playerInfo.isPlayersTurn =
                     i == 0;
-            this.playerEntities[i] = player;
+            this.playerEntities[i] = playerEntity;
         }
 
         // Initiate game systems

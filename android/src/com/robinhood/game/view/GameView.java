@@ -9,7 +9,6 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -63,8 +62,7 @@ public class GameView extends View {
         gameInfo = new Label("", textSkin);
         gameInfo.setFontScale(2f);
 
-        table.setBackground(
-                new BaseDrawable()); // remove superclass background
+        table.setBackground(new TextureRegionDrawable(new Texture("game-back.png")));
         table.row().pad(20f, 0, 700f, 0);
         table.add(gameInfo)
                 .fillX().uniform().width(300f).height(100f);
@@ -157,7 +155,7 @@ public class GameView extends View {
     public void render() {
         super.render();
         updateGameInfo();
-        debugRenderer.render(model.getWorld(), cam.combined);
+        //debugRenderer.render(model.getWorld(), cam.combined);
     }
 
     private void updateGameInfo() {
