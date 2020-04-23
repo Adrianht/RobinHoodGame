@@ -101,12 +101,12 @@ public class Model {
     }
 
     private Entity createEntity(String type, float posX) {
-        Entity entity = new Entity();
-        entity.addComponent("box2dBody");
+        Entity entity;
         if(type.equals("arrow")) {
-            // TODO: merge with ArrowEntityPool
-            entity.addComponent("arrowType");
+            entity = ArrowEntityPool.getInstance().getObject();
         } else {
+            entity = new Entity();
+            entity.addComponent("box2dBody");
             entity.components.box2dBody.body =
                     BodyFactory.getInstance().getBody(type, world, posX);
             if(type.equals("player")) {
@@ -136,6 +136,9 @@ public class Model {
     }
     public Body[] getCollidingBodies() {
         return collidingBodies;
+    }
+    public Entity getActiveArrowEntity() {
+        return activeArrowEntity;
     }
     public String getMyUsername() {
         return myUsername;
@@ -175,12 +178,7 @@ public class Model {
     public void setIsMyTurn(boolean isMyTurn) {
         this.isMyTurn = isMyTurn;
     }
-
     public void setActiveArrowEntity(Entity activeArrowEntity) {
         this.activeArrowEntity = activeArrowEntity;
-    }
-
-    public Entity getActiveArrowEntity() {
-        return activeArrowEntity;
     }
 }

@@ -5,7 +5,7 @@ import com.badlogic.gdx.audio.Sound;
 
 import com.robinhood.game.view.loader.GameAssetManager;
 
-public class AudioManager {
+public final class AudioManager {
 
     private static final AudioManager INSTANCE = new AudioManager();
     private boolean MUSIC_ENABLED = true;
