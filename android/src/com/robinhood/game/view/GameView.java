@@ -16,8 +16,6 @@ import com.robinhood.game.model.Entity;
 import com.robinhood.game.model.Model;
 import com.robinhood.game.view.interfaceObjects.*;
 
-import org.w3c.dom.Text;
-
 /**
  * Subclass in Template method pattern creating the UI when in-game.
  *
@@ -90,7 +88,7 @@ public class GameView extends View {
             stage.addActor(archer);
         }
 
-        stage.addActor(new Arrow(model));
+        stage.addActor(new Arrow(model, assetManager));
 
         Texture dragIndicatorTexture =
                 assetManager.get(assetManager.dragIndicator);

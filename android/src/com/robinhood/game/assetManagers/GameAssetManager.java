@@ -16,6 +16,10 @@ public final class GameAssetManager extends AssetManager {
     // Interface Object Textures
     public final String archer = "archer-icon.png";
     public final String dragIndicator = "dragInd.png";
+    public final String level1Arrow = "Level1.png";
+    public final String level2Arrow = "Level2.png";
+    public final String level3Arrow = "Level3.png";
+    public final String level4Arrow = "Level4.png";
 
     // Button Textures
     public final String leftImageButton = "left.png";
@@ -65,5 +69,9 @@ public final class GameAssetManager extends AssetManager {
     public void loadInterfaceObjectsTextures() {
         load(archer, Texture.class);
         load(dragIndicator, Texture.class);
+        load(level1Arrow, Texture.class);
+        load(level2Arrow, Texture.class);
+        load(level3Arrow, Texture.class);
+        load(level4Arrow, Texture.class);
     }
 }
