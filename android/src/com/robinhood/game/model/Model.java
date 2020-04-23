@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
+import com.robinhood.game.assetManagers.AudioManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +50,7 @@ public class Model {
                 collidingBodies = new Body[2];
                 collidingBodies[0] = contact.getFixtureA().getBody();
                 collidingBodies[1] = contact.getFixtureB().getBody();
+                AudioManager.getInstance().playSound("hit");
             }
 
             @Override

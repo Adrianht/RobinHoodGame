@@ -1,9 +1,13 @@
 package com.robinhood.game.view.interfaceObjects;
 
+import android.content.res.AssetManager;
+
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.robinhood.game.assetManagers.GameAssetManager;
 
 /**
  * Class with interface object showing a players
@@ -20,9 +24,10 @@ public class HealthBar extends Actor {
     private String lastSpriteName;
     private final int posX;
 
-    public HealthBar(int posX) {
-        createNewAtlas("health100");
+    public HealthBar(int posX, GameAssetManager assetManager) {
         this.posX = posX;
+        this.atlas = assetManager.get(assetManager.healthBarAtlas);
+        createNewAtlas("health100");
     }
 
     @Override
@@ -41,7 +46,6 @@ public class HealthBar extends Actor {
     }
 
     private void createNewAtlas(String spriteName) {
-        atlas = new TextureAtlas("healthbarSheet.pack");
         sprite = atlas.createSprite(spriteName);
         lastSpriteName = spriteName;
     }

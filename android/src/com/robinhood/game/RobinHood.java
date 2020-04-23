@@ -3,6 +3,7 @@ package com.robinhood.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.robinhood.game.controller.Controller;
 import com.robinhood.game.view.View;
+import com.robinhood.game.assetManagers.AudioManager;
 
 public class RobinHood extends ApplicationAdapter {
 
@@ -28,6 +29,4 @@ public class RobinHood extends ApplicationAdapter {
     public void setView(View view) {
         this.view = view;
     }
-
 }
-

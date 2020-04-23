@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
+import com.robinhood.game.assetManagers.GameAssetManager;
 import com.robinhood.game.model.Entity;
 import com.robinhood.game.model.Model;
 
@@ -18,15 +19,18 @@ import com.robinhood.game.model.Model;
  * @version 1.0
  * @since 2020-04-25
  */
+// FIXME-ola: refac and add disposal of used texture
 public class Arrow extends Actor {
 
     private final Model model;
     private Sprite sprite;
     private float startPosX, startPosY;
     private boolean isNewShot = true;
+    private GameAssetManager assetManager;
 
-    public Arrow(Model model) {
+    public Arrow(Model model, GameAssetManager assetManager) {
         this.model = model;
+        this.assetManager = assetManager;
     }
 
     @Override
@@ -50,23 +54,23 @@ public class Arrow extends Actor {
         }
     }
 
-    // FIXME: post assetManager
     private void createSprite(Entity arrowEntity) {
         String arrowType = arrowEntity.components.arrowType.type;
         Body arrowBody = arrowEntity.components.box2dBody.body;
-        sprite = new Sprite(new Texture(arrowType + ".png"));
+        Texture arrowTexture = assetManager.get(arrowType + ".png");
+        sprite = new Sprite(arrowTexture);
         sprite.setSize(20, 20);
         sprite.setRotation(0);
         switch (arrowType) {
             case "Level2":
-                // TODO: sprite.rotate(40);
+                // TODO-ola: sprite.rotate(40);
                 sprite.rotate(40);
                 break;
             case "Level3":
-                // TODO: sprite.rotate(40);
+                // TODO-ola: sprite.rotate(40);
                 break;
             case "Level4":
-                // TODO: sprite.rotate(40);
+                // TODO-ola: sprite.rotate(40);
                 break;
             default:
                 sprite.rotate(40);

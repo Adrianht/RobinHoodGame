@@ -1,11 +1,7 @@
 package com.robinhood.game.view;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -14,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
-import com.robinhood.game.AudioManager;
+import com.robinhood.game.assetManagers.AudioManager;
 import com.robinhood.game.controller.Controller;
 import com.robinhood.game.model.Entity;
 import com.robinhood.game.model.Model;
@@ -29,18 +25,6 @@ import com.robinhood.game.view.interfaceObjects.*;
  */
 public class GameView extends View {
 
-    private final Box2DDebugRenderer debugRenderer =
-            new Box2DDebugRenderer(
-            true,
-            true,
-            true,
-            true,
-            true,
-            true);
-    private final OrthographicCamera cam = new OrthographicCamera(
-            32,
-            24);
-
     private Label gameInfo;
     private final ImageButton
             upgrade2Button,
@@ -53,6 +37,11 @@ public class GameView extends View {
 
     public GameView(final Controller controller, Model model) {
         super(controller, model);
+        AudioManager.getInstance().initSound();
+        assetManager.loadImageButtonTextures();
+        assetManager.loadInterfaceObjectsTextures();
+        assetManager.loadTextureAtlas();
+        assetManager.finishLoading();
 
         ImageButton leftButton = createImgButton("left");
         ImageButton rightButton = createImgButton("right");
@@ -62,7 +51,9 @@ public class GameView extends View {
         gameInfo = new Label("", textSkin);
         gameInfo.setFontScale(2f);
 
-        table.setBackground(new TextureRegionDrawable(new Texture("game-back.png")));
+        Texture backgroundTexture =
+                assetManager.get(assetManager.gameBackgroundString);
+        table.setBackground(new TextureRegionDrawable(backgroundTexture));
         table.row().pad(20f, 0, 700f, 0);
         table.add(gameInfo)
                 .fillX().uniform().width(300f).height(100f);
@@ -85,20 +76,25 @@ public class GameView extends View {
         healthBars = new HealthBar[hitPointValues.length];
         int space = 1200 / (hitPointValues.length - 1);
         for (int i = 0; i < hitPointValues.length; i++) {
-            healthBars[i] = new HealthBar(space * i + 48);
+            healthBars[i] = new HealthBar(space * i + 48, assetManager);
             stage.addActor(healthBars[i]);
         }
 
+        Texture playerTexture = assetManager.get(assetManager.archer);
         Entity[] playerEntities = model.getPlayerEntities();
         for (int i = 0; i < playerEntities.length; i++) {
             Archer archer = new Archer(
-                    playerEntities[i]);
+                    playerEntities[i],
+                    playerTexture);
             stage.addActor(archer);
         }
 
-        stage.addActor(new Arrow(model));
+        stage.addActor(new Arrow(model, assetManager));
 
-        final DragIndicator dragIndicator = new DragIndicator();
+        Texture dragIndicatorTexture =
+                assetManager.get(assetManager.dragIndicator);
+        final DragIndicator dragIndicator =
+                new DragIndicator(dragIndicatorTexture);
         stage.addActor(dragIndicator);
         stage.addListener(new DragListener() {
             @Override
@@ -155,7 +151,18 @@ public class GameView extends View {
     public void render() {
         super.render();
         updateGameInfo();
-        //debugRenderer.render(model.getWorld(), cam.combined);
+        /*
+        new Box2DDebugRenderer(
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true).render(model.getWorld(), new OrthographicCamera(
+            32,
+            24).combined);
+
+         */
     }
 
     private void updateGameInfo() {
@@ -180,8 +187,9 @@ public class GameView extends View {
 
     private ImageButton createImgButton(String name) {
         ImageButton imgButton = new ImageButton(buttonSkin, name);
-        imgButton.getStyle().imageUp =
-                createTexture(name + ".png");
+        Texture texture =
+                assetManager.get(name + ".png");
+        imgButton.getStyle().imageUp = new TextureRegionDrawable(texture);
         imgButton.addListener(generateActionListener(name));
         return imgButton;
     }
@@ -193,12 +201,5 @@ public class GameView extends View {
                 controller.actionToFirebase(action);
             }
         };
-    }
-
-    private TextureRegionDrawable createTexture(String internalPath) {
-        return new TextureRegionDrawable(
-                new TextureRegion(
-                        new Texture(
-                                Gdx.files.internal(internalPath))));
     }
 }
