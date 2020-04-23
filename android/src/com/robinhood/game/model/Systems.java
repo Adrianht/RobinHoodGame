@@ -60,6 +60,7 @@ public class Systems {
                         .components.arrowType.damage = purchaseCostNDam;
             }
         } else {
+            activePlayerAndArrow[1].addComponent("box2dBody");
             activePlayerAndArrow[1].components.box2dBody.body =
                     BodyFactory.getInstance().getBody(
                             "arrow",

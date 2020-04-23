@@ -47,9 +47,9 @@ public final class BodyFactory {
         if(type.equals("ground")) {
             fixtureDef.density = 0f;
         } else if (type.equals("player")) {
-            fixtureDef.density = 1f;
+            fixtureDef.density = 5f;
         } else if (type.equals("arrow")) {
-            fixtureDef.density = 0.5f;
+            fixtureDef.density = 0.2f;
             fixtureDef.friction = 0.7f;
             fixtureDef.restitution = 0.3f;
         }
