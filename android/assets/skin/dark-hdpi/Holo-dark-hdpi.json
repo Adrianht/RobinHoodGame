@@ -37,9 +37,9 @@
 	},
 	com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
 		default: { up: btn_default_normal, down: btn_default_pressed, over: btn_default_focused, disabled: btn_default_disabled, imageUp: icon-blitz, imageDown: icon-blitz, imageOver: icon-blitz, imageDisabled: icon-blitz},
-		level2: { up: btn_default_normal, down: btn_default_pressed, over: btn_default_focused, disabled: btn_default_disabled, imageUp: icon-blitz, imageDown: icon-blitz, imageOver: icon-blitz, imageDisabled: icon-blitz},
-		level3: { up: btn_default_normal, down: btn_default_pressed, over: btn_default_focused, disabled: btn_default_disabled, imageUp: icon-blitz, imageDown: icon-blitz, imageOver: icon-blitz, imageDisabled: icon-blitz},
-		level4: { up: btn_default_normal, down: btn_default_pressed, over: btn_default_focused, disabled: btn_default_disabled, imageUp: icon-blitz, imageDown: icon-blitz, imageOver: icon-blitz, imageDisabled: icon-blitz},
+		Level2: { up: btn_default_normal, down: btn_default_pressed, over: btn_default_focused, disabled: btn_default_disabled, imageUp: icon-blitz, imageDown: icon-blitz, imageOver: icon-blitz, imageDisabled: icon-blitz},
+		Level3: { up: btn_default_normal, down: btn_default_pressed, over: btn_default_focused, disabled: btn_default_disabled, imageUp: icon-blitz, imageDown: icon-blitz, imageOver: icon-blitz, imageDisabled: icon-blitz},
+		Level4: { up: btn_default_normal, down: btn_default_pressed, over: btn_default_focused, disabled: btn_default_disabled, imageUp: icon-blitz, imageDown: icon-blitz, imageOver: icon-blitz, imageDisabled: icon-blitz},
 
 		left: { up: btn_default_normal, down: btn_default_pressed, over: btn_default_focused, disabled: btn_default_disabled, imageUp: icon-blitz, imageDown: icon-blitz, imageOver: icon-blitz, imageDisabled: icon-blitz},
 		right: { up: btn_default_normal, down: btn_default_pressed, over: btn_default_focused, disabled: btn_default_disabled, imageUp: icon-blitz, imageDown: icon-blitz, imageOver: icon-blitz, imageDisabled: icon-blitz},
