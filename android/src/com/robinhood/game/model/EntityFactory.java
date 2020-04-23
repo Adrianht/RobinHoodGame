@@ -7,7 +7,8 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-// FIXME: probably needs a lot of refactoring after work with game interface objects are done
+// FIXME: merge with BodyFactory branch,
+// scaling is here
 public class EntityFactory {
 
     private final World world;
@@ -37,7 +38,7 @@ public class EntityFactory {
     public Entity createPlayer(String username, int posX, int index) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(posX, -3);
+        bodyDef.position.set(posX, -5);
 
         Entity entity = new Entity();
         entity.addComponent("playerInfo");
@@ -51,7 +52,7 @@ public class EntityFactory {
         entity.components.box2dBody.body = world.createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(1, 3);
+        shape.setAsBox(.25f, .7f);
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 1f;
@@ -101,15 +102,18 @@ public class EntityFactory {
         BodyDef arrowBodyDef = new BodyDef();
         arrowBodyDef.type = BodyDef.BodyType.DynamicBody;
         if (new Vector2().fromString(shot).x > 0) {
-            arrowBodyDef.position.set(startPosX - 2, -2);
-            arrowBodyDef.angle = (float) Math.PI;
+            arrowBodyDef.position.set(startPosX - 1, -.35f);
         } else {
-            arrowBodyDef.position.set(startPosX + 2, -2);
+            arrowBodyDef.position.set(startPosX + 1, -.35f);
         }
 
         arrowEntity.addComponent("box2dBody");
         arrowEntity.components.box2dBody.body = world.createBody(arrowBodyDef);
-        ChainShape chainShape = new ChainShape();
+
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(.1f, .01f);
+
+        /*ChainShape chainShape = new ChainShape();
         float[] arrowShapeCoordinatesX = {.3f, .4f, .08f, 1.3f,
                 1.3f, 1.5f, 1.3f, 1.3f, .08f, .4f, .3f, 0f, .1f, 0f};
         float[] arrowShapeCoordinatesY = {0f, .1f, .1f, .1f,
@@ -123,12 +127,14 @@ public class EntityFactory {
         }
         chainShape.createLoop(vertices);
 
+         */
+
         FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = chainShape;
+        fixtureDef.shape = shape;
         fixtureDef.density = 0.5f;
         fixtureDef.friction = 0.7f;
         fixtureDef.restitution = 0.3f;
         arrowEntity.components.box2dBody.body.createFixture(fixtureDef);
-        chainShape.dispose();
+        shape.dispose();
     }
 }

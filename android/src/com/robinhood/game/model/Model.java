@@ -37,6 +37,7 @@ public class Model {
     private boolean isMyTurn;
     private Body[] collidingBodies;
     private String userInput, gameWinner;
+    private Entity[] playerEntities;
     private Entity activeArrowEntity;
 
     // Initiates a game
@@ -73,6 +74,7 @@ public class Model {
 
         int playerSpace = 24 / (usernames.size()-1);
         setIsMyTurn(myUsername.equals(usernames.get(0)));
+        this.playerEntities = new Entity[usernames.size()];
         for (int i = 0; i < usernames.size(); i++) {
             Entity player = entityFactory.createPlayer(
                     usernames.get(i),
@@ -80,6 +82,7 @@ public class Model {
                     i
             );
             entities.add(player);
+            this.playerEntities[i] = player;
         }
 
         // Initiate game systems
@@ -127,6 +130,9 @@ public class Model {
     }
     public Body[] getCollidingBodies() {
         return collidingBodies;
+    }
+    public Entity[] getPlayerEntities() {
+        return playerEntities;
     }
     public String getMyUsername() {
         return myUsername;

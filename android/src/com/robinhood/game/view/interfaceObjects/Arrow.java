@@ -23,7 +23,7 @@ public class Arrow extends Actor {
     private final Model model;
     private Sprite sprite;
     private float startPosX, startPosY;
-    private boolean isNewShot;
+    private boolean isNewShot = true;
 
     public Arrow(Model model) {
         this.model = model;
@@ -56,7 +56,7 @@ public class Arrow extends Actor {
         Body arrowBody = arrowEntity.components.box2dBody.body;
         String assetPath = "buy" + arrowType + ".png";
         sprite = new Sprite(new Texture(assetPath));
-        sprite.setSize(80, 80);
+        sprite.setSize(20, 20);
         sprite.setRotation(0);
         switch (arrowType) {
             case "Level2":
@@ -73,12 +73,12 @@ public class Arrow extends Actor {
                 sprite.rotate(40);
         }
         if(arrowBody.getLinearVelocity().x < 0) {
-            startPosX = Gdx.graphics.getWidth()/2.4f;
+            startPosX = Gdx.graphics.getWidth()/2.2f;
         } else {
-            startPosX = Gdx.graphics.getWidth()/2.4f + sprite.getWidth();
+            startPosX = Gdx.graphics.getWidth()/2.2f;
             sprite.rotate90(true);
             sprite.rotate90(true);
         }
-        startPosY = Gdx.graphics.getHeight()/2f;
+        startPosY = Gdx.graphics.getHeight()/1.85f;
     }
 }
