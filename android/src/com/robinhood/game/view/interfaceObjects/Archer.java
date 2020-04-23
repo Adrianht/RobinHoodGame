@@ -1,11 +1,14 @@
 package com.robinhood.game.view.interfaceObjects;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+
 import com.robinhood.game.model.Entity;
 
 /**
@@ -19,19 +22,28 @@ public class Archer extends Actor {
 
     private Sprite sprite;
     private final Entity entity;
+    private BitmapFont font = new BitmapFont();
+    private String username;
 
-    public Archer(Entity playerEntity, Texture playerTexture) {
+    public Archer(Entity playerEntity, Texture archerTexture) {
         entity = playerEntity;
-        sprite = new Sprite(playerTexture);
+        sprite = new Sprite(archerTexture);
         sprite.setSize(40, 60);
+        username = playerEntity.components.playerInfo.username;
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         Body body = entity.components.box2dBody.body;
-        sprite.setPosition(
-                box2dPosToGdxPosX(body),
-                box2dPosToGdxPosY(body.getPosition().y));
+        float posX = box2dPosToGdxPosX(body);
+        float posY = box2dPosToGdxPosY(body);
+        font.setColor(Color.BLACK);
+        font.draw(
+                batch,
+                username,
+                posX,
+                posY + sprite.getHeight() + 20);
+        sprite.setPosition(posX, posY);
         sprite.draw(batch);
     }
 
@@ -41,9 +53,9 @@ public class Archer extends Actor {
                 + body.getPosition().x * Gdx.graphics.getWidth() / 32;
     }
 
-    private static float box2dPosToGdxPosY(float box2dPosY){
+    private static float box2dPosToGdxPosY(Body body){
         return Gdx.graphics.getHeight()/2f
                 - .7f * Gdx.graphics.getHeight() / 24
-                + box2dPosY * Gdx.graphics.getHeight() / 24;
+                + body.getPosition().y * Gdx.graphics.getHeight() / 24;
     }
 }

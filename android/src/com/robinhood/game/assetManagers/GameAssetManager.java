@@ -2,7 +2,6 @@ package com.robinhood.game.assetManagers;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.assets.loaders.SkinLoader.SkinParameter;
@@ -12,23 +11,20 @@ public final class GameAssetManager extends AssetManager {
     private static final GameAssetManager INSTANCE = new GameAssetManager();
 
     // Background Textures
-    public final String menuBackgroundString = "background-smaller.png";
-    public final String gameBackgroundString = "game-back.png";
+    public final String menuBackground = "backgrounds/menuBackground.png";
+    public final String gameBackground = "backgrounds/gameBackground.png";
 
     // Interface Object Textures
-    public final String archer = "archer-icon.png";
-    public final String dragIndicator = "dragInd.png";
-    public final String level1Arrow = "Level1.png";
-    public final String level2Arrow = "Level2.png";
-    public final String level3Arrow = "Level3.png";
-    public final String level4Arrow = "Level4.png";
+    public final String archer = "img/archer.png";
+    public final String dragIndicator = "img/dragIndicator.png";
+    public final String arrow = "img/arrow.png";
 
     // Button Textures
-    public final String leftImageButton = "left.png";
-    public final String rightImageButton = "right.png";
-    public final String Level2ImageButton = "Level2.png";
-    public final String Level3ImageButton = "Level3.png";
-    public final String Level4ImageButton = "Level4.png";
+    public final String leftImageButton = "img/left.png";
+    public final String rightImageButton = "img/right.png";
+    public final String Level2ImageButton = "img/Level2.png";
+    public final String Level3ImageButton = "img/Level3.png";
+    public final String Level4ImageButton = "img/Level4.png";
 
     // Skins Parameters
     public final String buttonSkinParams = "skin/dark-hdpi/Holo-dark-hdpi.atlas";
@@ -51,8 +47,8 @@ public final class GameAssetManager extends AssetManager {
     }
 
     public void loadBackgrounds() {
-        load(menuBackgroundString, Texture.class);
-        load(gameBackgroundString, Texture.class);
+        load(menuBackground, Texture.class);
+        load(gameBackground, Texture.class);
     }
 
     public void loadSkins() {
@@ -75,10 +71,7 @@ public final class GameAssetManager extends AssetManager {
     public void loadInterfaceObjectsTextures() {
         load(archer, Texture.class);
         load(dragIndicator, Texture.class);
-        load(level1Arrow, Texture.class);
-        load(level2Arrow, Texture.class);
-        load(level3Arrow, Texture.class);
-        load(level4Arrow, Texture.class);
+        load(arrow, Texture.class);
     }
 
     public void loadTextureAtlas() {

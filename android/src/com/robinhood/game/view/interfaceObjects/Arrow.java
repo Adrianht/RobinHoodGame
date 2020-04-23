@@ -19,7 +19,6 @@ import com.robinhood.game.model.Model;
  * @version 1.0
  * @since 2020-04-25
  */
-// FIXME-ola: refac and add disposal of used texture
 public class Arrow extends Actor {
 
     private final Model model;
@@ -55,26 +54,11 @@ public class Arrow extends Actor {
     }
 
     private void createSprite(Entity arrowEntity) {
-        String arrowType = arrowEntity.components.arrowType.type;
         Body arrowBody = arrowEntity.components.box2dBody.body;
-        Texture arrowTexture = assetManager.get(arrowType + ".png");
+        Texture arrowTexture = assetManager.get(assetManager.arrow);
         sprite = new Sprite(arrowTexture);
         sprite.setSize(20, 20);
-        sprite.setRotation(0);
-        switch (arrowType) {
-            case "Level2":
-                // TODO-ola: sprite.rotate(40);
-                sprite.rotate(40);
-                break;
-            case "Level3":
-                // TODO-ola: sprite.rotate(40);
-                break;
-            case "Level4":
-                // TODO-ola: sprite.rotate(40);
-                break;
-            default:
-                sprite.rotate(40);
-        }
+        sprite.rotate(40);
         if(arrowBody.getLinearVelocity().x < 0) {
             startPosX = Gdx.graphics.getWidth()/2.2f;
         } else {

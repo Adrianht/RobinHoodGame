@@ -1,12 +1,10 @@
 package com.robinhood.game.view.interfaceObjects;
 
-import android.content.res.AssetManager;
-
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+
 import com.robinhood.game.assetManagers.GameAssetManager;
 
 /**
@@ -40,7 +38,6 @@ public class HealthBar extends Actor {
     public void updateSprite(int health) {
         String newSpriteName = "health" + (health/10)*10;
         if (!lastSpriteName.equals(newSpriteName)) {
-            atlas.dispose();
             createNewAtlas(newSpriteName);
         }
     }

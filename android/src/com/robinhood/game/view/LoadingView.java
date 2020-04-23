@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+
 import com.robinhood.game.controller.Controller;
 import com.robinhood.game.model.Model;
 
@@ -60,5 +61,4 @@ public class LoadingView extends View {
         playButton.setVisible(model.isGameInitialized());
         super.render();
     }
-
 }
