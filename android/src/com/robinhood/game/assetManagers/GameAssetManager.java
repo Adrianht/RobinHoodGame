@@ -4,17 +4,13 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.assets.loaders.SkinLoader.SkinParameter;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public final class GameAssetManager extends AssetManager {
 
     private static final GameAssetManager INSTANCE = new GameAssetManager();
 
-    public static GameAssetManager getInstance() {
-        return INSTANCE;
-    }
-
-    private GameAssetManager() {
-    }
+    //public TextureRegionDrawable menuBackground, gameBackground;
 
 
     // TODO: Add files specific files
@@ -23,9 +19,9 @@ public final class GameAssetManager extends AssetManager {
     public final String secondPlayerImage = "";
 
     // Background Textures
-    public final String menuBackground = "background-smaller.png";
-    public final String gameBackground1 = "";
-    public final String gameBackground2 = "";
+    public final String menuBackgroundString = "background-smaller.png";
+    public final String gameBackgroundString = "game-back.png";
+    //public final String gameBackground2 = "";
 
     // Skins Parameters
     public final String buttonSkinParams = "skin/dark-hdpi/Holo-dark-hdpi.atlas";
@@ -36,20 +32,26 @@ public final class GameAssetManager extends AssetManager {
     public final String textSkin = "skin/shade/uiskin.json";
     public final String headerSkin = "skin/craftacular/craftacular-ui.json";
 
+    private GameAssetManager() {}
+
+    public static GameAssetManager getInstance() {
+        return INSTANCE;
+    }
 
     public void loadBackgrounds() {
-        //manager.load(menuBackground, Texture.class);
-        //manager.load(gameBackground1, Texture.class);
-        //manager.load(gameBackground2, Texture.class);
+        load(menuBackgroundString, Texture.class);
+        load(gameBackgroundString, Texture.class);
+        finishLoading();
+        //menuBackground = get(menuBackgroundString);
+        //gameBackground = get(gameBackgroundString);
     }
 
     public void loadSkins() {
         SkinParameter buttonParams = new SkinParameter(buttonSkinParams);
         SkinParameter textParams = new SkinParameter(textSkinParams);
         SkinParameter headerParams = new SkinParameter(headerSkinParams);
-        //manager.load(buttonSkin, Skin.class, buttonParams);
-        //manager.load(textSkin, Skin.class, textParams);
-        //manager.load(headerSkin, Skin.class, headerParams);
+        load(buttonSkin, Skin.class, buttonParams);
+        load(textSkin, Skin.class, textParams);
+        load(headerSkin, Skin.class, headerParams);
     }
-
 }

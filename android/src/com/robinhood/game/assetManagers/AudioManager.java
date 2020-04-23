@@ -10,7 +10,7 @@ public final class AudioManager extends AssetManager {
     private boolean MUSIC_ENABLED = true;
     private boolean SOUND_ENABLED = true;
     private Music themeSong;
-    public Sound draw, hit, shoot;
+    private Sound draw, hit, shoot;
 
     // Music
     private final String music = "sounds/game_music.mp3";

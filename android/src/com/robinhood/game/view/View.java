@@ -31,13 +31,10 @@ public abstract class View {
     protected final Stage stage;
     protected final Table table;
 
-    //public GameAssetManager assetMan = new GameAssetManager();
-
     protected final Skin buttonSkin;
     protected final Skin textSkin;
     protected final Skin headerSkin;
 
-    protected final Texture menuBackground;
 
     View(Controller controller, Model model) {
         this(controller);
@@ -50,21 +47,22 @@ public abstract class View {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
-        assetMan.loadSkins();
-        assetMan.loadBackgrounds();
-        assetMan.manager.finishLoading();
-
-        buttonSkin = assetMan.manager.get(assetMan.buttonSkin);
-        textSkin = assetMan.manager.get(assetMan.buttonSkin);
-        headerSkin = assetMan.manager.get(assetMan.buttonSkin);
-
-        menuBackground = assetMan.manager.get(assetMan.menuBackground);
+        GameAssetManager assetManager = GameAssetManager.getInstance();
+        assetManager.loadSkins();
+        assetManager.loadBackgrounds();
+        assetManager.finishLoading();
+        buttonSkin = assetManager.get(assetManager.buttonSkin);
+        textSkin = assetManager.get(assetManager.buttonSkin);
+        headerSkin = assetManager.get(assetManager.buttonSkin);
 
         // Create new table that fills the screen -> Table added to stage
         table = new Table();
         table.setFillParent(true);
         table.setDebug(false);
-        table.setBackground(new TextureRegionDrawable(new TextureRegion(menuBackground)));
+        Texture menuback = assetManager.get(assetManager.menuBackgroundString);
+        TextureRegion menuback1 = new TextureRegion(menuback);
+        TextureRegionDrawable menuBack2 = new TextureRegionDrawable(menuback1);
+        table.setBackground(menuBack2);
         stage.addActor(table);
     }
 
@@ -72,12 +70,10 @@ public abstract class View {
         float[] values = hextoRGB("#5f8db0");
         Gdx.gl.glClearColor(values[0], values[1], values[2], 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        assetMan.manager.update();
         stage.draw();
     }
 
     public void dispose () {
-        assetMan.manager.dispose();
         stage.dispose();
     }
 
