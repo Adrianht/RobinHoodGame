@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
 import com.robinhood.game.assetManagers.AudioManager;
+import com.robinhood.game.assetManagers.GameAssetManager;
 import com.robinhood.game.controller.Controller;
 import com.robinhood.game.model.Entity;
 import com.robinhood.game.model.Model;
@@ -49,7 +50,10 @@ public class GameView extends View {
         gameInfo = new Label("", textSkin);
         gameInfo.setFontScale(2f);
 
-        table.setBackground(new TextureRegionDrawable(new Texture("game-back.png")));
+        GameAssetManager assetManager = GameAssetManager.getInstance();
+        Texture backgroundTexture =
+                assetManager.get(assetManager.menuBackgroundString);
+        table.setBackground(new TextureRegionDrawable(backgroundTexture));
         table.row().pad(20f, 0, 700f, 0);
         table.add(gameInfo)
                 .fillX().uniform().width(300f).height(100f);

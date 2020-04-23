@@ -2,6 +2,7 @@ package com.robinhood.game.assetManagers;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.assets.loaders.SkinLoader.SkinParameter;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -9,9 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 public final class GameAssetManager extends AssetManager {
 
     private static final GameAssetManager INSTANCE = new GameAssetManager();
-
-    //public TextureRegionDrawable menuBackground, gameBackground;
-
 
     // TODO: Add files specific files
     // Textures
@@ -21,12 +19,12 @@ public final class GameAssetManager extends AssetManager {
     // Background Textures
     public final String menuBackgroundString = "background-smaller.png";
     public final String gameBackgroundString = "game-back.png";
-    //public final String gameBackground2 = "";
 
     // Skins Parameters
     public final String buttonSkinParams = "skin/dark-hdpi/Holo-dark-hdpi.atlas";
     public final String textSkinParams = "skin/shade/uiskin.atlas";
     public final String headerSkinParams = "skin/craftacular/craftacular-ui.atlas";
+
     // Skins
     public final String buttonSkin = "skin/dark-hdpi/Holo-dark-hdpi.json";
     public final String textSkin = "skin/shade/uiskin.json";
@@ -42,8 +40,6 @@ public final class GameAssetManager extends AssetManager {
         load(menuBackgroundString, Texture.class);
         load(gameBackgroundString, Texture.class);
         finishLoading();
-        //menuBackground = get(menuBackgroundString);
-        //gameBackground = get(gameBackgroundString);
     }
 
     public void loadSkins() {

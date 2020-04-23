@@ -59,10 +59,9 @@ public abstract class View {
         table = new Table();
         table.setFillParent(true);
         table.setDebug(false);
-        Texture menuback = assetManager.get(assetManager.menuBackgroundString);
-        TextureRegion menuback1 = new TextureRegion(menuback);
-        TextureRegionDrawable menuBack2 = new TextureRegionDrawable(menuback1);
-        table.setBackground(menuBack2);
+        Texture backgroundTexture =
+                assetManager.get(assetManager.menuBackgroundString);
+        table.setBackground(new TextureRegionDrawable(backgroundTexture));
         stage.addActor(table);
     }
 
