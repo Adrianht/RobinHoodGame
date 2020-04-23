@@ -2,6 +2,8 @@ package com.robinhood.game.assetManagers;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.assets.loaders.SkinLoader.SkinParameter;
 
@@ -32,11 +34,15 @@ public final class GameAssetManager extends AssetManager {
     public final String buttonSkinParams = "skin/dark-hdpi/Holo-dark-hdpi.atlas";
     public final String textSkinParams = "skin/shade/uiskin.atlas";
     public final String headerSkinParams = "skin/craftacular/craftacular-ui.atlas";
+    public final String textFieldSkinParams = "skin/shade/uiskin.atlas";
 
     // Skins
     public final String buttonSkin = "skin/dark-hdpi/Holo-dark-hdpi.json";
     public final String textSkin = "skin/shade/uiskin.json";
     public final String headerSkin = "skin/craftacular/craftacular-ui.json";
+
+    // TextureAtlas
+    public final String healthBarAtlas = "healthbarSheet.pack";
 
     private GameAssetManager() {}
 
@@ -74,4 +80,9 @@ public final class GameAssetManager extends AssetManager {
         load(level3Arrow, Texture.class);
         load(level4Arrow, Texture.class);
     }
+
+    public void loadTextureAtlas() {
+        load(healthBarAtlas, TextureAtlas.class);
+    }
+
 }

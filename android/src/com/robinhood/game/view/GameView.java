@@ -40,6 +40,7 @@ public class GameView extends View {
         AudioManager.getInstance().initSound();
         assetManager.loadImageButtonTextures();
         assetManager.loadInterfaceObjectsTextures();
+        assetManager.loadTextureAtlas();
         assetManager.finishLoading();
 
         ImageButton leftButton = createImgButton("left");
@@ -75,7 +76,7 @@ public class GameView extends View {
         healthBars = new HealthBar[hitPointValues.length];
         int space = 1200 / (hitPointValues.length - 1);
         for (int i = 0; i < hitPointValues.length; i++) {
-            healthBars[i] = new HealthBar(space * i + 48);
+            healthBars[i] = new HealthBar(space * i + 48, assetManager);
             stage.addActor(healthBars[i]);
         }
 

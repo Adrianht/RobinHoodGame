@@ -1,5 +1,6 @@
 package com.robinhood.game.view;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -34,7 +35,7 @@ public class SettingsView extends View {
         final CheckBox soundCheckbox =
                 new CheckBox(null, buttonSkin);
         final TextField usernameField =
-                new TextField(model.getMyUsername(), buttonSkin);
+                new TextField(model.getMyUsername(), headerSkin);
 
         musicCheckbox.setChecked(AudioManager.getInstance().getMusicEnabled());
         soundCheckbox.setChecked(AudioManager.getInstance().getSoundEnabled());
@@ -50,7 +51,7 @@ public class SettingsView extends View {
         table.add(soundCheckbox);
         table.row().pad(50, 0, 0, 0);
         table.add(usernameField)
-                .colspan(3).center().width(300f).height(100f);
+                .colspan(3).width(200f).height(100f);
         table.row().pad(30, 0, 0, 0);
         table.add(menuButton)
                 .colspan(3).center().width(300f).height(100f);

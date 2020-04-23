@@ -32,7 +32,6 @@ public abstract class View {
     protected final Skin textSkin;
     protected final Skin headerSkin;
 
-
     View(Controller controller, Model model) {
         this(controller);
         this.model = model;
