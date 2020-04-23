@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-import com.robinhood.game.AudioManager;
+import com.robinhood.game.assetManagers.AudioManager;
 import com.robinhood.game.controller.Controller;
 import com.robinhood.game.model.Model;
 

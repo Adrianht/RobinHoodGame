@@ -1,11 +1,10 @@
-package com.robinhood.game;
+package com.robinhood.game.assetManagers;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 
-import com.robinhood.game.view.loader.GameAssetManager;
-
-public final class AudioManager {
+public final class AudioManager extends AssetManager {
 
     private static final AudioManager INSTANCE = new AudioManager();
     private boolean MUSIC_ENABLED = true;
@@ -13,25 +12,38 @@ public final class AudioManager {
     private Music themeSong;
     public Sound draw, hit, shoot;
 
-    private AudioManager() {
-        GameAssetManager assetManager = new GameAssetManager();
+    // Music
+    private final String music = "sounds/game_music.mp3";
 
-        assetManager.loadMusic();
-        assetManager.manager.finishLoading();
-        themeSong = assetManager.manager.get(assetManager.music);
+    // Sounds
+    private final String drawSound = "sounds/arrow_draw.wav";
+    private final String shootSound = "sounds/arrow_shoot.wav";
+    private final String hitSound = "sounds/arrow_hit.wav";
+    private final String upgradeSound = "sounds/arrow_upgrade.wav";
+
+    private AudioManager() {
+        load(music, Music.class);
+        finishLoading();
+        themeSong = get(music);
         themeSong.setLooping(true);
         themeSong.setVolume(0.5f);
         themeSong.play();
-
-        assetManager.loadSounds();
-        assetManager.manager.finishLoading();
-        hit = assetManager.manager.get(assetManager.hitSound);
-        shoot = assetManager.manager.get(assetManager.shootSound);
-        draw = assetManager.manager.get(assetManager.drawSound);
     }
 
     public static AudioManager getInstance() {
         return INSTANCE;
+    }
+
+    public void initSound() {
+        load(drawSound, Sound.class);
+        load(shootSound, Sound.class);
+        load(hitSound, Sound.class);
+        //load(upgradeSound, Sound.class);
+        finishLoading();
+        hit = get(hitSound);
+        shoot = get(shootSound);
+        draw = get(drawSound);
+        //upgrade = get(upgradeSound);
     }
 
     public void playSound(String sound) {

@@ -1,11 +1,9 @@
 package com.robinhood.game.view;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -14,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
-import com.robinhood.game.AudioManager;
+import com.robinhood.game.assetManagers.AudioManager;
 import com.robinhood.game.controller.Controller;
 import com.robinhood.game.model.Entity;
 import com.robinhood.game.model.Model;
@@ -29,18 +27,6 @@ import com.robinhood.game.view.interfaceObjects.*;
  */
 public class GameView extends View {
 
-    private final Box2DDebugRenderer debugRenderer =
-            new Box2DDebugRenderer(
-            true,
-            true,
-            true,
-            true,
-            true,
-            true);
-    private final OrthographicCamera cam = new OrthographicCamera(
-            32,
-            24);
-
     private Label gameInfo;
     private final ImageButton
             upgrade2Button,
@@ -53,6 +39,7 @@ public class GameView extends View {
 
     public GameView(final Controller controller, Model model) {
         super(controller, model);
+        AudioManager.getInstance().initSound();
 
         ImageButton leftButton = createImgButton("left");
         ImageButton rightButton = createImgButton("right");
@@ -155,7 +142,18 @@ public class GameView extends View {
     public void render() {
         super.render();
         updateGameInfo();
-        //debugRenderer.render(model.getWorld(), cam.combined);
+        /*
+        new Box2DDebugRenderer(
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true).render(model.getWorld(), new OrthographicCamera(
+            32,
+            24).combined);
+
+         */
     }
 
     private void updateGameInfo() {

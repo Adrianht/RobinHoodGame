@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.robinhood.game.controller.Controller;
 import com.robinhood.game.model.Model;
-import com.robinhood.game.view.loader.GameAssetManager;
+import com.robinhood.game.assetManagers.GameAssetManager;
 
 /**
  * Superclass in Template method pattern - base of all application UIs.
@@ -31,7 +31,7 @@ public abstract class View {
     protected final Stage stage;
     protected final Table table;
 
-    public GameAssetManager assetMan = new GameAssetManager();
+    //public GameAssetManager assetMan = new GameAssetManager();
 
     protected final Skin buttonSkin;
     protected final Skin textSkin;
