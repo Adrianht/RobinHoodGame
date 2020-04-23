@@ -27,7 +27,6 @@ public class Model {
 
     // Box2D-related fields
     private World world;
-    private EntityFactory entityFactory;
 
     // Other data fields
     private String myUsername = "Username";
@@ -63,23 +62,22 @@ public class Model {
             public void postSolve(Contact contact, ContactImpulse impulse) {
             }
         });
-        entityFactory = new EntityFactory(world);
 
         // Initiate game entities
         entities = new ArrayList<>();
-        entities.add(entityFactory.createGround());
-
-        entities.add(ArrowEntityPool.getInstance().getObject());
-
+        createEntity("arrow");
+        createEntity("ground");
         int playerSpace = 24 / (usernames.size()-1);
         setIsMyTurn(myUsername.equals(usernames.get(0)));
         for (int i = 0; i < usernames.size(); i++) {
-            Entity player = entityFactory.createPlayer(
-                    usernames.get(i),
-                    (playerSpace*i - 12),
-                    i
-            );
-            entities.add(player);
+            Entity playerEntity = createEntity(
+                    "player",
+                    playerSpace*i - 12);
+            playerEntity.components.playerInfo.index = i;
+            playerEntity.components.playerInfo.username =
+                    usernames.get(i);
+            playerEntity.components.playerInfo.isPlayersTurn =
+                    i == 0;
         }
 
         // Initiate game systems
@@ -90,7 +88,7 @@ public class Model {
     }
 
     // Method called on every game action
-    public void gameLoop() {
+    private void gameLoop() {
         systems.UserInputSystem(entities);
         systems.AnimationSystem(entities);
         systems.GameInfoSystem(entities);
@@ -98,8 +96,25 @@ public class Model {
         collidingBodies = null;
     }
 
-    public void createArrowBody(Entity arrowEntity, float startPosX) {
-        entityFactory.newArrowBody(arrowEntity, startPosX, userInput);
+    public Entity createEntity(String type) {
+        return createEntity(type, 0);
+    }
+
+    private Entity createEntity(String type, float posX) {
+        Entity entity;
+        if(type.equals("arrow")) {
+            entity = ArrowEntityPool.getInstance().getObject();
+        } else {
+            entity = new Entity();
+            entity.addComponent("box2dBody");
+            entity.components.box2dBody.body =
+                    BodyFactory.getInstance().getBody(type, world, posX);
+            if(type.equals("player")) {
+                entity.addComponent("playerInfo");
+            }
+        }
+        entities.add(entity);
+        return entity;
     }
 
     // Method called on change in Firebase Real-time db
