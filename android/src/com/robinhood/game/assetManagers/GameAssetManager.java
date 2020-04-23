@@ -9,14 +9,13 @@ public final class GameAssetManager extends AssetManager {
 
     private static final GameAssetManager INSTANCE = new GameAssetManager();
 
-    // TODO: Add files specific files
-    // Textures
-    public final String firstPlayerImage = "";
-    public final String secondPlayerImage = "";
-
     // Background Textures
     public final String menuBackgroundString = "background-smaller.png";
     public final String gameBackgroundString = "game-back.png";
+
+    // Interface Object Textures
+    public final String archer = "archer-icon.png";
+    public final String dragIndicator = "dragInd.png";
 
     // Button Textures
     public final String leftImageButton = "left.png";
@@ -61,5 +60,10 @@ public final class GameAssetManager extends AssetManager {
         load(Level2ImageButton, Texture.class);
         load(Level3ImageButton, Texture.class);
         load(Level4ImageButton, Texture.class);
+    }
+
+    public void loadInterfaceObjectsTextures() {
+        load(archer, Texture.class);
+        load(dragIndicator, Texture.class);
     }
 }

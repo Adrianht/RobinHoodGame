@@ -16,6 +16,8 @@ import com.robinhood.game.model.Entity;
 import com.robinhood.game.model.Model;
 import com.robinhood.game.view.interfaceObjects.*;
 
+import org.w3c.dom.Text;
+
 /**
  * Subclass in Template method pattern creating the UI when in-game.
  *
@@ -39,6 +41,7 @@ public class GameView extends View {
         super(controller, model);
         AudioManager.getInstance().initSound();
         assetManager.loadImageButtonTextures();
+        assetManager.loadInterfaceObjectsTextures();
         assetManager.finishLoading();
 
         ImageButton leftButton = createImgButton("left");
@@ -78,16 +81,21 @@ public class GameView extends View {
             stage.addActor(healthBars[i]);
         }
 
+        Texture playerTexture = assetManager.get(assetManager.archer);
         Entity[] playerEntities = model.getPlayerEntities();
         for (int i = 0; i < playerEntities.length; i++) {
             Archer archer = new Archer(
-                    playerEntities[i]);
+                    playerEntities[i],
+                    playerTexture);
             stage.addActor(archer);
         }
 
         stage.addActor(new Arrow(model));
 
-        final DragIndicator dragIndicator = new DragIndicator();
+        Texture dragIndicatorTexture =
+                assetManager.get(assetManager.dragIndicator);
+        final DragIndicator dragIndicator =
+                new DragIndicator(dragIndicatorTexture);
         stage.addActor(dragIndicator);
         stage.addListener(new DragListener() {
             @Override

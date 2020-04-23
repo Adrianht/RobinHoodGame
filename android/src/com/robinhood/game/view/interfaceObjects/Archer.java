@@ -8,15 +8,21 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.robinhood.game.model.Entity;
 
+/**
+ * Class with interface object showing the archer of a player.
+ *
+ * @author group 11
+ * @version 1.0
+ * @since 2020-04-25
+ */
 public class Archer extends Actor {
 
     private Sprite sprite;
     private final Entity entity;
 
-    public Archer(Entity playerEntity) {
+    public Archer(Entity playerEntity, Texture playerTexture) {
         entity = playerEntity;
-        sprite = new Sprite(
-                new Texture("archer-icon.png"));
+        sprite = new Sprite(playerTexture);
         sprite.setSize(40, 60);
     }
 

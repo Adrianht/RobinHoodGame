@@ -17,10 +17,8 @@ public class DragIndicator extends Actor {
 
     public Sprite sprite;
 
-    public DragIndicator() {
-        sprite = new Sprite(
-                new Texture(
-                        "dragInd.png"));
+    public DragIndicator(Texture dragIndicatorTexture) {
+        sprite = new Sprite(dragIndicatorTexture);
         sprite.setSize(0, 0);
         sprite.setOrigin(0, 20);
         setPosition(900, 600);
