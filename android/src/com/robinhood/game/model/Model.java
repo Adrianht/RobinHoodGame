@@ -67,8 +67,7 @@ public class Model {
         createEntity("arrow");
         createEntity("ground");
         int playerSpace = 24 / (usernames.size()-1);
-        // TODO: remove: setIsMyTurn(myUsername.equals(usernames.get(0)));
-        this.playerEntities = new Entity[usernames.size()];
+        playerEntities = new Entity[usernames.size()];
         for (int i = 0; i < usernames.size(); i++) {
             Entity playerEntity = createEntity(
                     "player",
@@ -78,8 +77,9 @@ public class Model {
                     usernames.get(i);
             playerEntity.components.playerInfo.isPlayersTurn =
                     i == 0;
-            this.playerEntities[i] = playerEntity;
+            playerEntities[i] = playerEntity;
         }
+        gameWinner = null;
 
         systems = new Systems(this);
         systems.GameInfoSystem(entities);
@@ -104,12 +104,6 @@ public class Model {
         }
         entities.add(entity);
         return entity;
-    }
-
-    public void resetModelData() {
-        entities.clear();
-        gameWinner = null;
-        playerEntities = null;
     }
 
     // Method called on change in Firebase Real-time db

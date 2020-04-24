@@ -70,6 +70,10 @@ public class Controller {
         model.notifyChangeInFirebase(userInput);
     }
 
+    public void endGameInstance() {
+        fbconnector.removeRoom();
+    }
+
     // Observer pattern methods used communicate with model package
     public void setMyUsername(String username){
         model.setMyUsername(username);
@@ -77,11 +81,6 @@ public class Controller {
 
     public void initiateGame(List<String> usernames) {
         model.initiateGame(usernames);
-    }
-
-    public void endGameInstance() {
-        fbconnector.removeRoom();
-        model.resetModelData();
     }
 
     // Method to exit application
