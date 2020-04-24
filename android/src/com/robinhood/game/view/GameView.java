@@ -87,22 +87,22 @@ public class GameView extends View {
     private void updateGameInfo() {
         if(model.getGameWinner() != null) {
             controller.navigateTo("GAMEOVER");
-        }
+        } else {
+            for (int i = 0; i < healthBars.length; i++) {
+                int hp = playerEntities[i]
+                        .components.playerInfo.hitPoints;
+                healthBars[i].updateSprite(hp);
+            }
 
-        for (int i = 0; i < healthBars.length; i++) {
-            int hp = playerEntities[i]
-                    .components.playerInfo.hitPoints;
-            healthBars[i].updateSprite(hp);
+            int myEnergyPoints = model.getMyEnergyPoints();
+            String gameInfoString = "Your Energy Points: "
+                    + myEnergyPoints;
+            gameInfo.setText(gameInfoString);
+            gameInfo.setFontScale(3f);
+            upgrade2Button.setVisible(myEnergyPoints >= 20);
+            upgrade3Button.setVisible(myEnergyPoints >= 40);
+            upgrade4Button.setVisible(myEnergyPoints >= 60);
         }
-
-        int myEnergyPoints = model.getMyEnergyPoints();
-        String gameInfoString = "Your Energy Points: "
-                + myEnergyPoints;
-        gameInfo.setText(gameInfoString);
-        gameInfo.setFontScale(3f);
-        upgrade2Button.setVisible(myEnergyPoints >= 20);
-        upgrade3Button.setVisible(myEnergyPoints >= 40);
-        upgrade4Button.setVisible(myEnergyPoints >= 60);
     }
 
     private void initiateHealthBars() {

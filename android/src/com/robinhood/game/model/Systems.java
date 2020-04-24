@@ -90,8 +90,6 @@ public class Systems {
                 model.setFlyingArrowEntity(activeArrow);
             }
             model.setFlyingArrowEntity(null);
-            model.getWorld().destroyBody(
-                    activeArrow.components.box2dBody.body);
         }
     }
 
@@ -101,15 +99,10 @@ public class Systems {
         Entity activeArrow = findActiveArrow(entities);
         Body[] collidingBodies = model.getCollidingBodies();
 
-        int prevIndex = activePlayer.components.playerInfo.index;
-        int nextActiveIndex = (prevIndex + 1) % players.size();
-        int survivorCount = 0;
-        String possibleWinner = "";
-
-        for(Entity player: players){
-            Components.PlayerInfo playerInfo =
-                    player.components.playerInfo;
-            if(action.equals("draw")) {
+        if(action.equals("draw")) {
+            for(Entity player: players) {
+                Components.PlayerInfo playerInfo =
+                        player.components.playerInfo;
                 Body playerBody =
                         player.components.box2dBody.body;
                 if(playerBody == collidingBodies[0]
@@ -117,32 +110,37 @@ public class Systems {
                     playerBody.setLinearVelocity(0,0);
                     playerInfo.hitPoints -=
                             activeArrow.components.arrowType.damage;
-                }
-                if(playerInfo.index == nextActiveIndex) {
-                    playerInfo.isPlayersTurn = true;
-                    if (playerInfo.energy > 90) {
-                        playerInfo.energy = 100;
-                    } else {
-                        playerInfo.energy += 10;
+                    if(playerInfo.hitPoints <= 0) {
+                        playerInfo.hitPoints = 0;
+                        model.getWorld().destroyBody(
+                                player.components.box2dBody.body);
+                        player.components.box2dBody.body = null;
                     }
                 }
                 if(player == activePlayer) {
                     playerInfo.isPlayersTurn = false;
                 }
             }
-            if(playerInfo.hitPoints > 0) {
-                survivorCount++;
-                possibleWinner = playerInfo.username;
+
+            int prevIndex = activePlayer.components.playerInfo.index;
+            Entity nextActivePlayer =
+                    findNextActivePlayer(players, prevIndex);
+            if(nextActivePlayer == activePlayer) {
+                model.setGameWinner(
+                        activePlayer.components.playerInfo.username);
+            } else {
+                nextActivePlayer.components.playerInfo.isPlayersTurn = true;
+                if (nextActivePlayer.components.playerInfo.energy > 90) {
+                    nextActivePlayer.components.playerInfo.energy = 100;
+                } else {
+                    nextActivePlayer.components.playerInfo.energy += 10;
+                }
             }
-        }
-        if (survivorCount < 2) {
-            model.setGameWinner(possibleWinner);
-        }
-        if (action.equals("draw")) {
             ArrowEntityPool.getInstance().releaseObject(activeArrow);
         }
     }
 
+    // Systems helper methods
     private static List<Entity> findPlayers(List<Entity> entities) {
         List<Entity> players = new ArrayList<>();
         for(Entity entity: entities) {
@@ -170,5 +168,25 @@ public class Systems {
             }
         }
         return null;
+    }
+
+    private static Entity findNextActivePlayer(
+            List<Entity> players,
+            int prevIndex) {
+        Entity nextPlayerEntity = null;
+        int nextActiveIndex = (prevIndex + 1) % players.size();
+        while(nextPlayerEntity == null) {
+            for(Entity player: players) {
+                Components.PlayerInfo playerInfo =
+                        player.components.playerInfo;
+                if(playerInfo.index == nextActiveIndex
+                        && playerInfo.hitPoints > 0) {
+                    nextPlayerEntity = player;
+                    break;
+                }
+            }
+            nextActiveIndex = (nextActiveIndex+1) % players.size();
+        }
+        return nextPlayerEntity;
     }
 }

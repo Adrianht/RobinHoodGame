@@ -10,7 +10,7 @@ public final class AudioManager extends AssetManager {
     private boolean MUSIC_ENABLED = true;
     private boolean SOUND_ENABLED = true;
     private Music themeSong;
-    private Sound draw, hit, shoot;
+    private Sound draw, hit, shoot, upgrade;
 
     // Music
     private final String music = "sounds/game_music.mp3";
@@ -37,10 +37,10 @@ public final class AudioManager extends AssetManager {
     public void initSound() {
         load(drawSound, Sound.class);
         load(shootSound, Sound.class);
-        load(hitSound, Sound.class);
+        //load(hitSound, Sound.class);
         //load(upgradeSound, Sound.class);
         finishLoading();
-        hit = get(hitSound);
+        //hit = get(hitSound);
         shoot = get(shootSound);
         draw = get(drawSound);
         //upgrade = get(upgradeSound);
@@ -48,12 +48,12 @@ public final class AudioManager extends AssetManager {
 
     public void playSound(String sound) {
         if(SOUND_ENABLED) {
-            if(sound.equals("draw")) {
-                draw.play();
-            } else if(sound.equals("hit")) {
-                hit.play();
-            } else if(sound.equals("shoot")) {
-                shoot.play();
+            switch (sound) {
+                case "draw":
+                    draw.play();
+                    break;
+                default: // "shoot"
+                    shoot.play();
             }
         }
     }

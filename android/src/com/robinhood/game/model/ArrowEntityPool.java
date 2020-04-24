@@ -35,6 +35,8 @@ public final class ArrowEntityPool {
                     Entity arrowEntity = entry.getKey();
                     available.remove(entry.getKey());
                     inUse = arrowEntity;
+                    arrowEntity.addComponent("arrowType");
+                    arrowEntity.addComponent("box2dBody");
                     return arrowEntity;
                 }
             }
@@ -51,9 +53,10 @@ public final class ArrowEntityPool {
     }
 
     public static void releaseObject(Entity usedArrowEntity) {
-        usedArrowEntity.components.box2dBody.body = null;
-        usedArrowEntity.components.arrowType.type = "Level1";
-        usedArrowEntity.components.arrowType.damage = 10;
+        usedArrowEntity.components.box2dBody.body.getWorld().destroyBody(
+                usedArrowEntity.components.box2dBody.body);
+        usedArrowEntity.removeComponent("arrowType");
+        usedArrowEntity.removeComponent("box2dBody");
         available.put(usedArrowEntity, System.currentTimeMillis());
         inUse = null;
     }

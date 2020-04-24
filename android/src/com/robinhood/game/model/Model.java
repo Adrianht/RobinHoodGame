@@ -7,7 +7,6 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
-import com.robinhood.game.assetManagers.AudioManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +78,8 @@ public class Model {
 
         systems = new Systems(this);
         systems.GameInfoSystem(entities);
+
+        world.step(0.1f, 5, 5);
     }
 
     public Entity createEntity(String type) {
@@ -165,7 +166,9 @@ public class Model {
         this.myUsername = username;
     }
     public void setGameWinner(String gameWinner) {
-        playerEntities = null;
+        if(gameWinner == null) {
+            playerEntities = null;
+        }
         this.gameWinner = gameWinner;
     }
     public void setFlyingArrowEntity(Entity flyingArrowEntity) {
