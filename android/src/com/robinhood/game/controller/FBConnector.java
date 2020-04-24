@@ -32,20 +32,9 @@ public class FBConnector {
         this.controller = controller;
     }
 
+    // Methods used to match players through Firebase
     public void findPlayers(final String username, final int nrOfPlayers) {
 
-
-        // TODO: replace following with commented after design finished
-        List<String> usernames = new ArrayList<>();
-        usernames.add("Username");
-        usernames.add("Username");
-        controller.initiateGame(usernames);
-        mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("rooms").child("UsernameRoom");
-        createGameRoomListener();
-
-
-/*
         nameIsValid = false;
         cancelFindPlayer = false;
 
@@ -112,17 +101,24 @@ public class FBConnector {
                 // empty method
             }
         });
-*/
     }
 
-    // Cancels search for opponent(s)
     public void cancelFindPlayer(String username) {
         cancelFindPlayer = true;
         removeUsername = username;
         mDatabase.push().setValue("cancelFindPlayer");
     }
 
-    // Creates listener within the designated game room
+    private boolean lastUsernameIsUnique(List<String> usernames) {
+        for (int i = 0; i < (usernames.size()-1); i++) {
+            if (usernames.get(usernames.size()-1).equals(usernames.get(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Methods communicating with a designated game room
     public void createGameRoomListener() {
         actionListener = new ValueEventListener() {
             @Override
@@ -141,25 +137,13 @@ public class FBConnector {
         mDatabase.child("action").addValueEventListener(actionListener);
     }
 
-    // Method to change last action in players game room
     public void exportActionToFirebase(String action) {
         mDatabase.child("action").setValue(null);
         mDatabase.child("action").setValue(action);
     }
 
-    // Method to clean database after game is finished
     public void removeRoom() {
         mDatabase.removeValue();
         mDatabase.child("action").removeEventListener(actionListener);
-    }
-
-    // Checks if last element is unique
-    private boolean lastUsernameIsUnique(List<String> usernames) {
-        for (int i = 0; i < (usernames.size()-1); i++) {
-            if (usernames.get(usernames.size()-1).equals(usernames.get(i))) {
-                return false;
-            }
-        }
-        return true;
     }
 }

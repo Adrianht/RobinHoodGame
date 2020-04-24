@@ -22,27 +22,24 @@ import java.util.List;
  */
 public class Model {
 
+    // Box2D-related fields
+    private World world;
+    private Body[] collidingBodies;
+
     // ECS-related fields
     private List<Entity> entities;
     private Systems systems;
 
-    // Box2D-related fields
-    private World world;
-
-    // Other data fields
+    // Game data fields
     private String myUsername = "Username";
-    private boolean gameInitialized = false;
-    private int[] hitPointValues;
     private int myEnergyPoints;
     private boolean isMyTurn;
-    private Body[] collidingBodies;
     private String userInput, gameWinner;
     private Entity[] playerEntities;
     private Entity activeArrowEntity;
 
-    // Initiates a game
+    // Methods to set up or tear down game info fields
     public void initiateGame(List<String> usernames) {
-        // Initiate Box2D-related objects
         world = new World(new Vector2(0,-98f), true);
         world.setContactListener(new ContactListener() {
             @Override
@@ -66,12 +63,11 @@ public class Model {
             }
         });
 
-        // Initiate game entities
         entities = new ArrayList<>();
         createEntity("arrow");
         createEntity("ground");
         int playerSpace = 24 / (usernames.size()-1);
-        setIsMyTurn(myUsername.equals(usernames.get(0)));
+        // TODO: remove: setIsMyTurn(myUsername.equals(usernames.get(0)));
         this.playerEntities = new Entity[usernames.size()];
         for (int i = 0; i < usernames.size(); i++) {
             Entity playerEntity = createEntity(
@@ -85,20 +81,8 @@ public class Model {
             this.playerEntities[i] = playerEntity;
         }
 
-        // Initiate game systems
         systems = new Systems(this);
         systems.GameInfoSystem(entities);
-
-        this.gameInitialized = true;
-    }
-
-    // Method called on every game action
-    private void gameLoop() {
-        systems.UserInputSystem(entities);
-        systems.AnimationSystem(entities);
-        systems.GameInfoSystem(entities);
-        systems.action = "";
-        collidingBodies = null;
     }
 
     public Entity createEntity(String type) {
@@ -122,17 +106,24 @@ public class Model {
         return entity;
     }
 
+    public void resetModelData() {
+        entities.clear();
+        gameWinner = null;
+        playerEntities = null;
+    }
+
     // Method called on change in Firebase Real-time db
     public void notifyChangeInFirebase(String userInput) {
         this.userInput = userInput;
         gameLoop();
     }
 
-    // Method returns if game is initialized
-    public void resetModelData() {
-        entities.clear();
-        gameWinner = null;
-        gameInitialized = false;
+    private void gameLoop() {
+        systems.UserInputSystem(entities);
+        systems.AnimationSystem(entities);
+        systems.GameInfoSystem(entities);
+        systems.action = "";
+        collidingBodies = null;
     }
 
     // Field getters
@@ -157,9 +148,6 @@ public class Model {
     public String getUserInput() {
         return userInput;
     }
-    public int[] getHitPointValues(){
-        return hitPointValues;
-    }
     public int getMyEnergyPoints(){
         return myEnergyPoints;
     }
@@ -167,7 +155,7 @@ public class Model {
         return isMyTurn;
     }
     public boolean isGameInitialized() {
-        return gameInitialized;
+        return playerEntities != null;
     }
 
     // Field setters
@@ -176,9 +164,6 @@ public class Model {
     }
     public void setGameWinner(String gameWinner) {
         this.gameWinner = gameWinner;
-    }
-    public void setHitPointValues(int[] hitPointValues) {
-        this.hitPointValues = hitPointValues;
     }
     public void setMyEnergyPoints(int myEnergyPoints) {
         this.myEnergyPoints = myEnergyPoints;
