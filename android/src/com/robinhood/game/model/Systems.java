@@ -55,7 +55,6 @@ public class Systems {
                         purchaseCostNDam;
             }
         } else {
-            System.out.println(activeArrow.components);
             activeArrow.components.box2dBody.body =
                     BodyFactory.getInstance().getBody(
                             "arrow",
@@ -139,7 +138,9 @@ public class Systems {
         if (survivorCount < 2) {
             model.setGameWinner(possibleWinner);
         }
-        ArrowEntityPool.getInstance().releaseObject(activeArrow);
+        if (action.equals("draw")) {
+            ArrowEntityPool.getInstance().releaseObject(activeArrow);
+        }
     }
 
     private static List<Entity> findPlayers(List<Entity> entities) {

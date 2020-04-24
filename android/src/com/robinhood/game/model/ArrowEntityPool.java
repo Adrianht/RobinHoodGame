@@ -51,7 +51,7 @@ public final class ArrowEntityPool {
     }
 
     public static void releaseObject(Entity usedArrowEntity) {
-        usedArrowEntity.removeComponent("box2dBody");
+        usedArrowEntity.components.box2dBody.body = null;
         usedArrowEntity.components.arrowType.type = "Level1";
         usedArrowEntity.components.arrowType.damage = 10;
         available.put(usedArrowEntity, System.currentTimeMillis());

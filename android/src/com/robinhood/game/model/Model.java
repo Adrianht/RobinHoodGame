@@ -45,7 +45,6 @@ public class Model {
                 collidingBodies = new Body[2];
                 collidingBodies[0] = contact.getFixtureA().getBody();
                 collidingBodies[1] = contact.getFixtureB().getBody();
-                AudioManager.getInstance().playSound("hit");
             }
 
             @Override
@@ -77,7 +76,6 @@ public class Model {
                     i == 0;
             playerEntities[i] = playerEntity;
         }
-        gameWinner = null;
 
         systems = new Systems(this);
         systems.GameInfoSystem(entities);
@@ -112,11 +110,11 @@ public class Model {
     }
 
     private void gameLoop() {
+        collidingBodies = null;
+        systems.action = "";
         systems.UserInputSystem(entities);
         systems.AnimationSystem(entities);
         systems.GameInfoSystem(entities);
-        collidingBodies = null;
-        systems.action = "";
     }
 
     // Field getters
@@ -167,6 +165,7 @@ public class Model {
         this.myUsername = username;
     }
     public void setGameWinner(String gameWinner) {
+        playerEntities = null;
         this.gameWinner = gameWinner;
     }
     public void setFlyingArrowEntity(Entity flyingArrowEntity) {

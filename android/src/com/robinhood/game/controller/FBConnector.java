@@ -143,7 +143,7 @@ public class FBConnector {
     }
 
     public void removeRoom() {
-        mDatabase.removeValue();
         mDatabase.child("action").removeEventListener(actionListener);
+        mDatabase.removeValue();
     }
 }

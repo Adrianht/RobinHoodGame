@@ -63,7 +63,9 @@ public class Controller {
     }
 
     public void actionToFirebase(String action) {
-        fbconnector.exportActionToFirebase(action);
+        if (model.isMyTurn()) {
+            fbconnector.exportActionToFirebase(action);
+        }
     }
 
     public void notifyChangeInFirebase(String userInput) {
@@ -72,6 +74,7 @@ public class Controller {
 
     public void endGameInstance() {
         fbconnector.removeRoom();
+        model.setGameWinner(null);
     }
 
     // Observer pattern methods used communicate with model package

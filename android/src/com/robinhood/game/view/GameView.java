@@ -138,9 +138,7 @@ public class GameView extends View {
         return new ClickListener(){
             @Override
             public void clicked(InputEvent event, float clickX, float clickY) {
-                if(model.isMyTurn()) {
-                    controller.actionToFirebase(action);
-                }
+                controller.actionToFirebase(action);
             }
         };
     }
