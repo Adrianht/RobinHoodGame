@@ -32,11 +32,9 @@ public class Model {
 
     // Game data fields
     private String myUsername = "Username";
-    private int myEnergyPoints;
-    private boolean isMyTurn;
     private String userInput, gameWinner;
     private Entity[] playerEntities;
-    private Entity activeArrowEntity;
+    private Entity flyingArrowEntity;
 
     // Methods to set up or tear down game info fields
     public void initiateGame(List<String> usernames) {
@@ -109,6 +107,7 @@ public class Model {
     // Method called on change in Firebase Real-time db
     public void notifyChangeInFirebase(String userInput) {
         this.userInput = userInput;
+        createEntity("arrow");
         gameLoop();
     }
 
@@ -116,8 +115,8 @@ public class Model {
         systems.UserInputSystem(entities);
         systems.AnimationSystem(entities);
         systems.GameInfoSystem(entities);
-        systems.action = "";
         collidingBodies = null;
+        systems.action = "";
     }
 
     // Field getters
@@ -131,7 +130,7 @@ public class Model {
         return playerEntities;
     }
     public Entity getActiveArrowEntity() {
-        return activeArrowEntity;
+        return flyingArrowEntity;
     }
     public String getMyUsername() {
         return myUsername;
@@ -142,11 +141,22 @@ public class Model {
     public String getUserInput() {
         return userInput;
     }
-    public int getMyEnergyPoints(){
-        return myEnergyPoints;
+    public int getMyEnergyPoints() {
+        for(Entity player: playerEntities) {
+            if(player.components.playerInfo.username.equals(myUsername)) {
+                return player.components.playerInfo.energy;
+            }
+        }
+        return 0;
     }
     public boolean isMyTurn(){
-        return isMyTurn;
+        for(Entity player: playerEntities) {
+            if(player.components.playerInfo.username.equals(myUsername)
+                    && player.components.playerInfo.isPlayersTurn) {
+                return true;
+            }
+        }
+        return false;
     }
     public boolean isGameInitialized() {
         return playerEntities != null;
@@ -159,13 +169,7 @@ public class Model {
     public void setGameWinner(String gameWinner) {
         this.gameWinner = gameWinner;
     }
-    public void setMyEnergyPoints(int myEnergyPoints) {
-        this.myEnergyPoints = myEnergyPoints;
-    }
-    public void setIsMyTurn(boolean isMyTurn) {
-        this.isMyTurn = isMyTurn;
-    }
-    public void setActiveArrowEntity(Entity activeArrowEntity) {
-        this.activeArrowEntity = activeArrowEntity;
+    public void setFlyingArrowEntity(Entity flyingArrowEntity) {
+        this.flyingArrowEntity = flyingArrowEntity;
     }
 }
