@@ -1,12 +1,11 @@
 package com.robinhood.game.view;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Align;
 
 import com.robinhood.game.assetManagers.AudioManager;
 import com.robinhood.game.controller.Controller;
@@ -23,16 +22,13 @@ import com.robinhood.game.view.interfaceObjects.*;
  */
 public class GameView extends View {
 
-    private Label gameInfo;
     private final ImageButton
             upgrade2Button,
             upgrade3Button,
             upgrade4Button,
             leftButton,
             rightButton;
-
-    private final Entity[] playerEntities;
-    private HealthBar[] healthBars;
+    private EnergyBar energyBar;
 
     public GameView(final Controller controller, Model model) {
         super(controller, model);
@@ -48,16 +44,10 @@ public class GameView extends View {
         upgrade2Button = createImgButton("Level2");
         upgrade3Button = createImgButton("Level3");
         upgrade4Button = createImgButton("Level4");
-        gameInfo = new Label("", textSkin);
 
         Texture backgroundTexture =
                 assetManager.get(assetManager.gameBackground);
         table.setBackground(new TextureRegionDrawable(backgroundTexture));
-        table.row().pad(0, 0, 600f, 0);
-        table.add(gameInfo)
-                .fillX().uniform().height(100f);
-        gameInfo.setAlignment(Align.left);
-        table.row().pad(0, 0, 0, 0);
         table.bottom();
         table.padBottom(100f);
         table.add(leftButton)
@@ -71,11 +61,7 @@ public class GameView extends View {
         table.add(rightButton)
                 .right().padLeft(300f).width(200f).height(150f);
 
-        playerEntities = model.getPlayerEntities();
-        initiateHealthBars();
-        initiateArchers();
-        stage.addActor(new Arrow(model, assetManager));
-        new DragIndicator(controller, stage, assetManager);
+        initiateInterfaceObjects();
     }
 
     @Override
@@ -88,41 +74,46 @@ public class GameView extends View {
         if(model.getGameWinner() != null) {
             controller.navigateTo("GAMEOVER");
         } else {
-            for (int i = 0; i < healthBars.length; i++) {
-                int hp = playerEntities[i]
-                        .components.playerInfo.hitPoints;
-                healthBars[i].updateSprite(hp);
+            int myEnergyPoints = model.getMyEnergyPoints();
+            energyBar.setVisible(myEnergyPoints >= 10);
+            if(energyBar.isVisible()) {
+                energyBar.updateSprite(myEnergyPoints);
             }
 
-            int myEnergyPoints = model.getMyEnergyPoints();
-            String gameInfoString = "Your Energy Points: "
-                    + myEnergyPoints;
-            gameInfo.setText(gameInfoString);
-            gameInfo.setFontScale(3f);
             upgrade2Button.setVisible(myEnergyPoints >= 20);
             upgrade3Button.setVisible(myEnergyPoints >= 40);
             upgrade4Button.setVisible(myEnergyPoints >= 60);
         }
     }
 
-    private void initiateHealthBars() {
-        healthBars = new HealthBar[playerEntities.length];
+    private void initiateInterfaceObjects() {
+        Entity[] playerEntities = model.getPlayerEntities();
         int space = 1200 / (playerEntities.length - 1);
-        for (int i = 0; i < playerEntities.length; i++) {
-            healthBars[i] =
-                    new HealthBar(space * i + 48, assetManager);
-            stage.addActor(healthBars[i]);
-        }
-    }
-
-    private void initiateArchers() {
         Texture archerTexture = assetManager.get(assetManager.archer);
-        for (Entity player: playerEntities) {
+        TextureAtlas healthBarAtlas =
+                assetManager.get(assetManager.healthBarAtlas);
+        for (int i = 0; i < playerEntities.length; i++) {
+            stage.addActor(new HealthBar(
+                    playerEntities[i],
+                    space * i + 48,
+                    healthBarAtlas));
             stage.addActor(new Archer(
-                    player,
+                    playerEntities[i],
                     archerTexture
             ));
         }
+
+        TextureAtlas energyBarAtlas =
+                assetManager.get(assetManager.energyBarAtlas);
+        energyBar = new EnergyBar(energyBarAtlas);
+        stage.addActor(energyBar);
+
+        Texture arrowTexture = assetManager.get(assetManager.arrow);
+        stage.addActor(new Arrow(model, arrowTexture));
+
+        Texture dragIndicatorTexture =
+                assetManager.get(assetManager.dragIndicator);
+        new DragIndicator(controller, stage, dragIndicatorTexture);
     }
 
     private ImageButton createImgButton(String name) {

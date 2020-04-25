@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-import com.robinhood.game.assetManagers.GameAssetManager;
 import com.robinhood.game.model.Entity;
 import com.robinhood.game.model.Model;
 
@@ -22,14 +21,14 @@ import com.robinhood.game.model.Model;
 public class Arrow extends Actor {
 
     private final Model model;
+    private final Texture arrowTexture;
     private Sprite sprite;
     private float startPosX, startPosY;
     private boolean isNewShot = true;
-    private GameAssetManager assetManager;
 
-    public Arrow(Model model, GameAssetManager assetManager) {
+    public Arrow(Model model, Texture arrowTexture) {
         this.model = model;
-        this.assetManager = assetManager;
+        this.arrowTexture = arrowTexture;
     }
 
     @Override
@@ -37,9 +36,9 @@ public class Arrow extends Actor {
         Entity activeArrow = model.getActiveArrowEntity();
         if (activeArrow != null) {
             Body arrowBody =
-                    activeArrow.components.box2dBody.body;
+                activeArrow.components.box2dBody.body;
             if (isNewShot) {
-                createSprite(activeArrow);
+                createSprite(arrowBody);
                 isNewShot = false;
             }
             sprite.setPosition(
@@ -53,9 +52,7 @@ public class Arrow extends Actor {
         }
     }
 
-    private void createSprite(Entity arrowEntity) {
-        Body arrowBody = arrowEntity.components.box2dBody.body;
-        Texture arrowTexture = assetManager.get(assetManager.arrow);
+    private void createSprite(Body arrowBody) {
         sprite = new Sprite(arrowTexture);
         sprite.setSize(20, 20);
         sprite.rotate(40);

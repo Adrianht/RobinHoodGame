@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 
 import com.robinhood.game.assetManagers.AudioManager;
-import com.robinhood.game.assetManagers.GameAssetManager;
 import com.robinhood.game.controller.Controller;
 
 /**
@@ -29,9 +28,8 @@ public class DragIndicator extends Actor {
     public DragIndicator(
             final Controller controller,
             Stage stage,
-            GameAssetManager assetManager) {
-        Texture dragIndicatorTexture =
-                assetManager.get(assetManager.dragIndicator);
+            Texture dragIndicatorTexture) {
+
         sprite = new Sprite(dragIndicatorTexture);
         sprite.setSize(0, 0);
         sprite.setOrigin(0, 20);
