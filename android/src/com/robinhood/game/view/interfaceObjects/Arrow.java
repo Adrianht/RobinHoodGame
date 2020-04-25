@@ -54,7 +54,7 @@ public class Arrow extends Actor {
 
     private void createSprite(Body arrowBody) {
         sprite = new Sprite(arrowTexture);
-        sprite.setSize(20, 20);
+        sprite.setSize(40, 40);
         sprite.rotate(40);
         if(arrowBody.getLinearVelocity().x < 0) {
             startPosX = Gdx.graphics.getWidth()/2.2f;

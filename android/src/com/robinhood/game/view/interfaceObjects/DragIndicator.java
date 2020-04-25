@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 
 import com.robinhood.game.assetManagers.AudioManager;
 import com.robinhood.game.controller.Controller;
+import com.robinhood.game.model.Model;
 
 /**
  * Class with interface object showing a player arrows
@@ -26,6 +27,7 @@ public class DragIndicator extends Actor {
     private boolean dragStart;
 
     public DragIndicator(
+            final Model model,
             final Controller controller,
             Stage stage,
             Texture dragIndicatorTexture) {
@@ -43,7 +45,7 @@ public class DragIndicator extends Actor {
                     float clickX,
                     float clickY,
                     int pointer) {
-                if(!dragStart){
+                if(!dragStart && model.isMyTurn()){
                     dragStart = true;
                     AudioManager.getInstance().playSound("draw");
                 }
@@ -78,7 +80,9 @@ public class DragIndicator extends Actor {
                     float clickY,
                     int pointer) {
                 dragStart = false;
-                AudioManager.getInstance().playSound("shoot");
+                if(model.isMyTurn()) {
+                    AudioManager.getInstance().playSound("shoot");
+                }
                 controller.actionToFirebase(new Vector2(
                         clickX-getDragStartX(),
                         clickY-getDragStartY()

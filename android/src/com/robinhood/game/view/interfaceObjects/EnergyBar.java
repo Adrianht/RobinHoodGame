@@ -1,5 +1,6 @@
 package com.robinhood.game.view.interfaceObjects;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -27,7 +28,9 @@ public class EnergyBar extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         sprite.setSize(300, 75);
-        sprite.setPosition(48, 850);
+        sprite.setPosition(
+                Gdx.graphics.getWidth()/2f - sprite.getWidth()/2f,
+                20);
         sprite.draw(batch);
     }
 

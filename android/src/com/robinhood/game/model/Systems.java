@@ -27,14 +27,14 @@ public class Systems {
         String userInput = model.getUserInput();
         Entity activeArrow = findActiveArrow(entities);
         Entity activePlayer = findActivePlayer(entities);
+        Body playerBody = activePlayer.components.box2dBody.body;
 
         if (userInput.equals("left") || userInput.equals("right")) {
-            if(activePlayer.components.playerInfo.energy > 1) {
-                activePlayer.components.box2dBody.body
-                        .setLinearVelocity(-2, 0);
+            if(activePlayer.components.playerInfo.energy > 1
+                    && Math.abs(playerBody.getPosition().x) < 13) {
+                playerBody.setLinearVelocity(-2, 0);
                 if (userInput.equals("right")) {
-                    activePlayer.components.box2dBody.body
-                            .setLinearVelocity(2, 0);
+                    playerBody.setLinearVelocity(2, 0);
                 }
                 activePlayer.components.playerInfo.energy -= 2;
                 action = "move";
@@ -59,8 +59,7 @@ public class Systems {
                     BodyFactory.getInstance().getBody(
                             "arrow",
                             model.getWorld(),
-                            activePlayer.components.box2dBody.body
-                                    .getPosition().x,
+                            playerBody.getPosition().x,
                             userInput);
             action = "draw";
         }

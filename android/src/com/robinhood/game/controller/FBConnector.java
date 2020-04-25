@@ -35,6 +35,18 @@ public class FBConnector {
     // Methods used to match players through Firebase
     public void findPlayers(final String username, final int nrOfPlayers) {
 
+        // TODO: replace following with commented after design finished
+        List<String> usernames = new ArrayList<>();
+        usernames.add("Username");
+        usernames.add("Username");
+        controller.initiateGame(usernames);
+        mDatabase = FirebaseDatabase.getInstance().getReference()
+                .child("rooms").child("UsernameRoom");
+        createGameRoomListener();
+
+
+/*
+
         nameIsValid = false;
         cancelFindPlayer = false;
 
@@ -101,6 +113,8 @@ public class FBConnector {
                 // empty method
             }
         });
+
+ */
     }
 
     public void cancelFindPlayer(String username) {

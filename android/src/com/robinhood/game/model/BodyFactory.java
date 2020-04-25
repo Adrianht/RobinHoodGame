@@ -55,7 +55,7 @@ public final class BodyFactory {
         Body body = world.createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(.1f, .01f);
+        shape.setAsBox(.3f, .03f);
         body.createFixture(shape, .2f);
         shape.dispose();
 
@@ -83,7 +83,7 @@ public final class BodyFactory {
         Body body = world.createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(.25f, .7f);
+        shape.setAsBox(.5f, 1.2f);
         body.createFixture(shape, 5f);
         shape.dispose();
 

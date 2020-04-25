@@ -1,7 +1,9 @@
 package com.robinhood.game.view;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -68,6 +70,15 @@ public class GameView extends View {
     public void render() {
         super.render();
         updateGameInfo();
+        new Box2DDebugRenderer(
+                true,
+                true,
+                true,
+                true,
+                true,
+                true).render(model.getWorld(), new OrthographicCamera(
+                32,
+                24).combined);
     }
 
     private void updateGameInfo() {
@@ -113,7 +124,7 @@ public class GameView extends View {
 
         Texture dragIndicatorTexture =
                 assetManager.get(assetManager.dragIndicator);
-        new DragIndicator(controller, stage, dragIndicatorTexture);
+        new DragIndicator(model, controller, stage, dragIndicatorTexture);
     }
 
     private ImageButton createImgButton(String name) {
