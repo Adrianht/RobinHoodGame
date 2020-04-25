@@ -28,7 +28,7 @@ public class Archer extends Actor {
     public Archer(Entity playerEntity, Texture archerTexture) {
         entity = playerEntity;
         sprite = new Sprite(archerTexture);
-        sprite.setSize(40, 60);
+        sprite.setSize(80, 120);
         username = playerEntity.components.playerInfo.username;
     }
 
@@ -38,7 +38,7 @@ public class Archer extends Actor {
         if (body != null) {
             float posX = box2dPosToGdxPosX(body);
             float posY = box2dPosToGdxPosY(body);
-            font.setColor(Color.BLACK);
+            font.setColor(Color.WHITE);
             font.draw(
                     batch,
                     username,
@@ -51,13 +51,13 @@ public class Archer extends Actor {
 
     private static float box2dPosToGdxPosX(Body body){
         return Gdx.graphics.getWidth()/2f
-                - .25f * Gdx.graphics.getWidth() / 32
+                - .5f * Gdx.graphics.getWidth() / 32
                 + body.getPosition().x * Gdx.graphics.getWidth() / 32;
     }
 
     private static float box2dPosToGdxPosY(Body body){
         return Gdx.graphics.getHeight()/2f
-                - .7f * Gdx.graphics.getHeight() / 24
+                - 1.2f * Gdx.graphics.getHeight() / 24
                 + body.getPosition().y * Gdx.graphics.getHeight() / 24;
     }
 }

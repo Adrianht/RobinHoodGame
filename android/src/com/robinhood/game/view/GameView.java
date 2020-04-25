@@ -113,7 +113,7 @@ public class GameView extends View {
 
         Texture dragIndicatorTexture =
                 assetManager.get(assetManager.dragIndicator);
-        new DragIndicator(controller, stage, dragIndicatorTexture);
+        new DragIndicator(model, controller, stage, dragIndicatorTexture);
     }
 
     private ImageButton createImgButton(String name) {

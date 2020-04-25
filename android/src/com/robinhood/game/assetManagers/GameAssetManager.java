@@ -13,8 +13,8 @@ public final class GameAssetManager extends AssetManager {
     // Background Textures
     public final String menuBackground = "backgrounds/menuBackground.png";
     public final String gameBackground = "backgrounds/gameBackground.png";
+    public final String instructionBackground = "backgrounds/instructionBackground.png";
     public final String loadingBackground = "backgrounds/loadingBackground.png";
-    public final String snowBackground = "backgrounds/snowBackground.png";
 
     // Interface Object Textures
     public final String archer = "img/archer.png";
@@ -52,6 +52,7 @@ public final class GameAssetManager extends AssetManager {
     public void loadBackgrounds() {
         load(menuBackground, Texture.class);
         load(gameBackground, Texture.class);
+        load(instructionBackground, Texture.class);
     }
 
     public void loadSkins() {
