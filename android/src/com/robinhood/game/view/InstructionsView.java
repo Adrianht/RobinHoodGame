@@ -52,16 +52,11 @@ public class InstructionsView extends View {
         TextButton menuButton =
                 new TextButton("Menu", buttonSkin);
 
-        System.out.println(instructions1);
-        System.out.println(instructions2);
-        System.out.println(instructions3);
-
         headerText.setFontScale(2f);
         instructions1.setFontScale(2f);
         instructions2.setFontScale(2f);
         instructions3.setFontScale(2f);
 
-        table.setDebug(true);
         Texture backgroundTexture =
                 assetManager.get(assetManager.instructionBackground);
         table.setBackground(new TextureRegionDrawable(backgroundTexture));
