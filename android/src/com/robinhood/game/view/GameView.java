@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.Align;
 import com.robinhood.game.controller.Controller;
 import com.robinhood.game.model.Model;
 import com.robinhood.game.view.interfaceObjects.DragIndicator;
+import com.robinhood.game.view.interfaceObjects.EnergyBar;
 import com.robinhood.game.view.interfaceObjects.HealthBar;
 
 /**
@@ -48,6 +49,7 @@ public class GameView extends View {
             upgrade4Button;
 
     private final HealthBar[] healthBars;
+    private final EnergyBar energyBar;
 
     public GameView(final Controller controller, Model model) {
         super(controller, model);
@@ -110,6 +112,10 @@ public class GameView extends View {
             stage.addActor(healthBars[i]);
         }
 
+        int energyValue = model.getMyEnergyPoints();
+        energyBar = new EnergyBar(energyValue);
+        stage.addActor(energyBar);
+
         final DragIndicator dragIndicator = new DragIndicator();
         stage.addActor(dragIndicator);
         stage.addListener(new DragListener() {
@@ -170,15 +176,15 @@ public class GameView extends View {
         }
 
         int myEnergyPoints = model.getMyEnergyPoints();
-        String gameInfoString = "Your Energy Points: "
-                + myEnergyPoints + "\n";
+        energyBar.updateSprite(myEnergyPoints);
 
         int[] hitPointValues = model.getHitPointValues();
         for (int i = 0; i < healthBars.length; i++) {
             healthBars[i].updateSprite(hitPointValues[i]);
         }
 
-        gameInfo.setText(gameInfoString);
+        // TODO: This one is no longer needed? gameInfoString
+        // gameInfo.setText(gameInfoString);
         upgrade2Button.setVisible(myEnergyPoints >= 20);
         upgrade3Button.setVisible(myEnergyPoints >= 40);
         upgrade4Button.setVisible(myEnergyPoints >= 60);

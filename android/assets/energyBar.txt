@@ -1,0 +1,75 @@
+energyBar.png
+size: 1550, 208
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+energy10
+  rotate: false
+  xy: 0, 0
+  size: 310, 104
+  orig: 310, 104
+  offset: 0, 0
+  index: -1
+energy20
+  rotate: false
+  xy: 310, 0
+  size: 310, 104
+  orig: 310, 104
+  offset: 0, 0
+  index: -1
+energy30
+  rotate: false
+  xy: 620, 0
+  size: 310, 104
+  orig: 310, 104
+  offset: 0, 0
+  index: -1
+energy40
+  rotate: false
+  xy: 930, 0
+  size: 310, 104
+  orig: 310, 104
+  offset: 0, 0
+  index: -1
+energy50
+  rotate: false
+  xy: 1240, 0
+  size: 310, 104
+  orig: 310, 104
+  offset: 0, 0
+  index: -1
+energy60
+  rotate: false
+  xy: 0, 104
+  size: 310, 104
+  orig: 310, 104
+  offset: 0, 0
+  index: -1
+energy70
+  rotate: false
+  xy: 310, 104
+  size: 310, 104
+  orig: 310, 104
+  offset: 0, 0
+  index: -1
+energy80
+  rotate: false
+  xy: 620, 104
+  size: 310, 104
+  orig: 310, 104
+  offset: 0, 0
+  index: -1
+energy90
+  rotate: false
+  xy: 930, 104
+  size: 310, 104
+  orig: 310, 104
+  offset: 0, 0
+  index: -1
+energy100
+  rotate: false
+  xy: 1240, 104
+  size: 310, 104
+  orig: 310, 104
+  offset: 0, 0
+  index: -1
