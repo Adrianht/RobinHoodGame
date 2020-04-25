@@ -81,10 +81,6 @@ git clone https://github.com/Adrianht/RobinHoodGame.git
 * **Charlotte Söderström** - *RobinYoTrello* - [charlottesoderstrom](https://github.com/charlottesoderstrom)
 * **Adrian Thompson** - *RobinYoFirebase* - [Adrianht](https://github.com/Adrianht)
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
 ## Acknowledgments
 
 Sources of inspiration:
