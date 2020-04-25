@@ -35,16 +35,18 @@ public class Archer extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         Body body = entity.components.box2dBody.body;
-        float posX = box2dPosToGdxPosX(body);
-        float posY = box2dPosToGdxPosY(body);
-        font.setColor(Color.BLACK);
-        font.draw(
-                batch,
-                username,
-                posX,
-                posY + sprite.getHeight() + 20);
-        sprite.setPosition(posX, posY);
-        sprite.draw(batch);
+        if (body != null) {
+            float posX = box2dPosToGdxPosX(body);
+            float posY = box2dPosToGdxPosY(body);
+            font.setColor(Color.BLACK);
+            font.draw(
+                    batch,
+                    username,
+                    posX,
+                    posY + sprite.getHeight() + 20);
+            sprite.setPosition(posX, posY);
+            sprite.draw(batch);
+        }
     }
 
     private static float box2dPosToGdxPosX(Body body){

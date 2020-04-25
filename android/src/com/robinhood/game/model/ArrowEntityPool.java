@@ -17,7 +17,7 @@ public final class ArrowEntityPool {
 
     private static final long expTime = 6000; // 6 seconds
     private static final HashMap<Entity, Long> available = new HashMap<>();
-    private static final HashMap<Entity, Long> inUse = new HashMap<>();
+    private static Entity inUse;
 
     private ArrowEntityPool() {}
 
@@ -27,33 +27,37 @@ public final class ArrowEntityPool {
 
     public synchronized static Entity getObject() {
         long now = System.currentTimeMillis();
-        if (!available.isEmpty()) {
+        if (!available.isEmpty() && inUse == null) {
             for (Map.Entry<Entity, Long> entry : available.entrySet()) {
                 if (now - entry.getValue() > expTime) {
                     available.remove(entry.getKey());
                 } else {
                     Entity arrowEntity = entry.getKey();
                     available.remove(entry.getKey());
-                    inUse.put(arrowEntity, now);
+                    inUse = arrowEntity;
+                    arrowEntity.addComponent("arrowType");
+                    arrowEntity.addComponent("box2dBody");
                     return arrowEntity;
                 }
             }
         }
-        return createEntity(now);
+        return createEntity();
     }
 
-    private synchronized static Entity createEntity(long now) {
+    private synchronized static Entity createEntity() {
         Entity newArrowEntity = new Entity();
         newArrowEntity.addComponent("arrowType");
-        inUse.put(newArrowEntity, now);
+        newArrowEntity.addComponent("box2dBody");
+        inUse = newArrowEntity;
         return newArrowEntity;
     }
 
     public static void releaseObject(Entity usedArrowEntity) {
+        usedArrowEntity.components.box2dBody.body.getWorld().destroyBody(
+                usedArrowEntity.components.box2dBody.body);
+        usedArrowEntity.removeComponent("arrowType");
         usedArrowEntity.removeComponent("box2dBody");
-        usedArrowEntity.components.arrowType.type = "Level1";
-        usedArrowEntity.components.arrowType.damage = 10;
         available.put(usedArrowEntity, System.currentTimeMillis());
-        inUse.remove(usedArrowEntity);
+        inUse = null;
     }
 }
