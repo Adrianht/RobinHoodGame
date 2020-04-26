@@ -12,17 +12,14 @@ public class Entity {
 
     public final Components components = new Components();
 
-    // Add component to this entity
     public void addComponent(String componentName) {
         componentAction(componentName, true);
     }
 
-    // Remove component from this entity
     public void removeComponent(String componentName) {
         componentAction(componentName, false);
     }
 
-    // Finds and execute action on correct component
     private void componentAction(String componentName, boolean isAddAction) {
         switch(componentName) {
             case "arrowType":

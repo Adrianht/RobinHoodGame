@@ -28,7 +28,7 @@ public class Controller {
         this.fbconnector = new FBConnector(this);
     }
 
-    // Navigation method called from views
+    // Observer pattern methods used by view package to navigate between views
     public void navigateTo(String destination) {
         switch(destination) {
             case "SETTINGS":
@@ -51,46 +51,43 @@ public class Controller {
         }
     }
 
-    // Method called from GameView to update firebase
-    public void actionToFirebase(String action) {
-        fbconnector.exportActionToFirebase(action);
-    }
-
-    // Called from FBConnector to notify model of change
-    public void notifyChangeInFirebase(String userInput) {
-        model.notifyChangeInFirebase(userInput);
-    }
-
-    // Reset model and firebase game room
-    public void endGameInstance() {
-        fbconnector.removeRoom();
-        model.resetModelData();
-    }
-
-    // Notify firebase of an available player
+    // Observer pattern methods used communicate with FirebaseRtD
     public void findPlayers() {
         fbconnector.findPlayers(
                 model.getMyUsername(),
                 nrOfPlayers);
     }
 
-    // Method to cancel a players search for opponent
     public void cancelFindPlayer() {
         fbconnector.cancelFindPlayer(model.getMyUsername());
     }
 
-    // Initate game when opponent(s) are found
+    public void actionToFirebase(String action) {
+        if (model.isMyTurn()) {
+            fbconnector.exportActionToFirebase(action);
+        }
+    }
+
+    public void notifyChangeInFirebase(String userInput) {
+        model.notifyChangeInFirebase(userInput);
+    }
+
+    public void endGameInstance() {
+        fbconnector.removeRoom();
+        model.setGameWinner(null);
+    }
+
+    // Observer pattern methods used communicate with model package
+    public void setMyUsername(String username){
+        model.setMyUsername(username);
+    }
+
     public void initiateGame(List<String> usernames) {
         model.initiateGame(usernames);
     }
 
-    // Method to exit application, called from MenuView
+    // Method to exit application
     public void exitApplication() {
         Gdx.app.exit();
-    }
-
-    // Method sets username in model
-    public void setMyUsername(String username){
-        model.setMyUsername(username);
     }
 }

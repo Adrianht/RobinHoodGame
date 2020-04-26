@@ -7,7 +7,6 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
-import com.robinhood.game.assetManagers.AudioManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,27 +21,22 @@ import java.util.List;
  */
 public class Model {
 
+    // Box2D-related fields
+    private World world;
+    private Body[] collidingBodies;
+
     // ECS-related fields
     private List<Entity> entities;
     private Systems systems;
 
-    // Box2D-related fields
-    private World world;
-
-    // Other data fields
+    // Game data fields
     private String myUsername = "Username";
-    private boolean gameInitialized = false;
-    private int[] hitPointValues;
-    private int myEnergyPoints;
-    private boolean isMyTurn;
-    private Body[] collidingBodies;
     private String userInput, gameWinner;
     private Entity[] playerEntities;
-    private Entity activeArrowEntity;
+    private Entity flyingArrowEntity;
 
-    // Initiates a game
+    // Methods to set up or tear down game info fields
     public void initiateGame(List<String> usernames) {
-        // Initiate Box2D-related objects
         world = new World(new Vector2(0,-98f), true);
         world.setContactListener(new ContactListener() {
             @Override
@@ -50,7 +44,6 @@ public class Model {
                 collidingBodies = new Body[2];
                 collidingBodies[0] = contact.getFixtureA().getBody();
                 collidingBodies[1] = contact.getFixtureB().getBody();
-                AudioManager.getInstance().playSound("hit");
             }
 
             @Override
@@ -66,13 +59,11 @@ public class Model {
             }
         });
 
-        // Initiate game entities
         entities = new ArrayList<>();
         createEntity("arrow");
         createEntity("ground");
         int playerSpace = 24 / (usernames.size()-1);
-        setIsMyTurn(myUsername.equals(usernames.get(0)));
-        this.playerEntities = new Entity[usernames.size()];
+        playerEntities = new Entity[usernames.size()];
         for (int i = 0; i < usernames.size(); i++) {
             Entity playerEntity = createEntity(
                     "player",
@@ -82,23 +73,13 @@ public class Model {
                     usernames.get(i);
             playerEntity.components.playerInfo.isPlayersTurn =
                     i == 0;
-            this.playerEntities[i] = playerEntity;
+            playerEntities[i] = playerEntity;
         }
 
-        // Initiate game systems
         systems = new Systems(this);
         systems.GameInfoSystem(entities);
 
-        this.gameInitialized = true;
-    }
-
-    // Method called on every game action
-    private void gameLoop() {
-        systems.UserInputSystem(entities);
-        systems.AnimationSystem(entities);
-        systems.GameInfoSystem(entities);
-        systems.action = "";
-        collidingBodies = null;
+        world.step(0.1f, 5, 5);
     }
 
     public Entity createEntity(String type) {
@@ -125,14 +106,16 @@ public class Model {
     // Method called on change in Firebase Real-time db
     public void notifyChangeInFirebase(String userInput) {
         this.userInput = userInput;
+        createEntity("arrow");
         gameLoop();
     }
 
-    // Method returns if game is initialized
-    public void resetModelData() {
-        entities.clear();
-        gameWinner = null;
-        gameInitialized = false;
+    private void gameLoop() {
+        collidingBodies = null;
+        systems.action = "";
+        systems.UserInputSystem(entities);
+        systems.AnimationSystem(entities);
+        systems.GameInfoSystem(entities);
     }
 
     // Field getters
@@ -146,7 +129,7 @@ public class Model {
         return playerEntities;
     }
     public Entity getActiveArrowEntity() {
-        return activeArrowEntity;
+        return flyingArrowEntity;
     }
     public String getMyUsername() {
         return myUsername;
@@ -157,17 +140,25 @@ public class Model {
     public String getUserInput() {
         return userInput;
     }
-    public int[] getHitPointValues(){
-        return hitPointValues;
-    }
-    public int getMyEnergyPoints(){
-        return myEnergyPoints;
+    public int getMyEnergyPoints() {
+        for(Entity player: playerEntities) {
+            if(player.components.playerInfo.username.equals(myUsername)) {
+                return player.components.playerInfo.energy;
+            }
+        }
+        return 0;
     }
     public boolean isMyTurn(){
-        return isMyTurn;
+        for(Entity player: playerEntities) {
+            if(player.components.playerInfo.username.equals(myUsername)
+                    && player.components.playerInfo.isPlayersTurn) {
+                return true;
+            }
+        }
+        return false;
     }
     public boolean isGameInitialized() {
-        return gameInitialized;
+        return playerEntities != null;
     }
 
     // Field setters
@@ -175,18 +166,12 @@ public class Model {
         this.myUsername = username;
     }
     public void setGameWinner(String gameWinner) {
+        if(gameWinner == null) {
+            playerEntities = null;
+        }
         this.gameWinner = gameWinner;
     }
-    public void setHitPointValues(int[] hitPointValues) {
-        this.hitPointValues = hitPointValues;
-    }
-    public void setMyEnergyPoints(int myEnergyPoints) {
-        this.myEnergyPoints = myEnergyPoints;
-    }
-    public void setIsMyTurn(boolean isMyTurn) {
-        this.isMyTurn = isMyTurn;
-    }
-    public void setActiveArrowEntity(Entity activeArrowEntity) {
-        this.activeArrowEntity = activeArrowEntity;
+    public void setFlyingArrowEntity(Entity flyingArrowEntity) {
+        this.flyingArrowEntity = flyingArrowEntity;
     }
 }

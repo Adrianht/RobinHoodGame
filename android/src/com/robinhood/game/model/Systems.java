@@ -25,59 +25,50 @@ public class Systems {
 
     public void UserInputSystem(List<Entity> entities) {
         String userInput = model.getUserInput();
-        Entity[] activePlayerAndArrow =
-                findActivePlayerAndArrow(entities);
+        Entity activeArrow = findActiveArrow(entities);
+        Entity activePlayer = findActivePlayer(entities);
+        Body playerBody = activePlayer.components.box2dBody.body;
 
         if (userInput.equals("left") || userInput.equals("right")) {
-            if(activePlayerAndArrow[0].components.playerInfo.energy > 1) {
-                activePlayerAndArrow[0]
-                        .components.box2dBody.body
-                        .setLinearVelocity(-1, 0);
+            if(activePlayer.components.playerInfo.energy > 1
+                    && Math.abs(playerBody.getPosition().x) < 13) {
+                playerBody.setLinearVelocity(-2, 0);
                 if (userInput.equals("right")) {
-                    activePlayerAndArrow[0]
-                            .components.box2dBody.body
-                            .setLinearVelocity(1, 0);
+                    playerBody.setLinearVelocity(2, 0);
                 }
-                activePlayerAndArrow[0]
-                        .components.playerInfo.energy -= 2;
+                activePlayer.components.playerInfo.energy -= 2;
                 action = "move";
             }
         } else if (userInput.substring(0,3).equals("Lev")) {
-            // Level 2 arrow - cost: 20, damage: 20
-            // Level 3 arrow - cost: 40, damage: 40
-            // Level 4 arrow - cost: 60, damage: 60
+            // "Level2" -> cost: 20, damage: 20
+            // "Level3" -> cost: 40, damage: 40
+            // "Level4" -> cost: 60, damage: 60
             int purchaseLevel = Integer.parseInt(
                     userInput.substring(userInput.length() - 1));
             int purchaseCostNDam = (purchaseLevel-1) * 20;
-            if (activePlayerAndArrow[0].components.playerInfo.energy
+            if (activePlayer.components.playerInfo.energy
                     >= purchaseCostNDam) {
-                activePlayerAndArrow[0]
-                        .components.playerInfo.energy -= purchaseCostNDam;
-                activePlayerAndArrow[1]
-                        .components.arrowType.type =
-                        "Level" + purchaseLevel;
-                activePlayerAndArrow[1]
-                        .components.arrowType.damage = purchaseCostNDam;
+                activePlayer.components.playerInfo.energy
+                        -= purchaseCostNDam;
+                activeArrow.components.arrowType.type = userInput;
+                activeArrow.components.arrowType.damage =
+                        purchaseCostNDam;
             }
         } else {
-            activePlayerAndArrow[1].addComponent("box2dBody");
-            activePlayerAndArrow[1].components.box2dBody.body =
+            activeArrow.components.box2dBody.body =
                     BodyFactory.getInstance().getBody(
                             "arrow",
                             model.getWorld(),
-                            activePlayerAndArrow[0]
-                                    .components.box2dBody.body
-                                    .getPosition().x,
+                            playerBody.getPosition().x,
                             userInput);
             action = "draw";
         }
     }
 
     public void AnimationSystem(List<Entity> entities) {
-        Entity[] activePlayerAndArrow = findActivePlayerAndArrow(entities);
-
         if (action.equals("move")) {
-            while (activePlayerAndArrow[0].components.box2dBody.body
+            Entity activePlayer = findActivePlayer(entities);
+            while (activePlayer.components.box2dBody.body
                     .getLinearVelocity().x != 0) {
                 model.getWorld().step(
                         .001f,
@@ -85,95 +76,70 @@ public class Systems {
                         1);
             }
         } else if (action.equals("draw")) {
-            Vector2 vector2 = new Vector2().fromString(model.getUserInput());
-            activePlayerAndArrow[1]
-                    .components.box2dBody.body
+            Entity activeArrow = findActiveArrow(entities);
+            Vector2 vector2 = new Vector2()
+                    .fromString(model.getUserInput());
+            activeArrow.components.box2dBody.body
                     .setLinearVelocity(vector2.scl(-.05f));
-
-            Body[] collidingBodies = null;
-            while(collidingBodies == null) {
+            while(model.getCollidingBodies() == null) {
                 model.getWorld().step(
                         0.0005f,
                         1,
                         1);
-                model.setActiveArrowEntity(activePlayerAndArrow[1]);
-                collidingBodies = model.getCollidingBodies();
+                model.setFlyingArrowEntity(activeArrow);
             }
-            model.setActiveArrowEntity(null);
-            Body hitBody = collidingBodies[0];
-            if(collidingBodies[0] == activePlayerAndArrow[1]
-                    .components.box2dBody.body) {
-                hitBody = collidingBodies[1];
-            }
-            hitBody.setLinearVelocity(0,0);
-
-            List<Entity> players = findPlayers(entities);
-            for(Entity player: players) {
-                if(hitBody == player.components.box2dBody.body) {
-                    player.components.playerInfo.hitPoints -=
-                            activePlayerAndArrow[1]
-                                    .components.arrowType.damage;
-                    break;
-                }
-            }
-
-            model.getWorld().destroyBody(
-                    activePlayerAndArrow[1].components.box2dBody.body);
-            ArrowEntityPool.getInstance().releaseObject(
-                    activePlayerAndArrow[1]);
-            model.createEntity("arrow");
+            model.setFlyingArrowEntity(null);
         }
     }
 
     public void GameInfoSystem(List<Entity> entities) {
         List<Entity> players = findPlayers(entities);
-        String myUsername = model.getMyUsername();
-        Entity[] activePlayerAndArrow = findActivePlayerAndArrow(entities);
-        String activePlayerUsername =
-                activePlayerAndArrow[0].components.playerInfo.username;
+        Entity activePlayer = findActivePlayer(entities);
+        Entity activeArrow = findActiveArrow(entities);
+        Body[] collidingBodies = model.getCollidingBodies();
 
         if(action.equals("draw")) {
-            int prevActiveIndex =
-                    activePlayerAndArrow[0].components.playerInfo.index;
-            int nextActiveIndex = (prevActiveIndex + 1) % players.size();
-            for(Entity player: players){
-                if (player.components.playerInfo.index == nextActiveIndex) {
-                    activePlayerUsername =
-                            player.components.playerInfo.username;
-                    if (player.components.playerInfo.energy > 90) {
-                        player.components.playerInfo.energy = 100;
-                    } else {
-                        player.components.playerInfo.energy += 10;
+            for(Entity player: players) {
+                Components.PlayerInfo playerInfo =
+                        player.components.playerInfo;
+                Body playerBody =
+                        player.components.box2dBody.body;
+                if(playerBody == collidingBodies[0]
+                        || playerBody == collidingBodies[1]) {
+                    playerBody.setLinearVelocity(0,0);
+                    playerInfo.hitPoints -=
+                            activeArrow.components.arrowType.damage;
+                    if(playerInfo.hitPoints <= 0) {
+                        playerInfo.hitPoints = 0;
+                        model.getWorld().destroyBody(
+                                player.components.box2dBody.body);
+                        player.components.box2dBody.body = null;
                     }
-                    break;
+                }
+                if(player == activePlayer) {
+                    playerInfo.isPlayersTurn = false;
                 }
             }
-        }
 
-        int[] hitPointValues = new int[players.size()];
-        int survivorCount = 0;
-        String possibleWinner = "";
-        for(Entity player: players){
-            player.components.playerInfo.isPlayersTurn =
-                    activePlayerUsername.equals(
-                            player.components.playerInfo.username);
-            model.setIsMyTurn(myUsername.equals(activePlayerUsername));
-            if (myUsername.equals(player.components.playerInfo.username)){
-                model.setMyEnergyPoints(player.components.playerInfo.energy);
+            int prevIndex = activePlayer.components.playerInfo.index;
+            Entity nextActivePlayer =
+                    findNextActivePlayer(players, prevIndex);
+            if(nextActivePlayer == activePlayer) {
+                model.setGameWinner(
+                        activePlayer.components.playerInfo.username);
+            } else {
+                nextActivePlayer.components.playerInfo.isPlayersTurn = true;
+                if (nextActivePlayer.components.playerInfo.energy > 90) {
+                    nextActivePlayer.components.playerInfo.energy = 100;
+                } else {
+                    nextActivePlayer.components.playerInfo.energy += 10;
+                }
             }
-            hitPointValues[player.components.playerInfo.index] =
-                    player.components.playerInfo.hitPoints;
-            if(player.components.playerInfo.hitPoints > 0) {
-                survivorCount++;
-                possibleWinner = player.components.playerInfo.username;
-            }
+            ArrowEntityPool.getInstance().releaseObject(activeArrow);
         }
-        if (survivorCount < 2) {
-            model.setGameWinner(possibleWinner);
-        }
-        model.setHitPointValues(hitPointValues);
     }
 
+    // Systems helper methods
     private static List<Entity> findPlayers(List<Entity> entities) {
         List<Entity> players = new ArrayList<>();
         for(Entity entity: entities) {
@@ -184,16 +150,42 @@ public class Systems {
         return players;
     }
 
-    private static Entity[] findActivePlayerAndArrow(List<Entity> entities) {
-        Entity[] activePlayerAndArrow = new Entity[2];
+    private static Entity findActivePlayer(List<Entity> entities) {
         for(Entity entity: entities) {
             if (entity.components.playerInfo != null &&
                     entity.components.playerInfo.isPlayersTurn) {
-                activePlayerAndArrow[0] = entity;
-            } else if (entity.components.arrowType != null) {
-                activePlayerAndArrow[1] = entity;
+                return entity;
             }
         }
-        return activePlayerAndArrow;
+        return null;
+    }
+
+    private static Entity findActiveArrow(List<Entity> entities) {
+        for(Entity entity: entities) {
+            if (entity.components.arrowType != null) {
+                return entity;
+            }
+        }
+        return null;
+    }
+
+    private static Entity findNextActivePlayer(
+            List<Entity> players,
+            int prevIndex) {
+        Entity nextPlayerEntity = null;
+        int nextActiveIndex = (prevIndex + 1) % players.size();
+        while(nextPlayerEntity == null) {
+            for(Entity player: players) {
+                Components.PlayerInfo playerInfo =
+                        player.components.playerInfo;
+                if(playerInfo.index == nextActiveIndex
+                        && playerInfo.hitPoints > 0) {
+                    nextPlayerEntity = player;
+                    break;
+                }
+            }
+            nextActiveIndex = (nextActiveIndex+1) % players.size();
+        }
+        return nextPlayerEntity;
     }
 }
