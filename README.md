@@ -58,7 +58,7 @@ Note that the rest of this description will be based on the use of Android Studi
 1. Clone or download this repository to your computer. For example, by running the following command
 (NB: this will require that you have [git](https://git-scm.com/) installed):
 ```
-git clone https://github.com/Adrianht/RobinHoodGame.git
+git clone git@github.com:Adrianht/RobinYoHood.git
 ```
 
 2. Open the project folder in Android Studio.
