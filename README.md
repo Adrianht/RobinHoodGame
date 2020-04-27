@@ -1,4 +1,4 @@
-# RobinHoodGame
+# RobinYoHood
 
 This is a repository for an Android game developed with libGDX and Firebase Realtime Database.
 The game was developed as the project delivery of the course TDT4240 Software Architecture at 
